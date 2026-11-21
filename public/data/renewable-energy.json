@@ -1,0 +1,33 @@
+{
+  "dataset": "nrg_ind_ren",
+  "indicator": "Renewable energy share in gross final energy consumption",
+  "referenceYear": 2023,
+  "unit": "%",
+  "sourceUrl": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/nrg_ind_ren",
+  "sourceParameters": {
+  	"nrg_bal": "REN",
+  	"unit": "PC"
+  },
+  "note": "The UK value is an illustrative estimate because Eurostat has no 2023 observation for the UK.",
+  "estimatedCNTR_IDs": [
+    "UK"
+  ],
+  "valuesByCNTR_ID": {
+    "SE": 66.393,
+    "FI": 50.784,
+    "LV": 43.25,
+    "DK": 43.728,
+    "AT": 41.6,
+    "PT": 35.154,
+    "ES": 24.981,
+    "FR": 22.462,
+    "DE": 21.512,
+    "IT": 19.179,
+    "PL": 16.651,
+    "NL": 17.588,
+    "BE": 14.673,
+    "IE": 15.243,
+    "NO": 76.729,
+    "UK": 14.5
+  }
+}
