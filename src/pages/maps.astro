@@ -7,16 +7,25 @@ import LeafletMap from '../components/LeafletMap.astro';
 	<section class="maps">
 		<p class="eyebrow">Geospatial data</p>
 		<h1>Maps</h1>
-		<p class="description">A sample choropleth using illustrative renewable energy values.</p>
+		<p class="description">Renewable energy share in gross final energy consumption, 2023.</p>
 
 		<ul class="legend" aria-label="Renewable energy share legend">
-			<li><span class="swatch lowest"></span>&lt; 17%</li>
-			<li><span class="swatch low"></span>17–18.9%</li>
-			<li><span class="swatch medium"></span>19–20.9%</li>
-			<li><span class="swatch high"></span>21–22.9%</li>
-			<li><span class="swatch highest"></span>23%+</li>
+			<li><span class="swatch no-data"></span>No data</li>
+			<li><span class="swatch lowest"></span>&lt; 15%</li>
+			<li><span class="swatch low"></span>15–24.9%</li>
+			<li><span class="swatch medium"></span>25–39.9%</li>
+			<li><span class="swatch high"></span>40–59.9%</li>
+			<li><span class="swatch highest"></span>60%+</li>
 		</ul>
-		<p class="note">Values are illustrative sample data, not official Eurostat statistics.</p>
+		<p class="note">
+			Source: <a href="https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/nrg_ind_ren">
+				Eurostat nrg_ind_ren
+			</a>. The UK value is an estimate; gray indicates countries without a value in this sample.
+		</p>
+		<p class="note boundary-note">
+			Boundaries: <a href="https://gisco-services.ec.europa.eu/">Eurostat GISCO, 2024</a>.
+			&copy; EuroGeographics for the administrative boundaries.
+		</p>
 
 		<LeafletMap />
 	</section>
@@ -78,6 +87,10 @@ import LeafletMap from '../components/LeafletMap.astro';
 		background: #e6eceb;
 	}
 
+	.no-data {
+		background: #e5e7eb;
+	}
+
 	.low {
 		background: #bfd4d8;
 	}
@@ -95,8 +108,16 @@ import LeafletMap from '../components/LeafletMap.astro';
 	}
 
 	.note {
-		margin: 14px 0 22px;
+		margin: 14px 0 0;
 		color: #6b7280;
 		font-size: 0.88rem;
+	}
+
+	.boundary-note {
+		margin: 6px 0 22px;
+	}
+
+	.note a {
+		color: inherit;
 	}
 </style>

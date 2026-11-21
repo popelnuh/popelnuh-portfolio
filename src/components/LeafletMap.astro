@@ -1,14 +1,12 @@
 ---
 interface Props {
-	dataUrl?: string;
-	metricProperty?: string;
-	metricLabel?: string;
+	boundariesUrl?: string;
+	metricsUrl?: string;
 }
 
 const {
-	dataUrl = '/data/sample-europe.geojson',
-	metricProperty = 'renewable_energy_pct',
-	metricLabel = 'Renewable energy share',
+	boundariesUrl = '/data/europe-countries.geojson',
+	metricsUrl = '/data/renewable-energy.json',
 } = Astro.props;
 ---
 
@@ -16,11 +14,10 @@ const {
 	<div
 		class="leaflet-map"
 		data-testid="leaflet-map"
-		data-geojson-url={dataUrl}
-		data-metric-property={metricProperty}
-		data-metric-label={metricLabel}
+		data-boundaries-url={boundariesUrl}
+		data-metrics-url={metricsUrl}
 		role="region"
-		aria-label={`European countries by ${metricLabel}`}
+		aria-label="European countries by renewable energy share"
 	></div>
 	<p class="map-status" role="status" aria-live="polite">Loading map data…</p>
 </div>
@@ -28,66 +25,69 @@ const {
 <script>
 	import * as L from 'leaflet';
 	import 'leaflet/dist/leaflet.css';
-	import type { FeatureCollection, Geometry } from 'geojson';
-
-	type MetricProperties = {
-		[key: string]: string | number;
-	};
-
-	const colorForValue = (value: unknown): string => {
-		if (typeof value !== 'number' || !Number.isFinite(value)) return '#e5e7eb';
-		if (value >= 23) return '#2f6f9f';
-		if (value >= 21) return '#5f98b5';
-		if (value >= 19) return '#92bac8';
-		if (value >= 17) return '#bfd4d8';
-		return '#e6eceb';
-	};
+	import {
+		joinRenewableEnergyData,
+		NO_DATA_COLOR,
+		type CountryBoundaries,
+		type RenewableEnergyDataset,
+	} from '../lib/renewableEnergyAdapter';
 
 	for (const container of document.querySelectorAll<HTMLElement>('[data-testid="leaflet-map"]')) {
 		const status = container.parentElement?.querySelector<HTMLElement>('.map-status');
-		const dataUrl = container.dataset.geojsonUrl ?? '/data/sample-europe.geojson';
-		const metricProperty = container.dataset.metricProperty ?? 'renewable_energy_pct';
-		const metricLabel = container.dataset.metricLabel ?? 'Renewable energy share';
+		const boundariesUrl = container.dataset.boundariesUrl ?? '/data/europe-countries.geojson';
+		const metricsUrl = container.dataset.metricsUrl ?? '/data/renewable-energy.json';
 		const map = L.map(container);
 
 		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			maxZoom: 19,
 			attribution:
-				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | &copy; EuroGeographics for the administrative boundaries',
 		}).addTo(map);
 
-		void fetch(dataUrl)
-			.then(async (response) => {
-				if (!response.ok) {
-					throw new Error(`Map data request failed with status ${response.status}`);
+		void Promise.all([fetch(boundariesUrl), fetch(metricsUrl)])
+			.then(async ([boundariesResponse, metricsResponse]) => {
+				if (!boundariesResponse.ok) {
+					throw new Error(`Boundary request failed with status ${boundariesResponse.status}`);
 				}
-
-				return (await response.json()) as FeatureCollection<Geometry, MetricProperties>;
+				if (!metricsResponse.ok) {
+					throw new Error(`Metric request failed with status ${metricsResponse.status}`);
+				}
+				const [boundaries, metrics] = await Promise.all([
+					boundariesResponse.json() as Promise<CountryBoundaries>,
+					metricsResponse.json() as Promise<RenewableEnergyDataset>,
+				]);
+				return { boundaries: joinRenewableEnergyData(boundaries, metrics), metrics };
 			})
-			.then((data) => {
-				const countries = L.geoJSON(data, {
+			.then(({ boundaries, metrics }) => {
+				const countries = L.geoJSON(boundaries, {
 					style: (feature) => ({
 						color: '#ffffff',
 						weight: 1.5,
-						fillColor: colorForValue(feature?.properties?.[metricProperty]),
+						fillColor: feature?.properties?.choropleth_color ?? NO_DATA_COLOR,
 						fillOpacity: 0.8,
 					}),
 					onEachFeature: (feature, layer) => {
 						const properties = feature.properties;
 						const countryName =
-							typeof properties?.name === 'string' ? properties.name : 'Unknown country';
-						const value = properties?.[metricProperty];
+							properties?.NAME_ENGL ?? properties?.CNTR_NAME ?? properties?.CNTR_ID ?? 'Unknown country';
+						const countryId = properties?.CNTR_ID ?? 'unknown';
+						const value = properties?.renewable_energy_pct ?? null;
 						const popup = document.createElement('div');
 						const name = document.createElement('strong');
 						const metric = document.createElement('p');
 
 						name.textContent = countryName;
 						metric.textContent =
-							typeof value === 'number' ? `${metricLabel}: ${value.toFixed(1)}%` : `${metricLabel}: no data`;
+							value === null
+								? `${metrics.indicator}: no data`
+								: `${metrics.indicator} (${metrics.referenceYear}): ${value.toFixed(1)}${metrics.unit}${properties?.estimated ? ' (estimate)' : ''}`;
 						popup.append(name, metric);
 						layer.bindPopup(popup);
 
 						if (layer instanceof L.Path) {
+							layer.on('add', () => {
+								layer.getElement()?.setAttribute('data-testid', `map-region-${countryId}`);
+							});
 							layer.on({
 								mouseover: () => {
 									layer.setStyle({ color: '#171a24', weight: 2.5, fillOpacity: 0.95 });
@@ -108,7 +108,7 @@ const {
 				if (status) status.textContent = 'Map data loaded. Select a country for details.';
 			})
 			.catch((error: unknown) => {
-				console.error(`Unable to load map data from ${dataUrl}`, error);
+				console.error(`Unable to load map data from ${boundariesUrl} and ${metricsUrl}`, error);
 				if (status) status.textContent = 'Map data could not be loaded.';
 			});
 	}

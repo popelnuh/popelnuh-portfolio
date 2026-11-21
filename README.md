@@ -2,7 +2,7 @@
 
 [![Azure Static Web Apps CI/CD](https://github.com/popelnuh/popelnuh-portfolio/actions/workflows/azure-static-web-apps-salmon-water-0ad7f5510.yml/badge.svg?branch=main)](https://github.com/popelnuh/popelnuh-portfolio/actions/workflows/azure-static-web-apps-salmon-water-0ad7f5510.yml)
 
-This repository contains my personal portfolio, built with Astro and hosted on Azure Static Web Apps. It is intended to include technical blog posts and interactive GIS visualizations, with a Leaflet sample map as the foundation for future datasets.
+This repository contains my personal portfolio, built with Astro and hosted on Azure Static Web Apps. It is intended to include technical blog posts and interactive GIS visualizations, with a Leaflet map using Eurostat GISCO boundaries and renewable energy metrics.
 
 Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0ad7f5510.8.azurestaticapps.net/)
 
@@ -24,7 +24,8 @@ Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0
 │       └── azure-static-web-apps-salmon-water-0ad7f5510.yml
 ├── public/
 │   ├── data/
-│   │   └── sample-europe.geojson
+│   │   ├── europe-countries.geojson
+│   │   └── renewable-energy.json
 │   ├── favicon.ico
 │   └── favicon.svg
 ├── src/
@@ -36,11 +37,21 @@ Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0
 │   │   └── Welcome.astro
 │   ├── layouts/
 │   │   └── Layout.astro
+│   ├── lib/
+│   │   └── renewableEnergyAdapter.ts
 │   └── pages/
 │       ├── about.astro
 │       ├── index.astro
 │       └── maps.astro
 ├── tests/
+│   ├── components/
+│   │   └── NavBarComponent.ts
+│   ├── fixtures/
+│   │   └── test.ts
+│   ├── pages/
+│   │   ├── AboutPage.ts
+│   │   ├── HomePage.ts
+│   │   └── MapsPage.ts
 │   └── pages.spec.ts
 ├── .mcp.json
 ├── astro.config.mjs
@@ -49,6 +60,10 @@ Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0
 ├── playwright.config.ts
 └── tsconfig.json
 ```
+
+## Map Data
+
+`public/data/europe-countries.geojson` contains European country geometries selected from the GISCO 2024 1:20 million dataset by `CNTR_ID`. `public/data/renewable-energy.json` stores 2023 Eurostat `nrg_ind_ren` (`REN`, `PC`) values keyed by `CNTR_ID`; the UK value is an estimate because Eurostat has no 2023 UK observation. The adapter joins the two files and assigns the neutral no-data color to countries without a metric. Boundary attribution is displayed on the map.
 
 ## Local Development
 
@@ -93,5 +108,5 @@ The GitHub Actions workflow runs the Playwright tests on pushes to `main` and ac
 ## Roadmap
 
 - [ ] Configure the custom domain `popelnuh.com`.
-- [ ] Replace the sample map values with Eurostat and OECD data.
+- [ ] Expand the map metrics with additional Eurostat and OECD datasets.
 - [ ] Expand Playwright coverage with accessibility and visual regression checks.

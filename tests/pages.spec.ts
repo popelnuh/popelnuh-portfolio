@@ -1,33 +1,33 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures/test';
 
-test('home page links to the about page', async ({ page }) => {
-	await page.goto('/');
+test('home page links to the about page', async ({ homePage, aboutPage }) => {
+	await homePage.goto();
 
-	await expect(page.getByRole('heading', { name: 'Welcome' })).toBeVisible();
-	await page.getByRole('link', { name: 'Learn more about me' }).click();
+	await expect(homePage.heading).toBeVisible();
+	await expect(homePage.nav.mapsLink).toHaveAttribute('href', '/maps');
+	await homePage.openAbout();
 
-	await expect(page).toHaveURL(/\/about\/?$/);
-	await expect(page.getByRole('heading', { name: 'Zlata Popelnuh' })).toBeVisible();
-	await expect(page.getByRole('link', { name: 'LinkedIn' })).toHaveAttribute(
+	await expect(aboutPage.heading).toBeVisible();
+	await expect(aboutPage.linkedInLink).toHaveAttribute(
 		'href',
 		'https://linkedin.com/in/zlata-popelnuh',
 	);
-	await expect(page.getByRole('link', { name: 'GitHub' })).toHaveAttribute(
+	await expect(aboutPage.githubLink).toHaveAttribute(
 		'href',
 		'https://github.com/popelnuh',
 	);
 });
 
-test('maps page renders an interactive choropleth', async ({ page }) => {
-	await page.goto('/maps');
+test('maps page renders an interactive choropleth', async ({ mapsPage }) => {
+	await mapsPage.goto();
 
-	const map = page.getByTestId('leaflet-map');
-	const polygon = page.locator('.leaflet-overlay-pane path').first();
-
-	await expect(map).toBeVisible();
-	await expect(page.locator('.leaflet-container')).toBeVisible();
-	await expect(polygon).toBeVisible();
-	await polygon.click();
-	await expect(page.locator('.leaflet-popup')).toBeVisible();
-	await expect(page.locator('.leaflet-popup-content')).toContainText('Spain');
+	await expect(mapsPage.heading).toBeVisible();
+	await expect(mapsPage.map).toBeVisible();
+	await expect(mapsPage.leafletContainer).toBeVisible();
+	await expect(mapsPage.spainRegion).toBeVisible();
+	await expect(mapsPage.countryWithoutMetric).toHaveAttribute('fill', '#e5e7eb');
+	await mapsPage.selectSpain();
+	await expect(mapsPage.popup).toBeVisible();
+	await expect(mapsPage.popup).toContainText('Spain');
+	await expect(mapsPage.popup).toContainText('25.0%');
 });
