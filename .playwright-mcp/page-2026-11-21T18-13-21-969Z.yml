@@ -1,0 +1,22 @@
+- generic [active] [ref=f2e1]:
+  - banner [ref=f2e2]:
+    - navigation "Main navigation" [ref=f2e3]:
+      - link "Zlata Popelnuh" [ref=f2e4] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f2e5]:
+        - link "Home" [ref=f2e6] [cursor=pointer]:
+          - /url: /
+        - link "About" [ref=f2e7] [cursor=pointer]:
+          - /url: /about
+  - main [ref=f2e8]:
+    - generic [ref=f2e9]:
+      - paragraph [ref=f2e10]: Quality, testing, and automation
+      - heading "Welcome" [level=1] [ref=f2e11]
+      - paragraph [ref=f2e12]: I’m Zlata Popelnuh, a quality and test automation lead based in Scotland.
+      - link "Learn more about me" [ref=f2e13] [cursor=pointer]:
+        - /url: /about
+  - generic [ref=f2e16]:
+    - button "Menu" [ref=f2e17]
+    - button "Inspect" [ref=f2e23]
+    - button "Audit" [ref=f2e27]
+    - button "Settings" [ref=f2e32]

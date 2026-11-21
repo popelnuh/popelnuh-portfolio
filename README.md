@@ -1,51 +1,86 @@
-# Astro Starter Kit: Basics
+# Zlata Popelnuh — Portfolio
 
-```sh
-npm create astro@latest -- --template basics
-```
+[![Azure Static Web Apps CI/CD](https://github.com/popelnuh/popelnuh-portfolio/actions/workflows/azure-static-web-apps-salmon-water-0ad7f5510.yml/badge.svg?branch=main)](https://github.com/popelnuh/popelnuh-portfolio/actions/workflows/azure-static-web-apps-salmon-water-0ad7f5510.yml)
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+This repository contains my personal portfolio, built with Astro and hosted on Azure Static Web Apps. It is intended to include technical blog posts, with interactive GIS and geospatial maps planned for a future release.
 
-## 🚀 Project Structure
+Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0ad7f5510.8.azurestaticapps.net/)
 
-Inside of your Astro project, you'll see the following folders and files:
+## Tech Stack
+
+- Astro
+- TypeScript
+- Playwright Test
+- Azure Static Web Apps
+- GitHub Actions
+
+## Project Structure
 
 ```text
-/
+.
+├── .github/
+│   └── workflows/
+│       └── azure-static-web-apps-salmon-water-0ad7f5510.yml
 ├── public/
+│   ├── favicon.ico
 │   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+├── src/
+│   ├── assets/
+│   │   ├── astro.svg
+│   │   └── background.svg
+│   ├── components/
+│   │   └── Welcome.astro
+│   ├── layouts/
+│   │   └── Layout.astro
+│   └── pages/
+│       ├── about.astro
+│       └── index.astro
+├── tests/
+│   └── pages.spec.ts
+├── .mcp.json
+├── astro.config.mjs
+├── package.json
+├── package-lock.json
+├── playwright.config.ts
+└── tsconfig.json
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Local Development
 
-## 🧞 Commands
+Requires Node.js `>=22.23.4`.
 
-All commands are run from the root of the project, from a terminal:
+```sh
+npm ci
+npm run dev
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Astro serves the site locally at `http://localhost:4321/`. To create and preview a production build:
 
-## End-to-end tests
+```sh
+npm run build
+npm run preview
+```
 
-Install the Playwright browser once with `npx playwright install chromium`, then run
-`npm run test:e2e` to test the home-to-about page flow.
+## Testing & CI/CD
 
-## 👀 Want to learn more?
+Install the Playwright Chromium browser once, then run the end-to-end tests:
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```sh
+npx playwright install chromium
+npm run test:e2e
+```
+
+Generate and open the HTML test report with:
+
+```sh
+npm run test:e2e -- --reporter=html
+npx playwright show-report
+```
+
+The GitHub Actions workflow runs the Playwright tests on pushes to `main` and active pull requests. A passing test job gates the Azure Static Web Apps build and deployment; pushes to `main` deploy the site, and pull requests use preview deployments.
+
+## Roadmap
+
+- [ ] Configure the custom domain `popelnuh.com`.
+- [ ] Build interactive GIS maps with Leaflet or MapLibre using Eurostat and OECD data.
+- [ ] Expand Playwright coverage with accessibility and visual regression checks.
