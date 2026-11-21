@@ -26,8 +26,23 @@ test('maps page renders an interactive choropleth', async ({ mapsPage }) => {
 	await expect(mapsPage.leafletContainer).toBeVisible();
 	await expect(mapsPage.spainRegion).toBeVisible();
 	await expect(mapsPage.countryWithoutMetric).toHaveAttribute('fill', '#e5e7eb');
-	await mapsPage.selectSpain();
+	await expect(mapsPage.attribution).toContainText(
+		'EuroGeographics for the administrative boundaries',
+	);
+	await mapsPage.selectCountry('ES');
 	await expect(mapsPage.popup).toBeVisible();
 	await expect(mapsPage.popup).toContainText('Spain');
 	await expect(mapsPage.popup).toContainText('25.0%');
+});
+
+test('map popups identify estimated and missing metric values', async ({ mapsPage }) => {
+	await mapsPage.goto();
+
+	await expect(mapsPage.ukRegion).toBeVisible();
+	await mapsPage.selectCountry('UK');
+	await expect(mapsPage.popup).toContainText('14.5% (estimate)');
+
+	await mapsPage.selectCountry('TR');
+	await expect(mapsPage.popup).toContainText('Türkiye');
+	await expect(mapsPage.popup).toContainText('no data');
 });

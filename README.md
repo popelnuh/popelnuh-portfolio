@@ -96,11 +96,26 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-Generate and open the HTML test report with:
+### Playwright MCP
+
+The workspace Playwright MCP server is configured in `.mcp.json`. Start the site with `npm run dev`, then use prompts like these in Copilot:
+
+- “Open `http://localhost:4321/maps`. Inspect the map, legend, navigation, and attribution. Report usability issues without changing files.”
+- “On `/maps`, click Spain, the UK, and Türkiye. Report each popup value and whether the no-data country is styled as expected.”
+- “Inspect `/maps` at desktop size and at a 390 × 844 viewport. Check for overflow, cramped controls, and hard-to-tap countries; report findings without editing files.”
+- “Check `/maps` for browser-console errors and failed network requests. Summarize any failures without changing files.”
+- “Review keyboard access on `/maps`: tab through navigation and map controls, and check whether country regions can be focused and activated.”
+
+### Playwright CLI commands
 
 ```sh
-npm run test:e2e -- --reporter=html
-npx playwright show-report
+npx playwright test                         # Run all tests headlessly
+npx playwright test --headed                # Run all tests in a visible browser
+npx playwright test tests/pages.spec.ts     # Run a single spec
+npx playwright test --ui                    # Open Playwright UI mode
+npx playwright test --debug                 # Debug with the Playwright Inspector
+npm run test:e2e -- --reporter=html         # Generate an HTML report
+npx playwright show-report                  # View the latest HTML report
 ```
 
 The GitHub Actions workflow runs the Playwright tests on pushes to `main` and active pull requests. A passing test job gates the Azure Static Web Apps build and deployment; pushes to `main` deploy the site, and pull requests use preview deployments.
