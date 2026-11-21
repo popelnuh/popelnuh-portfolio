@@ -1,0 +1,23 @@
+- generic [active] [ref=f1e1]:
+  - banner [ref=f1e2]:
+    - navigation "Main navigation" [ref=f1e3]:
+      - link "Zlata Popelnuh" [ref=f1e4] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f1e5]:
+        - link "Home" [ref=f1e6] [cursor=pointer]:
+          - /url: /
+        - link "About" [ref=f1e7] [cursor=pointer]:
+          - /url: /about
+  - main [ref=f1e8]:
+    - generic [ref=f1e9]:
+      - paragraph [ref=f1e10]: About me
+      - heading "Zlata Popelnuh" [level=1] [ref=f1e11]
+      - generic [ref=f1e12]:
+        - paragraph [ref=f1e13]: I am an ISTQB-certified quality and test automation professional with over 8 years of experience in testing.
+        - paragraph [ref=f1e14]: I work with Playwright, C#, Python, and Azure DevOps, and I have also explored GIS, QGIS, mapping, and spatial data. Previously a GIS specialist, I now focus on quality, test automation, and exploring new frameworks.
+        - paragraph [ref=f1e15]: Based in Scotland, UK.
+      - generic "Professional profiles" [ref=f1e16]:
+        - link "LinkedIn" [ref=f1e17] [cursor=pointer]:
+          - /url: https://linkedin.com/in/zlata-popelnuh
+        - link "GitHub" [ref=f1e18] [cursor=pointer]:
+          - /url: https://github.com/popelnuh
