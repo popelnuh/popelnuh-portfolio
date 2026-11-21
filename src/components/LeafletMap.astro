@@ -1,0 +1,135 @@
+---
+interface Props {
+	dataUrl?: string;
+	metricProperty?: string;
+	metricLabel?: string;
+}
+
+const {
+	dataUrl = '/data/sample-europe.geojson',
+	metricProperty = 'renewable_energy_pct',
+	metricLabel = 'Renewable energy share',
+} = Astro.props;
+---
+
+<div class="map-shell">
+	<div
+		class="leaflet-map"
+		data-testid="leaflet-map"
+		data-geojson-url={dataUrl}
+		data-metric-property={metricProperty}
+		data-metric-label={metricLabel}
+		role="region"
+		aria-label={`European countries by ${metricLabel}`}
+	></div>
+	<p class="map-status" role="status" aria-live="polite">Loading map data…</p>
+</div>
+
+<script>
+	import * as L from 'leaflet';
+	import 'leaflet/dist/leaflet.css';
+	import type { FeatureCollection, Geometry } from 'geojson';
+
+	type MetricProperties = {
+		[key: string]: string | number;
+	};
+
+	const colorForValue = (value: unknown): string => {
+		if (typeof value !== 'number' || !Number.isFinite(value)) return '#e5e7eb';
+		if (value >= 23) return '#2f6f9f';
+		if (value >= 21) return '#5f98b5';
+		if (value >= 19) return '#92bac8';
+		if (value >= 17) return '#bfd4d8';
+		return '#e6eceb';
+	};
+
+	for (const container of document.querySelectorAll<HTMLElement>('[data-testid="leaflet-map"]')) {
+		const status = container.parentElement?.querySelector<HTMLElement>('.map-status');
+		const dataUrl = container.dataset.geojsonUrl ?? '/data/sample-europe.geojson';
+		const metricProperty = container.dataset.metricProperty ?? 'renewable_energy_pct';
+		const metricLabel = container.dataset.metricLabel ?? 'Renewable energy share';
+		const map = L.map(container);
+
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 19,
+			attribution:
+				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		}).addTo(map);
+
+		void fetch(dataUrl)
+			.then(async (response) => {
+				if (!response.ok) {
+					throw new Error(`Map data request failed with status ${response.status}`);
+				}
+
+				return (await response.json()) as FeatureCollection<Geometry, MetricProperties>;
+			})
+			.then((data) => {
+				const countries = L.geoJSON(data, {
+					style: (feature) => ({
+						color: '#ffffff',
+						weight: 1.5,
+						fillColor: colorForValue(feature?.properties?.[metricProperty]),
+						fillOpacity: 0.8,
+					}),
+					onEachFeature: (feature, layer) => {
+						const properties = feature.properties;
+						const countryName =
+							typeof properties?.name === 'string' ? properties.name : 'Unknown country';
+						const value = properties?.[metricProperty];
+						const popup = document.createElement('div');
+						const name = document.createElement('strong');
+						const metric = document.createElement('p');
+
+						name.textContent = countryName;
+						metric.textContent =
+							typeof value === 'number' ? `${metricLabel}: ${value.toFixed(1)}%` : `${metricLabel}: no data`;
+						popup.append(name, metric);
+						layer.bindPopup(popup);
+
+						if (layer instanceof L.Path) {
+							layer.on({
+								mouseover: () => {
+									layer.setStyle({ color: '#171a24', weight: 2.5, fillOpacity: 0.95 });
+									layer.bringToFront();
+								},
+								mouseout: () => countries.resetStyle(layer),
+							});
+						}
+					},
+				}).addTo(map);
+
+				const bounds = countries.getBounds();
+				if (!bounds.isValid()) {
+					throw new Error('Map data does not contain any valid country polygons');
+				}
+
+				map.fitBounds(bounds, { padding: [16, 16] });
+				if (status) status.textContent = 'Map data loaded. Select a country for details.';
+			})
+			.catch((error: unknown) => {
+				console.error(`Unable to load map data from ${dataUrl}`, error);
+				if (status) status.textContent = 'Map data could not be loaded.';
+			});
+	}
+</script>
+
+<style>
+	.map-shell {
+		width: 100%;
+	}
+
+	.leaflet-map {
+		width: 100%;
+		height: 500px;
+		border: 1px solid #dfe2ea;
+		border-radius: 12px;
+		background: #eef2f4;
+	}
+
+	.map-status {
+		margin: 10px 0 0;
+		color: #555b6b;
+		font-size: 0.9rem;
+	}
+</style>

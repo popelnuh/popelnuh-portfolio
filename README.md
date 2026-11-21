@@ -2,13 +2,14 @@
 
 [![Azure Static Web Apps CI/CD](https://github.com/popelnuh/popelnuh-portfolio/actions/workflows/azure-static-web-apps-salmon-water-0ad7f5510.yml/badge.svg?branch=main)](https://github.com/popelnuh/popelnuh-portfolio/actions/workflows/azure-static-web-apps-salmon-water-0ad7f5510.yml)
 
-This repository contains my personal portfolio, built with Astro and hosted on Azure Static Web Apps. It is intended to include technical blog posts, with interactive GIS and geospatial maps planned for a future release.
+This repository contains my personal portfolio, built with Astro and hosted on Azure Static Web Apps. It is intended to include technical blog posts and interactive GIS visualizations, with a Leaflet sample map as the foundation for future datasets.
 
 Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0ad7f5510.8.azurestaticapps.net/)
 
 ## Tech Stack
 
 - Astro
+- Leaflet
 - TypeScript
 - Playwright Test
 - Azure Static Web Apps
@@ -22,6 +23,8 @@ Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0
 │   └── workflows/
 │       └── azure-static-web-apps-salmon-water-0ad7f5510.yml
 ├── public/
+│   ├── data/
+│   │   └── sample-europe.geojson
 │   ├── favicon.ico
 │   └── favicon.svg
 ├── src/
@@ -29,12 +32,14 @@ Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0
 │   │   ├── astro.svg
 │   │   └── background.svg
 │   ├── components/
+│   │   ├── LeafletMap.astro
 │   │   └── Welcome.astro
 │   ├── layouts/
 │   │   └── Layout.astro
 │   └── pages/
 │       ├── about.astro
-│       └── index.astro
+│       ├── index.astro
+│       └── maps.astro
 ├── tests/
 │   └── pages.spec.ts
 ├── .mcp.json
@@ -61,6 +66,12 @@ npm run build
 npm run preview
 ```
 
+Check Astro and TypeScript diagnostics with:
+
+```sh
+npm run check
+```
+
 ## Testing & CI/CD
 
 Install the Playwright Chromium browser once, then run the end-to-end tests:
@@ -82,5 +93,5 @@ The GitHub Actions workflow runs the Playwright tests on pushes to `main` and ac
 ## Roadmap
 
 - [ ] Configure the custom domain `popelnuh.com`.
-- [ ] Build interactive GIS maps with Leaflet or MapLibre using Eurostat and OECD data.
+- [ ] Replace the sample map values with Eurostat and OECD data.
 - [ ] Expand Playwright coverage with accessibility and visual regression checks.
