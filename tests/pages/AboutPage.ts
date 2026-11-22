@@ -7,6 +7,7 @@ export class AboutPage {
 	readonly linkedInLink: Locator;
 	readonly githubLink: Locator;
 	readonly emailLink: Locator;
+	readonly emailStatus: Locator;
 	readonly bioCard: Locator;
 	readonly aboutGrid: Locator;
 	readonly glanceHeading: Locator;
@@ -20,6 +21,7 @@ export class AboutPage {
 		this.linkedInLink = page.getByRole('link', { name: 'LinkedIn', exact: true });
 		this.githubLink = page.getByRole('link', { name: 'GitHub', exact: true });
 		this.emailLink = page.getByRole('link', { name: 'popelnuh@gmail.com', exact: true });
+		this.emailStatus = page.getByRole('status');
 		this.bioCard = page.locator('.bio-card');
 		this.aboutGrid = page.locator('.about-grid');
 		this.glanceHeading = page.getByRole('heading', { name: 'At a Glance', exact: true });
@@ -30,5 +32,10 @@ export class AboutPage {
 
 	async goto(): Promise<void> {
 		await this.page.goto('/about');
+	}
+
+	async clickEmailLink(): Promise<void> {
+		await this.page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+		await this.emailLink.click();
 	}
 }

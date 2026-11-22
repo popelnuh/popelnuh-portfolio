@@ -72,7 +72,7 @@ import Layout from '../layouts/Layout.astro';
 
 	.eyebrow,
 	.card-tag {
-		color: #635bff;
+		color: var(--accent-muted);
 		font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
 			'Courier New', monospace;
 		font-size: 0.78rem;
@@ -87,7 +87,7 @@ import Layout from '../layouts/Layout.astro';
 	h1 {
 		max-width: 860px;
 		margin: 0;
-		color: #0f172a;
+		color: var(--text-primary);
 		font-size: clamp(2.5rem, 6vw, 4.25rem);
 		line-height: 1.08;
 		letter-spacing: -0.04em;
@@ -97,7 +97,7 @@ import Layout from '../layouts/Layout.astro';
 	.intro {
 		max-width: 760px;
 		margin: 22px 0 28px;
-		color: #334155;
+		color: var(--text-body);
 		font-size: clamp(1.05rem, 2vw, 1.2rem);
 		font-weight: 400;
 		line-height: 1.7;
@@ -133,41 +133,41 @@ import Layout from '../layouts/Layout.astro';
 	}
 
 	.button-primary {
-		background: #635bff;
+		background: var(--accent);
 		color: white;
-		box-shadow: 0 8px 20px rgba(99, 91, 255, 0.18);
+		box-shadow: 0 8px 20px rgba(15, 23, 42, 0.14);
 	}
 
 	.button-primary:hover {
 		transform: translateY(-1px);
-		background: #5048e5;
+		background: var(--accent-hover);
 	}
 
 	.button-secondary {
-		border-color: #e2e8f0;
+		border-color: var(--border-subtle);
 		background: white;
-		color: #0f172a;
+		color: var(--text-primary);
 	}
 
 	.button-secondary:hover {
 		transform: translateY(-2px);
-		border-color: #635bff;
+		border-color: var(--accent);
 		box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
 	}
 
 	.button:focus-visible {
-		outline: 3px solid rgba(99, 91, 255, 0.3);
+		outline: 3px solid rgba(30, 41, 59, 0.28);
 		outline-offset: 3px;
 	}
 
 	.highlights {
 		padding: 28px 0 72px;
-		border-top: 1px solid #e2e8f0;
+		border-top: 1px solid var(--border-subtle);
 	}
 
 	.highlights h2 {
 		margin: 0 0 18px;
-		color: #0f172a;
+		color: var(--text-primary);
 		font-size: 1.35rem;
 		letter-spacing: -0.02em;
 	}
@@ -180,8 +180,8 @@ import Layout from '../layouts/Layout.astro';
 
 	.highlight-card {
 		padding: 21px 22px 23px;
-		border: 1px solid #e2e8f0;
-		border-top: 3px solid #635bff;
+		border: 1px solid var(--border-subtle);
+		border-top: 3px solid var(--accent);
 		border-radius: 12px;
 		background: #fff;
 		box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
@@ -194,14 +194,14 @@ import Layout from '../layouts/Layout.astro';
 
 	.highlight-card h3 {
 		margin: 0 0 10px;
-		color: #0f172a;
+		color: var(--text-primary);
 		font-size: 1.08rem;
 		line-height: 1.35;
 	}
 
 	.highlight-card > p:last-child {
 		margin: 0;
-		color: #334155;
+		color: var(--text-body);
 		font-size: 0.94rem;
 		font-weight: 400;
 		line-height: 1.65;

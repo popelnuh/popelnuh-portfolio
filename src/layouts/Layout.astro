@@ -1,9 +1,13 @@
 ---
 interface Props {
 	title?: string;
+	description?: string;
 }
 
-const { title = 'Zlata Popelnuh' } = Astro.props;
+const {
+	title = 'Zlata Popelnuh',
+	description = 'Senior Test Automation Engineer & GIS specialist. Interactive European data maps, clean architecture, and Playwright automation.',
+} = Astro.props;
 const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 ---
 
@@ -15,6 +19,11 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta name="twitter:card" content="summary" />
 		<title>{title}</title>
 	</head>
 	<body>
@@ -43,11 +52,44 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 		<main>
 			<slot />
 		</main>
-		<footer>© 2026 Zlata Popelnuh · Built with Astro &amp; tested with Playwright</footer>
+		<footer>
+			<div class="footer-content">
+				<span>© 2026 Zlata Popelnuh · Built with Astro &amp; tested with </span>
+				<a
+					class="playwright-link"
+					href="https://github.com/popelnuh/popelnuh-portfolio"
+					target="_blank"
+					rel="noopener noreferrer">Playwright</a
+				>
+				<a
+					class="actions-badge"
+					href="https://github.com/popelnuh/popelnuh-portfolio/actions"
+					target="_blank"
+					rel="noopener noreferrer"
+					aria-label="GitHub Actions workflow status"
+				>
+					<img
+						src="https://github.com/popelnuh/popelnuh-portfolio/actions/workflows/azure-static-web-apps-salmon-water-0ad7f5510.yml/badge.svg"
+						alt="GitHub Actions status"
+						height="20"
+					/>
+				</a>
+			</div>
+		</footer>
 	</body>
 </html>
 
 <style>
+	:global(:root) {
+		--accent: #1e293b;
+		--accent-hover: #0f172a;
+		--accent-muted: #475569;
+		--accent-soft: #f1f5f9;
+		--border-subtle: #e2e8f0;
+		--text-primary: #0f172a;
+		--text-body: #334155;
+	}
+
 	:global(*) {
 		box-sizing: border-box;
 	}
@@ -55,7 +97,7 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 	:global(html) {
 		font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 		background: #f7f8fc;
-		color: #171a24;
+		color: var(--text-primary);
 	}
 
 	:global(body) {
@@ -66,7 +108,7 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 	}
 
 	header {
-		border-bottom: 1px solid #e6e8ef;
+		border-bottom: 1px solid var(--border-subtle);
 		background: rgba(255, 255, 255, 0.92);
 	}
 
@@ -80,7 +122,7 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 	}
 
 	nav a {
-		color: #171a24;
+		color: var(--text-primary);
 		text-decoration: none;
 	}
 
@@ -96,18 +138,18 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 	.nav-links a {
 		padding: 8px 0 6px;
 		border-bottom: 2px solid transparent;
-		color: #555b6b;
+		color: var(--text-body);
 		font-weight: 600;
 		transition: color 160ms ease, border-color 160ms ease;
 	}
 
 	.nav-links a:hover,
 	.nav-links a.active {
-		color: #4f46e5;
+		color: var(--accent);
 	}
 
 	.nav-links a.active {
-		border-bottom-color: #4f46e5;
+		border-bottom-color: var(--accent);
 		font-weight: 700;
 	}
 
@@ -119,9 +161,42 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 
 	footer {
 		padding: 17px 20px;
-		border-top: 1px solid #e6e8ef;
-		color: #64748b;
+		border-top: 1px solid var(--border-subtle);
+		color: var(--accent-muted);
 		font-size: 0.85rem;
 		text-align: center;
+	}
+
+	.footer-content {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+		gap: 6px 8px;
+	}
+
+	.playwright-link {
+		color: inherit;
+		text-decoration-color: var(--border-subtle);
+		text-underline-offset: 2px;
+	}
+
+	.playwright-link:hover {
+		color: var(--accent);
+	}
+
+	.actions-badge {
+		display: inline-flex;
+		flex: 0 0 auto;
+		align-items: center;
+		margin-left: 4px;
+		line-height: 0;
+	}
+
+	.actions-badge img {
+		display: block;
+		width: auto;
+		height: 20px;
+		max-width: 100%;
 	}
 </style>

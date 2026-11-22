@@ -100,3 +100,4 @@ Check out your Vite / network configuration and https://vite.dev/config/server-o
     at HMRClient.send (http://localhost:4321/@vite/client:588:18)
     at HMRContext.send (http://localhost:4321/@vite/client:549:18)
     at AstroDevToolbar.initApp (http://localhost:4321/node_modules/.vite/deps/toolbar--72C0u4u.js?v=bb2677b0:322:41) @ http://localhost:4321/@vite/client:1757
+[ 2607700ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:4321/@vite/client:1824

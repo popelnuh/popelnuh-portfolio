@@ -10,6 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
     "test:e2e": "bddgen && playwright test",
     "check": "astro check"
   },
@@ -23,6 +25,7 @@
     "@types/leaflet": "^1.9.22",
     "@types/node": "^26.6.6",
     "playwright-bdd": "^9.2.1",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^5.1.1"
   }
 }

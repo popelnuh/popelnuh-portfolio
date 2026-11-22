@@ -6,6 +6,8 @@ Feature: About page
     Then the About page shows the profile and location
     And the About page lists its core stack
     And the About page provides LinkedIn, GitHub, and email links
+    When I click the email link
+    Then the page confirms the email address was copied
     And the About navigation link is active
     And the site footer is visible
 

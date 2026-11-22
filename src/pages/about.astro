@@ -56,7 +56,7 @@ import Layout from '../layouts/Layout.astro';
 						</svg>
 						GitHub
 					</a>
-					<a href="mailto:popelnuh@gmail.com">
+					<a href="mailto:popelnuh@gmail.com" data-email-link>
 						<svg aria-hidden="true" focusable="false" viewBox="0 0 20 20">
 							<path
 								d="M3 5.5h14v9H3zM3.5 6l6.5 5 6.5-5"
@@ -70,6 +70,7 @@ import Layout from '../layouts/Layout.astro';
 						popelnuh@gmail.com
 					</a>
 				</div>
+				<p class="email-status" id="email-status" role="status" aria-live="polite"></p>
 			</div>
 
 			<aside class="glance-card" aria-labelledby="glance-heading">
@@ -107,6 +108,28 @@ import Layout from '../layouts/Layout.astro';
 	</section>
 </Layout>
 
+<script>
+	const emailLink = document.querySelector<HTMLAnchorElement>('[data-email-link]');
+	const emailStatus = document.querySelector<HTMLElement>('#email-status');
+
+	emailLink?.addEventListener('click', () => {
+		if (!emailStatus) return;
+
+		const emailAddress = 'popelnuh@gmail.com';
+		emailStatus.textContent = `If your mail app did not open, copy ${emailAddress}.`;
+		if (!navigator.clipboard) return;
+
+		void navigator.clipboard.writeText(emailAddress).then(
+			() => {
+				emailStatus.textContent = `Email address copied to clipboard: ${emailAddress}.`;
+			},
+			() => {
+				emailStatus.textContent = `Copy unavailable. Email: ${emailAddress}.`;
+			},
+		);
+	});
+</script>
+
 <style>
 	.about {
 		padding: 72px 0 80px;
@@ -114,7 +137,7 @@ import Layout from '../layouts/Layout.astro';
 
 	.eyebrow {
 		margin: 0 0 10px;
-		color: #4f46e5;
+		color: var(--accent-muted);
 		font-size: 0.85rem;
 		font-weight: 600;
 		letter-spacing: 0.1em;
@@ -124,7 +147,7 @@ import Layout from '../layouts/Layout.astro';
 
 	h1 {
 		margin: 0 0 32px;
-		color: #0f172a;
+		color: var(--text-primary);
 		font-size: clamp(3rem, 8vw, 5.5rem);
 		line-height: 1;
 		letter-spacing: -0.05em;
@@ -139,20 +162,20 @@ import Layout from '../layouts/Layout.astro';
 
 	.bio-card,
 	.glance-card {
-		border: 1px solid #e2e8f0;
+		border: 1px solid var(--border-subtle);
 		background: white;
 		box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);
 	}
 
 	.bio-card {
 		padding: 28px 30px;
-		border-left: 3px solid #4f46e5;
+		border-left: 3px solid var(--accent);
 		border-radius: 0 12px 12px 0;
 	}
 
 	.bio-card p {
 		margin: 0;
-		color: #334155;
+		color: var(--text-body);
 		font-size: 1rem;
 		font-weight: 400;
 		line-height: 1.75;
@@ -170,7 +193,7 @@ import Layout from '../layouts/Layout.astro';
 	.glance-card h2,
 	.stack h3 {
 		margin: 0;
-		color: #0f172a;
+		color: var(--text-primary);
 	}
 
 	.glance-card h2 {
@@ -186,7 +209,7 @@ import Layout from '../layouts/Layout.astro';
 
 	.metadata dt {
 		margin-bottom: 4px;
-		color: #64748b;
+		color: var(--accent-muted);
 		font-size: 0.78rem;
 		font-weight: 700;
 		letter-spacing: 0.06em;
@@ -195,7 +218,7 @@ import Layout from '../layouts/Layout.astro';
 
 	.metadata dd {
 		margin: 0;
-		color: #334155;
+		color: var(--text-body);
 		font-size: 0.95rem;
 		font-weight: 400;
 		line-height: 1.5;
@@ -210,7 +233,7 @@ import Layout from '../layouts/Layout.astro';
 	.stack {
 		margin-top: 24px;
 		padding-top: 20px;
-		border-top: 1px solid #e2e8f0;
+		border-top: 1px solid var(--border-subtle);
 	}
 
 	.stack h3 {
@@ -229,10 +252,10 @@ import Layout from '../layouts/Layout.astro';
 
 	.badges li {
 		padding: 6px 9px;
-		border: 1px solid #e2e8f0;
+		border: 1px solid var(--border-subtle);
 		border-radius: 6px;
-		background: #f8fafc;
-		color: #334155;
+		background: var(--accent-soft);
+		color: var(--text-body);
 		font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
 			'Courier New', monospace;
 		font-size: 0.74rem;
@@ -251,10 +274,10 @@ import Layout from '../layouts/Layout.astro';
 		align-items: center;
 		gap: 9px;
 		padding: 10px 15px;
-		border: 1px solid #cbd5e1;
+		border: 1px solid var(--border-subtle);
 		border-radius: 9px;
 		background: white;
-		color: #0f172a;
+		color: var(--text-primary);
 		font-weight: 700;
 		text-decoration: none;
 		transition:
@@ -271,14 +294,21 @@ import Layout from '../layouts/Layout.astro';
 
 	.links a:hover {
 		transform: translateY(-2px);
-		border-color: #4f46e5;
-		color: #4f46e5;
-		box-shadow: 0 6px 16px rgba(79, 70, 229, 0.1);
+		border-color: var(--accent);
+		color: var(--accent);
+		box-shadow: 0 6px 16px rgba(15, 23, 42, 0.1);
 	}
 
 	.links a:focus-visible {
-		outline: 3px solid rgba(79, 70, 229, 0.28);
+		outline: 3px solid rgba(30, 41, 59, 0.28);
 		outline-offset: 3px;
+	}
+
+	.email-status {
+		min-height: 1.4em;
+		margin: 8px 0 0;
+		color: var(--accent-muted);
+		font-size: 0.85rem;
 	}
 
 	@media (max-width: 760px) {
