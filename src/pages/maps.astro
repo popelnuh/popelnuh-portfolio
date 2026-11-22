@@ -15,7 +15,7 @@ import { mapStrategies } from '../lib/mapStrategies';
 				data-track="maps-toc-link"
 				data-testid="maps-toc-european-education-insights"
 			>
-				European Children's Education Insights
+				European Children Education Insights
 			</a>
 			<a
 				href="#world-travel-map"
@@ -100,6 +100,51 @@ import { mapStrategies } from '../lib/mapStrategies';
 					data-testid="map-tab-summer-holidays"
 				>
 					Summer Holidays
+				</button>
+				<button
+					id="school-starting-age-tab"
+					class="map-tab"
+					type="button"
+					role="tab"
+					aria-selected="false"
+					tabindex="-1"
+					aria-controls="map-panel"
+					data-map-strategy="school-starting-age"
+					data-track="map-tab-switch"
+					data-dataset="school-starting-age"
+					data-testid="map-tab-school-starting-age"
+				>
+					School Starting Age
+				</button>
+				<button
+					id="teacher-qualifications-tab"
+					class="map-tab"
+					type="button"
+					role="tab"
+					aria-selected="false"
+					tabindex="-1"
+					aria-controls="map-panel"
+					data-map-strategy="teacher-qualifications"
+					data-track="map-tab-switch"
+					data-dataset="teacher-qualifications"
+					data-testid="map-tab-teacher-qualifications"
+				>
+					Teacher Qualifications
+				</button>
+				<button
+					id="religious-education-tab"
+					class="map-tab"
+					type="button"
+					role="tab"
+					aria-selected="false"
+					tabindex="-1"
+					aria-controls="map-panel"
+					data-map-strategy="religious-education"
+					data-track="map-tab-switch"
+					data-dataset="religious-education"
+					data-testid="map-tab-religious-education"
+				>
+					Religion in Schools
 				</button>
 			</div>
 
@@ -229,7 +274,10 @@ import { mapStrategies } from '../lib/mapStrategies';
 			value === 'childcare' ||
 			value === 'school-uniforms' ||
 			value === 'free-school-meals' ||
-			value === 'summer-holidays'
+			value === 'summer-holidays' ||
+			value === 'school-starting-age' ||
+			value === 'teacher-qualifications' ||
+			value === 'religious-education'
 		);
 	}
 
@@ -267,7 +315,12 @@ import { mapStrategies } from '../lib/mapStrategies';
 
 		const rendererStrategyKey =
 			key === 'free-school-meals' ? 'school-uniforms' : key;
-		if (key === 'free-school-meals' || key === 'school-uniforms') {
+		if (
+			key === 'free-school-meals' ||
+			key === 'school-uniforms' ||
+			key === 'teacher-qualifications' ||
+			key === 'religious-education'
+		) {
 			selectCategoricalPolicyDataset(key);
 		}
 		map.dispatchEvent(

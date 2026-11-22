@@ -1,0 +1,254 @@
+{
+  "dataset": "Minimum teacher qualification level across Europe",
+  "referencePeriod": "Mainstream Initial Teacher Education requirements",
+  "values": [
+    {
+      "giscoId": "FI",
+      "country": "Finland",
+      "category": "masters_all",
+      "note": "A Master's degree (ISCED 7) is required for both primary and secondary teachers.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "EE",
+      "country": "Estonia",
+      "category": "masters_all",
+      "note": "Master's-level qualification is the mainstream requirement across primary and secondary teaching.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "FR",
+      "country": "France",
+      "category": "masters_all",
+      "note": "Teachers generally complete Master's-level preparation for primary and secondary state schools.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "DE",
+      "country": "Germany",
+      "category": "masters_all",
+      "note": "A Master of Education or Staatsexamen (ISCED 7) and practical preparatory service (Referendariat) are required across school levels.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "IT",
+      "country": "Italy",
+      "category": "masters_all",
+      "note": "A Master's-level degree is required for state pre-primary, primary, and secondary teachers.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "PL",
+      "country": "Poland",
+      "category": "masters_all",
+      "note": "Master's-level qualifications are the mainstream minimum for primary and secondary teachers.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "CZ",
+      "country": "Czechia",
+      "category": "masters_all",
+      "note": "Master's-level teacher education is the mainstream requirement across school levels.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "SK",
+      "country": "Slovakia",
+      "category": "masters_all",
+      "note": "Teachers generally need a Master's-level qualification for both primary and secondary education.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "PT",
+      "country": "Portugal",
+      "category": "masters_all",
+      "note": "A Master's-level professional qualification is the mainstream requirement for teaching across school levels.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "HR",
+      "country": "Croatia",
+      "category": "masters_all",
+      "note": "Master's-level teacher education is required for mainstream primary and secondary teaching posts.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "SI",
+      "country": "Slovenia",
+      "category": "masters_all",
+      "note": "A Master's-level qualification is the mainstream minimum for teachers across school levels.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "NO",
+      "country": "Norway",
+      "category": "masters_all",
+      "note": "A five-year integrated Master's degree (ISCED 7) has been required for most primary and lower secondary teachers since 2017.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "IS",
+      "country": "Iceland",
+      "category": "masters_all",
+      "note": "Master's-level teacher education is the mainstream requirement across primary and secondary schools.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "AT",
+      "country": "Austria",
+      "category": "masters_all",
+      "note": "Master's-level qualifications are the mainstream requirement for primary and secondary teachers.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "LU",
+      "country": "Luxembourg",
+      "category": "masters_all",
+      "note": "Master's-level preparation is the mainstream minimum qualification for state-school teachers.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "ES",
+      "country": "Spain",
+      "category": "masters_secondary_only",
+      "note": "Primary teachers need a Bachelor's degree, while secondary teachers must also complete a Master's in Secondary Education.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "SE",
+      "country": "Sweden",
+      "category": "masters_secondary_only",
+      "note": "Qualification requirements vary by school level, with Master's-level study required for some secondary teaching routes.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "NL",
+      "country": "Netherlands",
+      "category": "masters_secondary_only",
+      "note": "A Bachelor's degree qualifies primary and lower-secondary teachers, while upper-secondary VWO/HAVO teachers need a Master's.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "BE",
+      "country": "Belgium",
+      "category": "masters_secondary_only",
+      "note": "Bachelor's-level training is the primary-school route, while some secondary teaching positions require Master's-level study.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "HU",
+      "country": "Hungary",
+      "category": "masters_secondary_only",
+      "note": "Primary and secondary teaching routes differ, with Master's-level study required for secondary teachers.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "RO",
+      "country": "Romania",
+      "category": "masters_secondary_only",
+      "note": "Bachelor's-level preparation applies to primary teaching, while secondary teaching requires Master's-level qualification.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "BG",
+      "country": "Bulgaria",
+      "category": "masters_secondary_only",
+      "note": "The minimum qualification differs by school level, with Master's-level preparation required for secondary teachers.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "LT",
+      "country": "Lithuania",
+      "category": "masters_secondary_only",
+      "note": "Bachelor's-level qualifications cover primary teaching, while Master's-level qualifications are required for secondary teachers.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "LV",
+      "country": "Latvia",
+      "category": "masters_secondary_only",
+      "note": "Teacher qualification requirements vary by school level, with Master's-level study required for secondary teaching.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "IE",
+      "country": "Ireland",
+      "category": "masters_secondary_only",
+      "note": "Primary teachers generally qualify through Bachelor's-level education, while secondary teachers complete postgraduate teacher education.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "MT",
+      "country": "Malta",
+      "category": "masters_secondary_only",
+      "note": "Bachelor's-level preparation is typical for primary teaching, with Master's-level requirements applying to secondary teachers.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "CH",
+      "country": "Switzerland",
+      "category": "masters_secondary_only",
+      "note": "Qualification level varies by school level and track, with Master's-level preparation required for some secondary teachers.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "UK",
+      "country": "United Kingdom",
+      "category": "bachelors_all",
+      "note": "A Bachelor's degree (ISCED 6) plus Qualified Teacher Status or a PGDE/PGCE is required for primary and secondary teaching.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "DK",
+      "country": "Denmark",
+      "category": "bachelors_all",
+      "note": "Primary and lower-secondary teachers typically complete a professional Bachelor's degree in teacher education.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "EL",
+      "country": "Greece",
+      "category": "bachelors_all",
+      "note": "A university Bachelor's degree with the relevant pedagogical preparation is the mainstream minimum for state-school teachers.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "CY",
+      "country": "Cyprus",
+      "category": "bachelors_all",
+      "note": "A university Bachelor's degree (ISCED 6) is the minimum qualification across school levels.",
+      "sourceLabel": "Eurydice – Teachers in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    }
+  ]
+}

@@ -73,3 +73,30 @@ Feature: European data maps
     Then the tooltip shows Italy's summer holiday duration
     When I select Italy
     Then the Italy popup shows its duration, note, and source link
+
+  Scenario: Explore compulsory school starting age across Europe
+    Given I open the Maps page
+    When I switch to the School Starting Age map
+    Then the school starting age heading, four-tier legend, and map load without browser errors
+    When I hover Estonia
+    Then the tooltip shows Estonia's compulsory starting age
+    When I select Estonia
+    Then the Estonia popup shows its starting age, note, and source link
+
+  Scenario: Explore minimum teacher qualifications across Europe
+    Given I open the Maps page
+    When I switch to the Teacher Qualifications map
+    Then the teacher qualifications heading, three-tier legend, and map load without browser errors
+    When I hover Finland
+    Then the tooltip shows Finland's minimum teacher qualification
+    When I select Finland
+    Then the Finland teacher qualifications popup shows its note and source link
+
+  Scenario: Explore religious education and worship in state schools
+    Given I open the Maps page
+    When I switch to the Religion in Schools map
+    Then the religious education heading, four-tier legend, and map load without browser errors
+    When I hover the UK
+    Then the tooltip shows the UK's religious education policy
+    When I select the UK
+    Then the UK religious education popup shows its note and source link

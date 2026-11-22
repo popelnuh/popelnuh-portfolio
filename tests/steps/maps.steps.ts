@@ -190,6 +190,192 @@ When('I switch to the Summer Holidays map', async ({ mapsPage }) => {
 	await mapsPage.selectSummerHolidaysMap();
 });
 
+When('I switch to the School Starting Age map', async ({ mapsPage }) => {
+	await mapsPage.selectSchoolStartingAgeMap();
+});
+
+When('I switch to the Teacher Qualifications map', async ({ mapsPage }) => {
+	await mapsPage.selectTeacherQualificationsMap();
+});
+
+When('I switch to the Religion in Schools map', async ({ mapsPage }) => {
+	await mapsPage.selectReligiousEducationMap();
+});
+
+Then(
+	'the religious education heading, four-tier legend, and map load without browser errors',
+	async ({ mapsPage }) => {
+		await expect(mapsPage.educationStatus).toHaveText(
+			'Map data loaded. Select a country for details.',
+		);
+		await expect(mapsPage.religiousEducationTab).toHaveAttribute('aria-selected', 'true');
+		await expect(mapsPage.religiousEducationHeading).toBeVisible();
+		await expect(mapsPage.religiousEducationLegend.getByRole('listitem')).toHaveText([
+			'No data',
+			'Secular (Excluded from Curriculum)',
+			'Non-Confessional / Comparative',
+			'Confessional (With Opt-Out / Ethics)',
+			'Statutory Worship / Faith-Patron System',
+		]);
+		await expect(mapsPage.religiousEducationSource).toHaveAttribute(
+			'href',
+			'https://eurydice.eacea.ec.europa.eu/national-education-systems',
+		);
+		await expect(mapsPage.religiousEducationAttribution).toBeVisible();
+		await expect(mapsPage.educationLeafletContainer).toHaveAttribute(
+			'aria-label',
+			'European countries by religious education and worship policy in state schools',
+		);
+		await expect(mapsPage.religiousEducationMapRegion).toHaveAttribute('fill', '#d4a373');
+		expect(mapsPage.getErrors()).toEqual([]);
+	},
+);
+
+Then("the tooltip shows the UK's religious education policy", async ({ mapsPage }) => {
+	await expect(mapsPage.tooltip).toContainText('United Kingdom');
+	await expect(mapsPage.tooltip).toContainText('Statutory Worship / Faith-Patron System');
+});
+
+Then(
+	'the UK religious education popup shows its note and source link',
+	async ({ mapsPage }) => {
+		await expect(mapsPage.popup).toContainText('United Kingdom');
+		await expect(mapsPage.popup).toContainText(
+			'Statutory Religious Education plus daily collective worship',
+		);
+		await expect(mapsPage.popup).toContainText('parental opt-out');
+		await expect(mapsPage.religiousEducationSourceLink).toHaveAttribute(
+			'href',
+			'https://eurydice.eacea.ec.europa.eu/national-education-systems',
+		);
+		await expect(mapsPage.religiousEducationSourceLink).toHaveAttribute('target', '_blank');
+		await expect(mapsPage.religiousEducationSourceLink).toHaveAttribute(
+			'rel',
+			'noopener noreferrer',
+		);
+		expect(mapsPage.getErrors()).toEqual([]);
+	},
+);
+
+Then(
+	'the teacher qualifications heading, three-tier legend, and map load without browser errors',
+	async ({ mapsPage }) => {
+		await expect(mapsPage.educationStatus).toHaveText(
+			'Map data loaded. Select a country for details.',
+		);
+		await expect(mapsPage.teacherQualificationsTab).toHaveAttribute('aria-selected', 'true');
+		await expect(mapsPage.teacherQualificationsHeading).toBeVisible();
+		await expect(mapsPage.teacherQualificationsLegend.getByRole('listitem')).toHaveText([
+			'No data',
+			"Master's (Primary & Secondary)",
+			"Bachelor's Primary / Master's Secondary",
+			"Bachelor's + Teaching Qualification",
+		]);
+		await expect(mapsPage.teacherQualificationsSource).toHaveAttribute(
+			'href',
+			'https://eurydice.eacea.ec.europa.eu/national-education-systems',
+		);
+		await expect(mapsPage.teacherQualificationsAttribution).toBeVisible();
+		await expect(mapsPage.educationLeafletContainer).toHaveAttribute(
+			'aria-label',
+			'European countries by minimum teacher qualification level',
+		);
+		await expect(mapsPage.teacherQualificationsMapRegion).toHaveAttribute(
+			'fill',
+			'#0f766e',
+		);
+		expect(mapsPage.getErrors()).toEqual([]);
+	},
+);
+
+When('I hover Finland', async ({ mapsPage }) => {
+	await mapsPage.hoverCountry('FI');
+});
+
+Then("the tooltip shows Finland's minimum teacher qualification", async ({ mapsPage }) => {
+	await expect(mapsPage.tooltip).toContainText('Finland');
+	await expect(mapsPage.tooltip).toContainText("Master's (Primary & Secondary)");
+});
+
+Then(
+	'the Finland teacher qualifications popup shows its note and source link',
+	async ({ mapsPage }) => {
+		await expect(mapsPage.popup).toContainText('Finland');
+		await expect(mapsPage.popup).toContainText(
+			"A Master's degree (ISCED 7) is required for both primary and secondary teachers.",
+		);
+		await expect(mapsPage.teacherQualificationsSourceLink).toHaveAttribute(
+			'href',
+			'https://eurydice.eacea.ec.europa.eu/national-education-systems',
+		);
+		await expect(mapsPage.teacherQualificationsSourceLink).toHaveAttribute('target', '_blank');
+		await expect(mapsPage.teacherQualificationsSourceLink).toHaveAttribute(
+			'rel',
+			'noopener noreferrer',
+		);
+		expect(mapsPage.getErrors()).toEqual([]);
+	},
+);
+
+Then(
+	'the school starting age heading, four-tier legend, and map load without browser errors',
+	async ({ mapsPage }) => {
+		await expect(mapsPage.educationStatus).toHaveText(
+			'Map data loaded. Select a country for details.',
+		);
+		await expect(mapsPage.schoolStartingAgeTab).toHaveAttribute('aria-selected', 'true');
+		await expect(mapsPage.schoolStartingAgeHeading).toBeVisible();
+		await expect(mapsPage.schoolStartingAgeLegend.getByRole('listitem')).toHaveText([
+			'No data',
+			'3–4 years',
+			'5 years',
+			'6 years',
+			'7 years',
+		]);
+		await expect(mapsPage.schoolStartingAgeSource).toHaveAttribute(
+			'href',
+			'https://eurydice.eacea.ec.europa.eu/publications',
+		);
+		await expect(mapsPage.schoolStartingAgeAttribution).toBeVisible();
+		await expect(mapsPage.educationLeafletContainer).toHaveAttribute(
+			'aria-label',
+			'European countries by compulsory education starting age',
+		);
+		await expect(mapsPage.estoniaSchoolStartingAgeRegion).toHaveAttribute(
+			'fill',
+			'#cbd5e1',
+		);
+		expect(mapsPage.getErrors()).toEqual([]);
+	},
+);
+
+When('I hover Estonia', async ({ mapsPage }) => {
+	await mapsPage.hoverCountry('EE');
+});
+
+Then("the tooltip shows Estonia's compulsory starting age", async ({ mapsPage }) => {
+	await expect(mapsPage.tooltip).toContainText('Estonia');
+	await expect(mapsPage.tooltip).toContainText('Age 7');
+});
+
+Then('the Estonia popup shows its starting age, note, and source link', async ({ mapsPage }) => {
+	await expect(mapsPage.popup).toContainText('Estonia');
+	await expect(mapsPage.popup).toContainText('Age 7');
+	await expect(mapsPage.popup).toContainText(
+		'Compulsory basic education starts at age 7, the highest starting age in the EU.',
+	);
+	await expect(mapsPage.schoolStartingAgeSourceLink).toHaveAttribute(
+		'href',
+		'https://eurydice.eacea.ec.europa.eu/publications',
+	);
+	await expect(mapsPage.schoolStartingAgeSourceLink).toHaveAttribute('target', '_blank');
+	await expect(mapsPage.schoolStartingAgeSourceLink).toHaveAttribute(
+		'rel',
+		'noopener noreferrer',
+	);
+	expect(mapsPage.getErrors()).toEqual([]);
+});
+
 Then(
 	'the summer holidays heading, bucket legend, and map load without browser errors',
 	async ({ mapsPage }) => {

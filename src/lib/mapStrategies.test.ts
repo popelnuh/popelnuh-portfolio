@@ -2,21 +2,34 @@ import { describe, expect, it } from 'vitest';
 import {
 	CHILDCARE_NO_DATA_COLOR,
 	FREE_SCHOOL_MEALS_NO_DATA_COLOR,
+	RELIGIOUS_EDUCATION_NO_DATA_COLOR,
+	TEACHER_QUALIFICATIONS_NO_DATA_COLOR,
 	formatSchoolUniformPopup,
 	formatFreeSchoolMealsPopup,
+	formatReligiousEducationPopup,
+	formatTeacherQualificationsPopup,
 	formatSummerHolidayPopup,
 	formatSummerHolidayDuration,
+	formatSchoolStartingAge,
+	formatSchoolStartingAgePopup,
 	getChildcareCostColor,
 	getFreeSchoolMealsColor,
+	getReligiousEducationColor,
+	getTeacherQualificationsColor,
 	getSummerHolidayColor,
+	getSchoolStartingAgeColor,
 	getSchoolUniformColor,
 	getSchoolUniformCategoryLabel,
 	mapStrategies,
 	freeSchoolMealsStrategy,
+	religiousEducationStrategy,
+	teacherQualificationsStrategy,
+	schoolStartingAgeStrategy,
 	summerHolidaysStrategy,
 	schoolUniformsStrategy,
 	SCHOOL_UNIFORMS_NO_DATA_COLOR,
 	SUMMER_HOLIDAYS_NO_DATA_COLOR,
+	SCHOOL_STARTING_AGE_NO_DATA_COLOR,
 } from '@/lib/mapStrategies';
 import { isSafeHttpsUrl } from '@/lib/adapters/schoolUniformsAdapter';
 import type { MapTooltipContext } from '@/lib/mapStrategies';
@@ -128,6 +141,157 @@ describe('school uniforms map strategy', () => {
 	])('maps category %s to its qualitative color', (category, color) => {
 		expect(getSchoolUniformColor(category)).toBe(color);
 		expect(schoolUniformsStrategy.colorScale(category)).toBe(color);
+	});
+
+	describe('teacher qualifications map strategy', () => {
+		it.each([
+			['masters_all', '#0f766e'],
+			['masters_secondary_only', '#3b82f6'],
+			['bachelors_all', '#d4a373'],
+			[null, TEACHER_QUALIFICATIONS_NO_DATA_COLOR],
+			['unknown', TEACHER_QUALIFICATIONS_NO_DATA_COLOR],
+			['toString', TEACHER_QUALIFICATIONS_NO_DATA_COLOR],
+		])('maps category %s to its qualitative color', (category, color) => {
+			expect(getTeacherQualificationsColor(category)).toBe(color);
+			expect(teacherQualificationsStrategy.colorScale(category)).toBe(color);
+		});
+
+		describe('religious education map strategy', () => {
+			it.each([
+				['secular', '#cbd5e1'],
+				['non_confessional', '#0f766e'],
+				['confessional_opt_out', '#3b82f6'],
+				['statutory_worship_or_patron', '#d4a373'],
+				[null, RELIGIOUS_EDUCATION_NO_DATA_COLOR],
+				['unknown', RELIGIOUS_EDUCATION_NO_DATA_COLOR],
+				['toString', RELIGIOUS_EDUCATION_NO_DATA_COLOR],
+			])('maps category %s to its qualitative color', (category, color) => {
+				expect(getReligiousEducationColor(category)).toBe(color);
+				expect(religiousEducationStrategy.colorScale(category)).toBe(color);
+			});
+
+			it('uses category labels in hover tooltips and selected-country details', () => {
+				const context = schoolUniformContext({
+					country: 'United Kingdom',
+					value: 'statutory_worship_or_patron',
+					note: 'State schools provide religious education and collective worship with parental opt-out.',
+					sourceLabel: 'Eurydice – National Education Systems',
+					sourceUrl: 'https://eurydice.eacea.ec.europa.eu/national-education-systems',
+				});
+
+				expect(religiousEducationStrategy.formatTooltip(context)).toBe(
+					'Statutory Worship / Faith-Patron System',
+				);
+				expect(formatReligiousEducationPopup(context)).toEqual({
+					valueLabel: 'Statutory Worship / Faith-Patron System',
+					note: 'State schools provide religious education and collective worship with parental opt-out.',
+					sourceLabel: 'Eurydice – National Education Systems',
+					sourceUrl: 'https://eurydice.eacea.ec.europa.eu/national-education-systems',
+				});
+			});
+
+			it('omits unsafe external sources from selected-country details', () => {
+				expect(
+					formatReligiousEducationPopup(
+						schoolUniformContext({
+							value: 'secular',
+							note: 'Religious instruction is excluded from the curriculum.',
+							sourceLabel: 'Unsafe source',
+							sourceUrl: 'javascript:alert(1)',
+						}),
+					),
+				).toEqual({
+					valueLabel: 'Secular (Excluded from Curriculum)',
+					note: 'Religious instruction is excluded from the curriculum.',
+				});
+			});
+		});
+
+		it('uses category labels in hover tooltips and selected-country details', () => {
+			const context = schoolUniformContext({
+				country: 'Finland',
+				value: 'masters_all',
+				note: "A Master's degree (ISCED 7) is required for both primary and secondary teachers.",
+				sourceLabel: 'Eurydice – Teachers in Europe',
+				sourceUrl: 'https://eurydice.eacea.ec.europa.eu/national-education-systems',
+			});
+
+			expect(teacherQualificationsStrategy.formatTooltip(context)).toBe(
+				"Master's (Primary & Secondary)",
+			);
+			expect(formatTeacherQualificationsPopup(context)).toEqual({
+				valueLabel: "Master's (Primary & Secondary)",
+				note: "A Master's degree (ISCED 7) is required for both primary and secondary teachers.",
+				sourceLabel: 'Eurydice – Teachers in Europe',
+				sourceUrl: 'https://eurydice.eacea.ec.europa.eu/national-education-systems',
+			});
+		});
+
+		it('omits unsafe external sources from selected-country details', () => {
+			expect(
+				formatTeacherQualificationsPopup(
+					schoolUniformContext({
+						value: 'bachelors_all',
+						note: 'A bachelor-level qualification is required.',
+						sourceLabel: 'Unsafe source',
+						sourceUrl: 'javascript:alert(1)',
+					}),
+				),
+			).toEqual({
+				valueLabel: "Bachelor's + Teaching Qualification",
+				note: 'A bachelor-level qualification is required.',
+			});
+		});
+	});
+
+	describe('school starting age map strategy', () => {
+		it.each([
+			[3, '#0f766e'],
+			[4.5, '#0f766e'],
+			[5, '#3b82f6'],
+			[6, '#93c5fd'],
+			[7, '#cbd5e1'],
+			[null, SCHOOL_STARTING_AGE_NO_DATA_COLOR],
+			[undefined, SCHOOL_STARTING_AGE_NO_DATA_COLOR],
+		])('maps age %s into its Eurydice bucket', (age, color) => {
+			expect(getSchoolStartingAgeColor(age)).toBe(color);
+			expect(schoolStartingAgeStrategy.colorScale(age ?? null)).toBe(color);
+		});
+
+		it('formats tooltip and selected-country details with a safe source', () => {
+			const context = schoolUniformContext({
+				country: 'Estonia',
+				value: 7,
+				note: 'Compulsory basic education starts at age 7.',
+				sourceLabel: 'Eurydice – Compulsory Education in Europe',
+				sourceUrl: 'https://eurydice.eacea.ec.europa.eu/publications',
+			});
+
+			expect(formatSchoolStartingAge(7)).toBe('Age 7');
+			expect(schoolStartingAgeStrategy.formatTooltip(context)).toBe('Age 7');
+			expect(formatSchoolStartingAgePopup(context)).toEqual({
+				valueLabel: 'Age 7',
+				note: 'Compulsory basic education starts at age 7.',
+				sourceLabel: 'Eurydice – Compulsory Education in Europe',
+				sourceUrl: 'https://eurydice.eacea.ec.europa.eu/publications',
+			});
+		});
+
+		it('omits a source link when the URL is not HTTPS', () => {
+			expect(
+				formatSchoolStartingAgePopup(
+					schoolUniformContext({
+						value: 5,
+						note: 'Compulsory education starts at age 5.',
+						sourceLabel: 'Unsafe source',
+						sourceUrl: 'http://example.test/source',
+					}),
+				),
+			).toEqual({
+				valueLabel: 'Age 5',
+				note: 'Compulsory education starts at age 5.',
+			});
+		});
 	});
 
 	it('uses the category label in the hover tooltip', () => {

@@ -17,11 +17,17 @@ makes malformed input and exceptional identifiers directly testable without a br
 
 `mapStrategies` supplies numeric or categorical colors, legends, tooltip formatting, and popup
 details to the shared Leaflet component. The European map tabs include renewable energy, childcare
-costs, school-uniform policies, free-school-meal policies, and summer school holidays. The component
-owns map lifecycle and interaction; strategies own metric presentation. Adding a metric therefore
-avoids duplicating map setup, while structured popup details allow selected countries to show notes
-and safe external sources.
+costs, school-uniform policies, free-school-meal policies, summer school holidays, compulsory
+school starting age, teacher qualification levels, and religious education and worship policies.
+The component owns map lifecycle and
+interaction; strategies own metric presentation. Adding a metric therefore avoids duplicating map
+setup, while structured popup details allow selected countries to show notes and safe external
+sources.
 
 The strategy contract is intentionally small and can grow as new metrics need distinct behavior.
 Because color scales and tooltip formatters are pure functions, Vitest can verify thresholds,
-missing-data fallbacks, and output formatting independently of Leaflet.
+missing-data fallbacks, and output formatting independently of Leaflet. Teacher qualification
+categories follow the mainstream Initial Teacher Education minimum requirement and distinguish
+Master's-level qualification across school levels, Master's-level secondary routes, and Bachelor's
+routes with teaching qualifications. Religious education categories summarize mainstream state
+school models while noting selected regional exceptions and excluding private faith schools.

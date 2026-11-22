@@ -11,6 +11,11 @@ import {
 	type SummerHolidayDataset,
 	type SummerHolidayRecord,
 } from './adapters/summerHolidaysAdapter';
+import {
+	adaptSchoolStartingAgeDataset,
+	type SchoolStartingAgeDataset,
+	type SchoolStartingAgeRecord,
+} from './adapters/schoolStartingAgeAdapter';
 import type { MapMetricRecord, CountryBoundaries } from './mapTypes';
 
 export interface ChildcareMapData {
@@ -30,17 +35,30 @@ export interface SummerHolidayMapData {
 	recordsByGiscoId: Record<string, SummerHolidayRecord>;
 }
 
-type CategoricalPolicyDatasetKey = 'school-uniforms' | 'free-school-meals';
+export interface SchoolStartingAgeMapData {
+	boundaries: CountryBoundaries;
+	dataset: SchoolStartingAgeDataset;
+	recordsByGiscoId: Record<string, SchoolStartingAgeRecord>;
+}
+
+type CategoricalPolicyDatasetKey =
+	| 'school-uniforms'
+	| 'free-school-meals'
+	| 'teacher-qualifications'
+	| 'religious-education';
 
 const CATEGORICAL_POLICY_DATASET_URLS: Record<CategoricalPolicyDatasetKey, string> = {
 	'school-uniforms': '/data/europe-school-uniforms.json',
 	'free-school-meals': '/data/europe-free-school-meals.json',
+	'teacher-qualifications': '/data/europe-teacher-qualifications.json',
+	'religious-education': '/data/europe-religious-education.json',
 };
 
 const jsonRequests = new Map<string, Promise<unknown>>();
 const childcareRequests = new Map<string, Promise<ChildcareMapData>>();
 const schoolUniformRequests = new Map<string, Promise<SchoolUniformMapData>>();
 const summerHolidayRequests = new Map<string, Promise<SummerHolidayMapData>>();
+const schoolStartingAgeRequests = new Map<string, Promise<SchoolStartingAgeMapData>>();
 let selectedCategoricalPolicyDataset: CategoricalPolicyDatasetKey | null = null;
 
 export function selectCategoricalPolicyDataset(key: CategoricalPolicyDatasetKey): void {
@@ -144,5 +162,31 @@ export function loadSummerHolidayMapData(
 		});
 
 	summerHolidayRequests.set(cacheKey, request);
+	return request;
+}
+
+export function loadSchoolStartingAgeMapData(
+	boundariesUrl: string,
+	datasetUrl: string,
+): Promise<SchoolStartingAgeMapData> {
+	const cacheKey = `${boundariesUrl}\n${datasetUrl}`;
+	const cachedRequest = schoolStartingAgeRequests.get(cacheKey);
+	if (cachedRequest) return cachedRequest;
+
+	const request = Promise.all([
+		fetchMapJson<CountryBoundaries>(boundariesUrl),
+		fetchMapJson<SchoolStartingAgeDataset>(datasetUrl),
+	])
+		.then(([boundaries, dataset]) => ({
+			boundaries,
+			dataset,
+			recordsByGiscoId: adaptSchoolStartingAgeDataset(dataset),
+		}))
+		.catch((error: unknown) => {
+			schoolStartingAgeRequests.delete(cacheKey);
+			throw error;
+		});
+
+	schoolStartingAgeRequests.set(cacheKey, request);
 	return request;
 }

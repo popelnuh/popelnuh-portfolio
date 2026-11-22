@@ -17,6 +17,9 @@ export class MapsPage {
 	readonly schoolUniformsTab: Locator;
 	readonly freeSchoolMealsTab: Locator;
 	readonly summerHolidaysTab: Locator;
+	readonly schoolStartingAgeTab: Locator;
+	readonly teacherQualificationsTab: Locator;
+	readonly religiousEducationTab: Locator;
 	readonly childcareHeading: Locator;
 	readonly childcareLegend: Locator;
 	readonly childcareSwatch: Locator;
@@ -37,6 +40,24 @@ export class MapsPage {
 	readonly summerHolidaysAttribution: Locator;
 	readonly summerHolidaysSourceLink: Locator;
 	readonly italyRegion: Locator;
+	readonly schoolStartingAgeHeading: Locator;
+	readonly schoolStartingAgeLegend: Locator;
+	readonly schoolStartingAgeSource: Locator;
+	readonly schoolStartingAgeAttribution: Locator;
+	readonly schoolStartingAgeSourceLink: Locator;
+	readonly estoniaSchoolStartingAgeRegion: Locator;
+	readonly teacherQualificationsHeading: Locator;
+	readonly teacherQualificationsLegend: Locator;
+	readonly teacherQualificationsSource: Locator;
+	readonly teacherQualificationsAttribution: Locator;
+	readonly teacherQualificationsSourceLink: Locator;
+	readonly teacherQualificationsMapRegion: Locator;
+	readonly religiousEducationHeading: Locator;
+	readonly religiousEducationLegend: Locator;
+	readonly religiousEducationSource: Locator;
+	readonly religiousEducationAttribution: Locator;
+	readonly religiousEducationSourceLink: Locator;
+	readonly religiousEducationMapRegion: Locator;
 	readonly map: Locator;
 	readonly educationMap: Locator;
 	readonly mapShell: Locator;
@@ -93,6 +114,15 @@ export class MapsPage {
 		this.schoolUniformsTab = this.tabList.getByRole('tab', { name: 'School Uniforms' });
 		this.freeSchoolMealsTab = this.tabList.getByRole('tab', { name: 'Free School Meals' });
 		this.summerHolidaysTab = this.tabList.getByRole('tab', { name: 'Summer Holidays' });
+		this.schoolStartingAgeTab = this.tabList.getByRole('tab', {
+			name: 'School Starting Age',
+		});
+		this.teacherQualificationsTab = this.tabList.getByRole('tab', {
+			name: 'Teacher Qualifications',
+		});
+		this.religiousEducationTab = this.tabList.getByRole('tab', {
+			name: 'Religion in Schools',
+		});
 		this.childcareHeading = page.getByRole('heading', {
 			name: 'Net Childcare Costs Across Europe',
 		});
@@ -162,6 +192,54 @@ export class MapsPage {
 			name: 'Eurydice – European School Calendars',
 		});
 		this.italyRegion = this.educationMap.getByTestId('map-region-IT');
+		this.schoolStartingAgeHeading = page.getByRole('heading', {
+			name: 'Compulsory School Starting Age Across Europe',
+		});
+		this.schoolStartingAgeLegend = page.getByRole('list', {
+			name: 'Compulsory school starting age legend',
+		});
+		this.schoolStartingAgeSource = page.getByRole('link', {
+			name: 'Eurydice – Compulsory Education in Europe',
+		});
+		this.schoolStartingAgeAttribution = page.getByText(
+			/Compulsory education often begins 1–3 years before formal primary school/,
+		);
+		this.schoolStartingAgeSourceLink = this.popup.getByRole('link', {
+			name: 'Eurydice – Compulsory Education in Europe',
+		});
+		this.estoniaSchoolStartingAgeRegion = this.educationMap.getByTestId('map-region-EE');
+		this.teacherQualificationsHeading = page.getByRole('heading', {
+			name: 'Minimum Teacher Qualification Level Across Europe',
+		});
+		this.teacherQualificationsLegend = page.getByRole('list', {
+			name: 'Minimum teacher qualification level legend',
+		});
+		this.teacherQualificationsSource = page.getByRole('link', {
+			name: 'Eurydice – Teachers in Europe',
+		});
+		this.teacherQualificationsAttribution = page.getByText(
+			/ISCED 6 \(Bachelor’s\) and ISCED 7 \(Master’s\)/,
+		);
+		this.teacherQualificationsSourceLink = this.popup.getByRole('link', {
+			name: 'Eurydice – Teachers in Europe',
+		});
+		this.teacherQualificationsMapRegion = this.educationMap.getByTestId('map-region-FI');
+		this.religiousEducationHeading = page.getByRole('heading', {
+			name: 'Religious Education & Worship in State Schools Across Europe',
+		});
+		this.religiousEducationLegend = page.getByRole('list', {
+			name: 'Religious education and worship policy legend',
+		});
+		this.religiousEducationSource = page.getByRole('link', {
+			name: 'Eurydice – National Education Systems',
+		});
+		this.religiousEducationAttribution = page.getByText(
+			/regional exceptions.*private faith schools/i,
+		);
+		this.religiousEducationSourceLink = this.popup.getByRole('link', {
+			name: 'Eurydice – National Education Systems',
+		});
+		this.religiousEducationMapRegion = this.educationMap.getByTestId('map-region-UK');
 		this.tooltip = page.getByRole('tooltip').last();
 		this.attribution = this.renewableMapSection.getByText(
 			'© EuroGeographics for the administrative boundaries',
@@ -235,6 +313,21 @@ export class MapsPage {
 	async selectSummerHolidaysMap(): Promise<void> {
 		this.selectedMap = 'education';
 		await this.summerHolidaysTab.click();
+	}
+
+	async selectSchoolStartingAgeMap(): Promise<void> {
+		this.selectedMap = 'education';
+		await this.schoolStartingAgeTab.click();
+	}
+
+	async selectTeacherQualificationsMap(): Promise<void> {
+		this.selectedMap = 'education';
+		await this.teacherQualificationsTab.click();
+	}
+
+	async selectReligiousEducationMap(): Promise<void> {
+		this.selectedMap = 'education';
+		await this.religiousEducationTab.click();
 	}
 
 	async selectChildcareMapByKeyboard(): Promise<void> {
