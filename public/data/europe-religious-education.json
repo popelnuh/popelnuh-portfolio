@@ -1,0 +1,262 @@
+{
+  "dataset": "Religious education and worship in state schools across Europe",
+  "referencePeriod": "Mainstream state school policy",
+  "values": [
+    {
+      "giscoId": "FR",
+      "country": "France",
+      "category": "secular",
+      "note": "Strict secularism (laïcité) excludes religious instruction and worship from state schools, except in the Alsace-Moselle region.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "SI",
+      "country": "Slovenia",
+      "category": "secular",
+      "note": "Confessional religious instruction and worship are prohibited in public schools; optional non-confessional ethics and religions electives exist.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "AL",
+      "country": "Albania",
+      "category": "secular",
+      "note": "Public schools are secular, and religious instruction is not part of the mainstream state-school curriculum.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "SE",
+      "country": "Sweden",
+      "category": "non_confessional",
+      "note": "Compulsory non-confessional study of world religions and ethics is provided; confessional instruction and worship are prohibited in state schools.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "NO",
+      "country": "Norway",
+      "category": "non_confessional",
+      "note": "The compulsory non-confessional KRLE subject covers Christianity, other religions, philosophies, and ethics neutrally.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "DK",
+      "country": "Denmark",
+      "category": "non_confessional",
+      "note": "Religious education is generally taught as a non-confessional subject, with provision shaped by the national curriculum.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "EE",
+      "country": "Estonia",
+      "category": "non_confessional",
+      "note": "State schools are secular; optional non-confessional religious studies may be offered if requested by parents.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "IS",
+      "country": "Iceland",
+      "category": "non_confessional",
+      "note": "Religions and ethics are taught through a general curriculum rather than confessional instruction in state schools.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "NL",
+      "country": "Netherlands",
+      "category": "non_confessional",
+      "note": "State schools may provide comparative religion and worldview education within a non-confessional framework.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "CH",
+      "country": "Switzerland",
+      "category": "non_confessional",
+      "note": "Religious education policy varies by canton, with comparative and non-confessional provision common in state schools.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "DE",
+      "country": "Germany",
+      "category": "confessional_opt_out",
+      "note": "Confessional religious education is a standard state-school subject in most Länder, paired with an optional Ethics or Philosophy alternative.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "AT",
+      "country": "Austria",
+      "category": "confessional_opt_out",
+      "note": "Religious education is offered by recognized religious communities, and pupils may opt out under the applicable rules.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "PL",
+      "country": "Poland",
+      "category": "confessional_opt_out",
+      "note": "Optional confessional religious instruction, predominantly Catholic, is offered in state schools alongside an Ethics alternative.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "IT",
+      "country": "Italy",
+      "category": "confessional_opt_out",
+      "note": "Catholic religious education is offered in state schools, with students able to choose not to attend and take an alternative activity.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "ES",
+      "country": "Spain",
+      "category": "confessional_opt_out",
+      "note": "Schools offer religious education linked to recognized faiths, with an alternative educational activity for students who do not take it.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "PT",
+      "country": "Portugal",
+      "category": "confessional_opt_out",
+      "note": "Optional religious and moral education is available in public schools, with students free to decline the subject.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "EL",
+      "country": "Greece",
+      "category": "confessional_opt_out",
+      "note": "Orthodox religious education is part of the state-school curriculum, with exemption available under national rules.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "BE",
+      "country": "Belgium",
+      "category": "confessional_opt_out",
+      "note": "Public schools provide a choice of recognized religious instruction or non-confessional ethics, depending on the education network.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "FI",
+      "country": "Finland",
+      "category": "confessional_opt_out",
+      "note": "Pupils generally receive religious education based on their own faith community, with secular ethics available to some pupils.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "CZ",
+      "country": "Czechia",
+      "category": "confessional_opt_out",
+      "note": "Religious education may be offered in state schools as an optional subject, while ethics or civic education provides alternatives.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "SK",
+      "country": "Slovakia",
+      "category": "confessional_opt_out",
+      "note": "Pupils choose between religious education and ethics as alternative subjects in state schools.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "HU",
+      "country": "Hungary",
+      "category": "confessional_opt_out",
+      "note": "State schools provide religious or ethics education, with families choosing the applicable option.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "HR",
+      "country": "Croatia",
+      "category": "confessional_opt_out",
+      "note": "Catholic religious education is commonly offered as an optional subject, with Ethics available as an alternative.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "RO",
+      "country": "Romania",
+      "category": "confessional_opt_out",
+      "note": "Religious education is provided in public schools with participation and withdrawal governed by national rules.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "BG",
+      "country": "Bulgaria",
+      "category": "confessional_opt_out",
+      "note": "Optional Orthodox and other religious education is available in state schools under the national curriculum.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "LT",
+      "country": "Lithuania",
+      "category": "confessional_opt_out",
+      "note": "Pupils may choose religious instruction from recognized faiths or ethics in state schools.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "LV",
+      "country": "Latvia",
+      "category": "confessional_opt_out",
+      "note": "Religious instruction is available in state schools under defined conditions, with ethics or other study available as an alternative.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "MT",
+      "country": "Malta",
+      "category": "confessional_opt_out",
+      "note": "Catholic religious education is taught in state schools, and students may opt out under the applicable rules.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "CY",
+      "country": "Cyprus",
+      "category": "confessional_opt_out",
+      "note": "Orthodox religious education is included in state-school provision, with exemption arrangements available.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "LU",
+      "country": "Luxembourg",
+      "category": "confessional_opt_out",
+      "note": "Ethics and citizenship education is provided as a common subject in public schools, replacing earlier denominational instruction.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "UK",
+      "country": "United Kingdom",
+      "category": "statutory_worship_or_patron",
+      "note": "Statutory Religious Education plus daily collective worship in England, Wales, and Northern Ireland (Religious Observance in Scotland) includes a parental opt-out.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    },
+    {
+      "giscoId": "IE",
+      "country": "Ireland",
+      "category": "statutory_worship_or_patron",
+      "note": "State-funded primary schools are predominantly denominational, mostly under Catholic patronage, with a constitutional right to opt out of religious instruction.",
+      "sourceLabel": "Eurydice – National Education Systems",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems"
+    }
+  ]
+}

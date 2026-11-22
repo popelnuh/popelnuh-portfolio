@@ -1,9 +1,14 @@
 ---
+import { mapStrategies, type MapStrategyKey } from '../lib/mapStrategies';
+
 interface Props {
 	boundariesUrl?: string;
 	metricsUrl?: string;
 	childcareMetricsUrl?: string;
 	schoolUniformsUrl?: string;
+	summerHolidaysUrl?: string;
+	schoolStartingAgeUrl?: string;
+	initialStrategy?: MapStrategyKey;
 }
 
 const {
@@ -11,6 +16,9 @@ const {
 	metricsUrl = '/data/renewable-energy.json',
 	childcareMetricsUrl = '/data/oecd-childcare-costs.json',
 	schoolUniformsUrl = '/data/europe-school-uniforms.json',
+	summerHolidaysUrl = '/data/europe-summer-holidays.json',
+	schoolStartingAgeUrl = '/data/europe-school-starting-age.json',
+	initialStrategy = 'renewable',
 } = Astro.props;
 ---
 
@@ -22,8 +30,11 @@ const {
 		data-metrics-url={metricsUrl}
 		data-childcare-metrics-url={childcareMetricsUrl}
 		data-school-uniforms-url={schoolUniformsUrl}
+		data-summer-holidays-url={summerHolidaysUrl}
+		data-school-starting-age-url={schoolStartingAgeUrl}
+		data-initial-strategy={initialStrategy}
 		role="region"
-		aria-label="European countries by renewable energy share"
+		aria-label={mapStrategies[initialStrategy].ariaLabel}
 	></div>
 	<p class="map-status" role="status" aria-live="polite">Loading map data…</p>
 </div>
@@ -35,6 +46,8 @@ const {
 		fetchMapJson,
 		loadChildcareMapData,
 		loadSchoolUniformMapData,
+		loadSummerHolidayMapData,
+		loadSchoolStartingAgeMapData,
 	} from '../lib/mapRepository';
 	import { mapStrategies, type MapStrategyKey } from '../lib/mapStrategies';
 	import { isSafeHttpsUrl } from '../lib/adapters/schoolUniformsAdapter';
@@ -56,6 +69,22 @@ const {
 			container.dataset.childcareMetricsUrl ?? '/data/oecd-childcare-costs.json';
 		const schoolUniformsUrl =
 			container.dataset.schoolUniformsUrl ?? '/data/europe-school-uniforms.json';
+		const summerHolidaysUrl =
+			container.dataset.summerHolidaysUrl ?? '/data/europe-summer-holidays.json';
+		const schoolStartingAgeUrl =
+			container.dataset.schoolStartingAgeUrl ?? '/data/europe-school-starting-age.json';
+		const configuredStrategy = container.dataset.initialStrategy;
+		const initialStrategyKey: MapStrategyKey =
+			configuredStrategy === 'renewable' ||
+			configuredStrategy === 'childcare' ||
+			configuredStrategy === 'school-uniforms' ||
+			configuredStrategy === 'free-school-meals' ||
+			configuredStrategy === 'summer-holidays' ||
+			configuredStrategy === 'school-starting-age' ||
+			configuredStrategy === 'teacher-qualifications' ||
+			configuredStrategy === 'religious-education'
+				? configuredStrategy
+				: 'renewable';
 		const map = L.map(container);
 		let countriesLayer: L.GeoJSON | null = null;
 		let loadSequence = 0;
@@ -140,7 +169,12 @@ const {
 					};
 					referenceYear = dataset.referenceYear;
 					indicator = dataset.indicator;
-				} else {
+				} else if (
+					strategyKey === 'school-uniforms' ||
+					strategyKey === 'free-school-meals' ||
+					strategyKey === 'teacher-qualifications' ||
+					strategyKey === 'religious-education'
+				) {
 					const { boundaries: rawBoundaries, recordsByGiscoId } =
 						await loadSchoolUniformMapData(boundariesUrl, schoolUniformsUrl);
 					boundaries = {
@@ -160,6 +194,48 @@ const {
 							};
 						}),
 					};
+				} else if (strategyKey === 'summer-holidays') {
+					const { boundaries: rawBoundaries, recordsByGiscoId } =
+						await loadSummerHolidayMapData(boundariesUrl, summerHolidaysUrl);
+					boundaries = {
+						...rawBoundaries,
+						features: rawBoundaries.features.map((feature) => {
+							const record = recordsByGiscoId[feature.properties.CNTR_ID];
+							return {
+								...feature,
+								properties: {
+									...feature.properties,
+									metricValue: record?.weeks ?? null,
+									estimated: false,
+									policyNote: record?.note,
+									sourceLabel: record?.sourceLabel,
+									sourceUrl: record?.sourceUrl,
+								},
+							};
+						}),
+					};
+					indicator = 'Summer school holiday duration';
+				} else {
+					const { boundaries: rawBoundaries, recordsByGiscoId } =
+						await loadSchoolStartingAgeMapData(boundariesUrl, schoolStartingAgeUrl);
+					boundaries = {
+						...rawBoundaries,
+						features: rawBoundaries.features.map((feature) => {
+							const record = recordsByGiscoId[feature.properties.CNTR_ID];
+							return {
+								...feature,
+								properties: {
+									...feature.properties,
+									metricValue: record?.age ?? null,
+									estimated: false,
+									policyNote: record?.note,
+									sourceLabel: record?.sourceLabel,
+									sourceUrl: record?.sourceUrl,
+								},
+							};
+						}),
+					};
+					indicator = 'Compulsory education starting age';
 				}
 
 				if (sequence !== loadSequence) return;
@@ -279,14 +355,18 @@ const {
 			if (
 				event.detail !== 'renewable' &&
 				event.detail !== 'childcare' &&
-				event.detail !== 'school-uniforms'
+				event.detail !== 'school-uniforms' &&
+				event.detail !== 'summer-holidays' &&
+				event.detail !== 'school-starting-age' &&
+				event.detail !== 'teacher-qualifications' &&
+				event.detail !== 'religious-education'
 			) {
 				return;
 			}
 			void updateMap(event.detail);
 		});
 
-		void updateMap('renewable');
+		void updateMap(initialStrategyKey);
 	}
 </script>
 

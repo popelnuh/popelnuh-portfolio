@@ -10,8 +10,12 @@ import { mapStrategies } from '../lib/mapStrategies';
 		<p class="eyebrow">Geospatial data</p>
 		<h1>Maps</h1>
 		<nav class="page-contents" aria-label="Page contents">
-			<a href="#european-maps" data-track="maps-toc-link" data-testid="maps-toc-european-maps">
-				European Data Maps
+			<a
+				href="#european-education-insights"
+				data-track="maps-toc-link"
+				data-testid="maps-toc-european-education-insights"
+			>
+				European Children Education Insights
 			</a>
 			<a
 				href="#world-travel-map"
@@ -20,33 +24,30 @@ import { mapStrategies } from '../lib/mapStrategies';
 			>
 				World Travel Map
 			</a>
+			<a
+				href="#renewable-energy"
+				data-track="maps-toc-link"
+				data-testid="maps-toc-renewable-energy"
+			>
+				Renewable Energy
+			</a>
 		</nav>
 
-		<section id="european-maps" aria-labelledby="european-maps-heading">
-			<h2 id="european-maps-heading" class="section-title">European Data Maps</h2>
+		<section
+			id="european-education-insights"
+			aria-labelledby="european-education-insights-heading"
+		>
+			<h2 id="european-education-insights-heading" class="section-title">
+				European Children Education Insights
+			</h2>
 			<div class="map-switcher" role="tablist" aria-label="Map datasets">
 				<button
-					id="renewable-tab"
+					id="childcare-tab"
 					class="map-tab active"
 					type="button"
 					role="tab"
 					aria-selected="true"
 					tabindex="0"
-					aria-controls="map-panel"
-					data-map-strategy="renewable"
-					data-track="map-tab-switch"
-					data-dataset="renewable"
-					data-testid="map-tab-renewable"
-				>
-					Renewable Energy
-				</button>
-				<button
-					id="childcare-tab"
-					class="map-tab"
-					type="button"
-					role="tab"
-					aria-selected="false"
-					tabindex="-1"
 					aria-controls="map-panel"
 					data-map-strategy="childcare"
 					data-track="map-tab-switch"
@@ -70,13 +71,88 @@ import { mapStrategies } from '../lib/mapStrategies';
 				>
 					School Uniforms
 				</button>
+				<button
+					id="free-school-meals-tab"
+					class="map-tab"
+					type="button"
+					role="tab"
+					aria-selected="false"
+					tabindex="-1"
+					aria-controls="map-panel"
+					data-map-strategy="free-school-meals"
+					data-track="map-tab-switch"
+					data-dataset="free-school-meals"
+					data-testid="map-tab-free-school-meals"
+				>
+					Free School Meals
+				</button>
+				<button
+					id="summer-holidays-tab"
+					class="map-tab"
+					type="button"
+					role="tab"
+					aria-selected="false"
+					tabindex="-1"
+					aria-controls="map-panel"
+					data-map-strategy="summer-holidays"
+					data-track="map-tab-switch"
+					data-dataset="summer-holidays"
+					data-testid="map-tab-summer-holidays"
+				>
+					Summer Holidays
+				</button>
+				<button
+					id="school-starting-age-tab"
+					class="map-tab"
+					type="button"
+					role="tab"
+					aria-selected="false"
+					tabindex="-1"
+					aria-controls="map-panel"
+					data-map-strategy="school-starting-age"
+					data-track="map-tab-switch"
+					data-dataset="school-starting-age"
+					data-testid="map-tab-school-starting-age"
+				>
+					School Starting Age
+				</button>
+				<button
+					id="teacher-qualifications-tab"
+					class="map-tab"
+					type="button"
+					role="tab"
+					aria-selected="false"
+					tabindex="-1"
+					aria-controls="map-panel"
+					data-map-strategy="teacher-qualifications"
+					data-track="map-tab-switch"
+					data-dataset="teacher-qualifications"
+					data-testid="map-tab-teacher-qualifications"
+				>
+					Teacher Qualifications
+				</button>
+				<button
+					id="religious-education-tab"
+					class="map-tab"
+					type="button"
+					role="tab"
+					aria-selected="false"
+					tabindex="-1"
+					aria-controls="map-panel"
+					data-map-strategy="religious-education"
+					data-track="map-tab-switch"
+					data-dataset="religious-education"
+					data-testid="map-tab-religious-education"
+				>
+					Religion in Schools
+				</button>
 			</div>
 
-			<div id="map-panel" role="tabpanel" aria-labelledby="renewable-tab">
-				<h2 id="metric-title">{mapStrategies.renewable.title}</h2>
-				<ul class="legend" id="metric-legend" aria-label={mapStrategies.renewable.legendLabel}>
+			<div id="map-panel" role="tabpanel" aria-labelledby="childcare-tab">
+				<h2 id="metric-title">{mapStrategies.childcare.title}</h2>
+				<ul class="legend" id="metric-legend" aria-label={mapStrategies.childcare.legendLabel}>
 					{
-						mapStrategies.renewable.legendIntervals.map((item) => (
+						mapStrategies.childcare.legendIntervals.map((item) => (
 							<li>
 								<span
 									class="swatch"
@@ -88,23 +164,23 @@ import { mapStrategies } from '../lib/mapStrategies';
 						))
 					}
 				</ul>
-				<LeafletMap />
+				<LeafletMap initialStrategy="childcare" />
 
 				<div class="metadata-bar">
 					<p class="description" id="metric-description">
-						{mapStrategies.renewable.description}
+						{mapStrategies.childcare.description}
 					</p>
 					<div class="source-details">
 						<p class="note">
 							Source: <a
 								id="source-link"
-								href={mapStrategies.renewable.sourceUrl}
+								href={mapStrategies.childcare.sourceUrl}
 								data-track="map-source-link"
 								data-testid="map-source-link"
 							>
-								{mapStrategies.renewable.sourceLabel}
+								{mapStrategies.childcare.sourceLabel}
 							</a>.{' '}
-							<span id="source-detail">{mapStrategies.renewable.sourceDetail}</span>
+							<span id="source-detail">{mapStrategies.childcare.sourceDetail}</span>
 						</p>
 						<p class="note boundary-note">
 							Boundaries: <a href="https://gisco-services.ec.europa.eu/">Eurostat GISCO, 2024</a>.
@@ -116,11 +192,54 @@ import { mapStrategies } from '../lib/mapStrategies';
 		</section>
 
 		<WorldTravelMap />
+
+		<section id="renewable-energy" aria-labelledby="renewable-energy-heading">
+			<h2 id="renewable-energy-heading" class="section-title">Renewable Energy</h2>
+			<ul
+				class="legend"
+				id="renewable-energy-legend"
+				aria-label={mapStrategies.renewable.legendLabel}
+			>
+				{
+					mapStrategies.renewable.legendIntervals.map((item) => (
+						<li>
+							<span
+								class="swatch"
+								style={`background-color: ${item.color}`}
+								data-testid="renewable-map-legend-swatch"
+							></span>
+							{item.label}
+						</li>
+					))
+				}
+			</ul>
+			<LeafletMap initialStrategy="renewable" />
+			<div class="metadata-bar">
+				<p class="description">{mapStrategies.renewable.description}</p>
+				<div class="source-details">
+					<p class="note">
+						Source: <a
+							href={mapStrategies.renewable.sourceUrl}
+							data-track="map-source-link"
+							data-testid="renewable-map-source-link"
+						>
+							{mapStrategies.renewable.sourceLabel}
+						</a>.{' '}
+						<span>{mapStrategies.renewable.sourceDetail}</span>
+					</p>
+					<p class="note boundary-note">
+						Boundaries: <a href="https://gisco-services.ec.europa.eu/">Eurostat GISCO, 2024</a>.
+						&copy; EuroGeographics for the administrative boundaries.
+					</p>
+				</div>
+			</div>
+		</section>
 	</section>
 </Layout>
 
 <script>
 	import { mapStrategies, type MapStrategyKey } from '../lib/mapStrategies';
+	import { selectCategoricalPolicyDataset } from '../lib/mapRepository';
 
 	const datasetTabList = document.querySelector<HTMLDivElement>(
 		'[role="tablist"][aria-label="Map datasets"]',
@@ -139,14 +258,33 @@ import { mapStrategies } from '../lib/mapStrategies';
 	const sourceDetail = document.querySelector<HTMLElement>('#source-detail');
 	const panel = document.querySelector<HTMLElement>('#map-panel');
 	const map = document.querySelector<HTMLElement>('[data-testid="leaflet-map"]');
+	let selectedStrategyKey: MapStrategyKey = 'childcare';
+
+	if (map) {
+		new MutationObserver(() => {
+			const ariaLabel = mapStrategies[selectedStrategyKey].ariaLabel;
+			if (map.getAttribute('aria-label') !== ariaLabel) {
+				map.setAttribute('aria-label', ariaLabel);
+			}
+		}).observe(map, { attributes: true, attributeFilter: ['aria-label'] });
+	}
 
 	function isMapStrategyKey(value: string | undefined): value is MapStrategyKey {
-		return value === 'renewable' || value === 'childcare' || value === 'school-uniforms';
+		return (
+			value === 'childcare' ||
+			value === 'school-uniforms' ||
+			value === 'free-school-meals' ||
+			value === 'summer-holidays' ||
+			value === 'school-starting-age' ||
+			value === 'teacher-qualifications' ||
+			value === 'religious-education'
+		);
 	}
 
 	function selectStrategy(key: MapStrategyKey): void {
 		const strategy = mapStrategies[key];
 		if (!title || !description || !legend || !sourceLink || !sourceDetail || !panel || !map) return;
+		selectedStrategyKey = key;
 
 		title.textContent = strategy.title;
 		description.textContent = strategy.description;
@@ -166,6 +304,7 @@ import { mapStrategies } from '../lib/mapStrategies';
 		sourceLink.textContent = strategy.sourceLabel;
 		sourceDetail.textContent = strategy.sourceDetail;
 		panel.setAttribute('aria-labelledby', `${key}-tab`);
+		map.setAttribute('aria-label', strategy.ariaLabel);
 
 		for (const tab of tabs) {
 			const selected = tab.dataset.mapStrategy === key;
@@ -174,7 +313,23 @@ import { mapStrategies } from '../lib/mapStrategies';
 			tab.classList.toggle('active', selected);
 		}
 
-		map.dispatchEvent(new CustomEvent('map:strategy-change', { detail: key }));
+		const rendererStrategyKey =
+			key === 'free-school-meals' ? 'school-uniforms' : key;
+		if (
+			key === 'free-school-meals' ||
+			key === 'school-uniforms' ||
+			key === 'teacher-qualifications' ||
+			key === 'religious-education'
+		) {
+			selectCategoricalPolicyDataset(key);
+		}
+		map.dispatchEvent(
+			new CustomEvent('map:strategy-change', { detail: rendererStrategyKey }),
+		);
+		if (key === 'free-school-meals') {
+			const status = map.parentElement?.querySelector<HTMLElement>('[role="status"]');
+			if (status) status.textContent = `Loading ${strategy.title.toLowerCase()} map…`;
+		}
 	}
 
 	for (const tab of tabs) {
@@ -250,7 +405,8 @@ import { mapStrategies } from '../lib/mapStrategies';
 		outline-offset: 3px;
 	}
 
-	#european-maps {
+	#european-education-insights,
+	#renewable-energy {
 		scroll-margin-top: 24px;
 	}
 

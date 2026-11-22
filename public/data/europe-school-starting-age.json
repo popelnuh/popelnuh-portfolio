@@ -1,0 +1,254 @@
+{
+  "dataset": "Compulsory School Starting Age Across Europe",
+  "referencePeriod": "2024–2025",
+  "values": [
+    {
+      "giscoId": "AT",
+      "country": "Austria",
+      "age": 5,
+      "note": "Compulsory education includes a pre-primary year from age 5, while primary school begins at 6.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "BE",
+      "country": "Belgium",
+      "age": 5,
+      "note": "Compulsory education begins at age 5 and includes the final year of pre-primary education.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "BG",
+      "country": "Bulgaria",
+      "age": 5,
+      "note": "Compulsory pre-primary education begins at age 5, before primary school starts at 7.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "CH",
+      "country": "Switzerland",
+      "age": 4,
+      "note": "Compulsory education usually begins at age 4, with cantonal rules determining the exact entry date.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "CY",
+      "country": "Cyprus",
+      "age": 4.5,
+      "note": "Compulsory pre-primary education begins at age 4 years and 6 months, before primary school starts at 6.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "CZ",
+      "country": "Czechia",
+      "age": 5,
+      "note": "The final year of pre-primary education is compulsory from age 5, before primary school begins at 6.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "DE",
+      "country": "Germany",
+      "age": 6,
+      "note": "Compulsory primary school starts at age 6 across all federal states (Länder).",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "DK",
+      "country": "Denmark",
+      "age": 6,
+      "note": "Compulsory education starts at age 6 and includes the mandatory preschool class.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "EE",
+      "country": "Estonia",
+      "age": 7,
+      "note": "Compulsory basic education starts at age 7, the highest starting age in the EU.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "EL",
+      "country": "Greece",
+      "age": 4,
+      "note": "Compulsory pre-primary education begins at age 4, while primary school starts at 6.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "ES",
+      "country": "Spain",
+      "age": 6,
+      "note": "Compulsory education begins at age 6, although most children attend non-compulsory early education beforehand.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "FI",
+      "country": "Finland",
+      "age": 6,
+      "note": "The mandatory pre-primary year starts at age 6; formal primary school (ISCED 1) begins at 7.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "FR",
+      "country": "France",
+      "age": 3,
+      "note": "Compulsory education begins at age 3 (école maternelle); primary school starts at 6.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "HR",
+      "country": "Croatia",
+      "age": 6,
+      "note": "Compulsory education normally begins with primary school at age 6.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "HU",
+      "country": "Hungary",
+      "age": 3,
+      "note": "Compulsory kindergarten starts at age 3, while primary school begins at age 6.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "IE",
+      "country": "Ireland",
+      "age": 6,
+      "note": "Compulsory education starts at age 6, though almost all children start primary school at age 4 or 5.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "IS",
+      "country": "Iceland",
+      "age": 6,
+      "note": "Compulsory education begins at age 6 with primary education.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "IT",
+      "country": "Italy",
+      "age": 6,
+      "note": "Compulsory education begins at age 6, when children enter primary school.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "LT",
+      "country": "Lithuania",
+      "age": 6,
+      "note": "Compulsory education begins at age 6, including compulsory pre-primary provision where applicable.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "LU",
+      "country": "Luxembourg",
+      "age": 4,
+      "note": "Compulsory education begins at age 4 with early education, before primary school starts at 6.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "LV",
+      "country": "Latvia",
+      "age": 5,
+      "note": "Compulsory pre-primary education begins at age 5, before primary school starts at 7.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "MT",
+      "country": "Malta",
+      "age": 5,
+      "note": "Compulsory education begins at age 5, while most children attend kindergarten from age 3.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "NL",
+      "country": "Netherlands",
+      "age": 5,
+      "note": "Compulsory from age 5, though most children start primary school on their 4th birthday.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "NO",
+      "country": "Norway",
+      "age": 6,
+      "note": "Compulsory education begins at age 6 with primary school.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "PL",
+      "country": "Poland",
+      "age": 6,
+      "note": "Compulsory primary education begins at age 6, following a compulsory pre-primary year.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "PT",
+      "country": "Portugal",
+      "age": 6,
+      "note": "Compulsory education begins at age 6 with entry to primary school.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "RO",
+      "country": "Romania",
+      "age": 6,
+      "note": "Compulsory education starts at age 6 and includes the preparatory grade before primary grades.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "SE",
+      "country": "Sweden",
+      "age": 6,
+      "note": "The mandatory preschool class (förskoleklass) starts at age 6; primary school begins at 7.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "SI",
+      "country": "Slovenia",
+      "age": 6,
+      "note": "Compulsory education begins at age 6 with primary school.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "SK",
+      "country": "Slovakia",
+      "age": 5,
+      "note": "Compulsory pre-primary education begins at age 5, before primary school starts at 6.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    },
+    {
+      "giscoId": "UK",
+      "country": "United Kingdom",
+      "age": 5,
+      "note": "Compulsory at age 5 in England, Wales, and Scotland, and age 4 in Northern Ireland.",
+      "sourceLabel": "Eurydice – Compulsory Education in Europe",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/publications"
+    }
+  ]
+}
