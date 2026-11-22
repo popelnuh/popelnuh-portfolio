@@ -132,3 +132,43 @@ Then("Türkiye's tooltip explains that OECD data is unavailable", async ({ mapsP
 	await expect(mapsPage.tooltip).toContainText('No OECD data available');
 	await expect(mapsPage.tooltip).not.toContainText(/undefined|NaN/);
 });
+
+When('I switch to the School Uniforms map', async ({ mapsPage }) => {
+	await mapsPage.selectSchoolUniformsMap();
+});
+
+Then('the school uniform heading, legend, and map load without browser errors', async ({ mapsPage }) => {
+	await expect(mapsPage.status).toHaveText('Map data loaded. Select a country for details.');
+	await expect(mapsPage.schoolUniformsTab).toHaveAttribute('aria-selected', 'true');
+	await expect(mapsPage.schoolUniformsHeading).toBeVisible();
+	await expect(mapsPage.schoolUniformsLegend.getByRole('listitem')).toHaveText([
+		'No data',
+		'Standard in state schools',
+		'Mostly private / optional',
+		'Not used in state schools',
+	]);
+	await expect(mapsPage.geoJsonRegions.first()).toBeVisible();
+	expect(mapsPage.getErrors()).toEqual([]);
+});
+
+When('I hover the UK', async ({ mapsPage }) => {
+	await mapsPage.hoverCountry('UK');
+});
+
+Then('the tooltip shows the country and policy category', async ({ mapsPage }) => {
+	await expect(mapsPage.tooltip).toContainText('United Kingdom');
+	await expect(mapsPage.tooltip).toContainText('Standard in state schools');
+});
+
+Then('the UK popup shows its policy note and source link', async ({ mapsPage }) => {
+	await expect(mapsPage.popup).toContainText('United Kingdom');
+	await expect(mapsPage.popup).toContainText(
+		'Standard in over 90% of state schools, set at school level rather than national law.',
+	);
+	await expect(mapsPage.uniformSourceLink).toHaveAttribute(
+		'href',
+		'https://www.gov.uk/government/publications/school-uniform/school-uniforms',
+	);
+	await expect(mapsPage.uniformSourceLink).toHaveAttribute('target', '_blank');
+	await expect(mapsPage.uniformSourceLink).toHaveAttribute('rel', 'noopener noreferrer');
+});

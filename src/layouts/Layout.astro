@@ -33,17 +33,23 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 					<a
 						href="/"
 						class={currentPathname === '/' ? 'active' : undefined}
-						aria-current={currentPathname === '/' ? 'page' : undefined}>Home</a
+						aria-current={currentPathname === '/' ? 'page' : undefined}
+						data-track="nav-home"
+						data-testid="nav-home">Home</a
 					>
 					<a
 						href="/about"
 						class={currentPathname === '/about' ? 'active' : undefined}
-						aria-current={currentPathname === '/about' ? 'page' : undefined}>About</a
+						aria-current={currentPathname === '/about' ? 'page' : undefined}
+						data-track="nav-about"
+						data-testid="nav-about">About</a
 					>
 					<a
 						href="/maps"
 						class={currentPathname === '/maps' ? 'active' : undefined}
-						aria-current={currentPathname === '/maps' ? 'page' : undefined}>Maps</a
+						aria-current={currentPathname === '/maps' ? 'page' : undefined}
+						data-track="nav-maps"
+						data-testid="nav-maps">Maps</a
 					>
 				</div>
 			</nav>
@@ -58,7 +64,9 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 					class="playwright-link"
 					href="https://github.com/popelnuh/popelnuh-portfolio"
 					target="_blank"
-					rel="noopener noreferrer">Playwright</a
+					rel="noopener noreferrer"
+					data-track="footer-playwright-repo"
+					data-testid="footer-playwright-repo">Playwright</a
 				>
 				<div class="actions-badges">
 					<a
@@ -67,6 +75,8 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 						target="_blank"
 						rel="noopener noreferrer"
 						aria-label="CI/CD workflow status"
+						data-track="footer-ci-badge"
+						data-testid="footer-ci-badge"
 					>
 						<img
 							src="https://img.shields.io/github/actions/workflow/status/popelnuh/popelnuh-portfolio/azure-static-web-apps-salmon-water-0ad7f5510.yml?branch=main&amp;style=flat-square&amp;label=CI%2FCD&amp;labelColor=0f172a&amp;color=10b981"
@@ -80,6 +90,8 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 						target="_blank"
 						rel="noopener noreferrer"
 						aria-label="Unit tests workflow status"
+						data-track="footer-unit-tests-badge"
+						data-testid="footer-unit-tests-badge"
 					>
 						<img
 							src="https://img.shields.io/github/actions/workflow/status/popelnuh/popelnuh-portfolio/unit-tests.yml?branch=main&amp;style=flat-square&amp;label=Unit%20Tests&amp;labelColor=0f172a&amp;color=10b981"
@@ -92,6 +104,21 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 		</footer>
 	</body>
 </html>
+
+<script>
+	import { trackEvent } from '../lib/analytics';
+
+	document.addEventListener('click', (event) => {
+		if (!(event.target instanceof Element)) return;
+
+		const trackedElement = event.target.closest<HTMLElement>('[data-track]');
+		const name = trackedElement?.dataset.track;
+		if (!name) return;
+
+		const dataset = trackedElement.dataset.dataset;
+		trackEvent(name, dataset ? { dataset } : undefined);
+	});
+</script>
 
 <style>
 	:global(:root) {

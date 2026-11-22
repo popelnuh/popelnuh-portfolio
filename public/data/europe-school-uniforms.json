@@ -1,0 +1,430 @@
+{
+  "dataset": "School Uniform Policies Across Europe",
+  "referencePeriod": "2024–2026",
+  "values": [
+    {
+      "giscoId": "AD",
+      "country": "Andorra",
+      "category": "optional_or_private",
+      "note": "Uniform use is not a national requirement; individual schools may set dress policies.",
+      "sourceLabel": "Andorran Ministry of Education",
+      "sourceUrl": "https://www.educacio.ad/"
+    },
+    {
+      "giscoId": "AL",
+      "country": "Albania",
+      "category": "optional_or_private",
+      "note": "Uniform requirements are not uniform nationally and may vary by school or provider.",
+      "sourceLabel": "Eurydice – Albania",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/albania/overview"
+    },
+    {
+      "giscoId": "AM",
+      "country": "Armenia",
+      "category": "optional_or_private",
+      "note": "Dress requirements are determined locally, with some schools using distinctive uniforms.",
+      "sourceLabel": "Government of Armenia",
+      "sourceUrl": "https://www.gov.am/en/"
+    },
+    {
+      "giscoId": "AT",
+      "country": "Austria",
+      "category": "not_used",
+      "note": "Public schools generally do not use uniforms; individual and private schools may set dress rules.",
+      "sourceLabel": "Eurydice – Austria",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/austria/overview"
+    },
+    {
+      "giscoId": "AZ",
+      "country": "Azerbaijan",
+      "category": "optional_or_private",
+      "note": "Uniform styles and requirements are established through school-level rules.",
+      "sourceLabel": "Azerbaijan Ministry of Science and Education",
+      "sourceUrl": "https://edu.gov.az/en"
+    },
+    {
+      "giscoId": "BA",
+      "country": "Bosnia and Herzegovina",
+      "category": "optional_or_private",
+      "note": "Uniform use varies among schools and education authorities; some schools adopt their own dress rules.",
+      "sourceLabel": "Eurydice – Bosnia and Herzegovina",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/bosnia-and-herzegovina/overview"
+    },
+    {
+      "giscoId": "BE",
+      "country": "Belgium",
+      "category": "optional_or_private",
+      "note": "There is no general uniform requirement; a small number of schools set their own uniform rules.",
+      "sourceLabel": "Belgian Government – Education",
+      "sourceUrl": "https://www.belgium.be/en/education"
+    },
+    {
+      "giscoId": "BG",
+      "country": "Bulgaria",
+      "category": "optional_or_private",
+      "note": "School dress requirements are locally determined, and uniforms are more common at some individual schools.",
+      "sourceLabel": "Eurydice – Bulgaria",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/bulgaria/overview"
+    },
+    {
+      "giscoId": "BY",
+      "country": "Belarus",
+      "category": "optional_or_private",
+      "note": "Schools may set appearance rules and uniform requirements within national education guidance.",
+      "sourceLabel": "Belarus Ministry of Education",
+      "sourceUrl": "https://edu.gov.by/"
+    },
+    {
+      "giscoId": "FO",
+      "country": "Faroes",
+      "category": "not_used",
+      "note": "Uniforms are not generally used in public schools; individual institutions may set their own attire rules.",
+      "sourceLabel": "Faroese Ministry of Education",
+      "sourceUrl": "https://www.uvs.fo/"
+    },
+    {
+      "giscoId": "FR",
+      "country": "France",
+      "category": "optional_or_private",
+      "note": "Uniforms are not generally required; a 2024 government pilot was scaled back in 2025.",
+      "sourceLabel": "Ministère de l'Éducation nationale",
+      "sourceUrl": "https://www.education.gouv.fr/"
+    },
+    {
+      "giscoId": "GE",
+      "country": "Georgia",
+      "category": "optional_or_private",
+      "note": "Uniform practice is not consistent nationally and may be prescribed by individual schools.",
+      "sourceLabel": "Eurydice – Georgia",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/georgia/overview"
+    },
+    {
+      "giscoId": "GG",
+      "country": "Guernsey",
+      "category": "optional_or_private",
+      "note": "Uniforms are common at many schools, with each school setting its own requirements.",
+      "sourceLabel": "States of Guernsey – Education",
+      "sourceUrl": "https://www.gov.gg/education"
+    },
+    {
+      "giscoId": "GI",
+      "country": "Gibraltar",
+      "category": "optional_or_private",
+      "note": "School-level rules determine uniforms, which are used by many local schools.",
+      "sourceLabel": "Government of Gibraltar – Education",
+      "sourceUrl": "https://www.gibraltar.gov.gi/"
+    },
+    {
+      "giscoId": "CH",
+      "country": "Switzerland",
+      "category": "not_used",
+      "note": "Uniforms are not standard in public schools; school-level dress rules and private-school practice vary.",
+      "sourceLabel": "Eurydice – Switzerland",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/switzerland/overview"
+    },
+    {
+      "giscoId": "CY",
+      "country": "Cyprus",
+      "category": "standard",
+      "note": "Public schools commonly require uniforms, with details set by each school's rules.",
+      "sourceLabel": "Cyprus Ministry of Education, Sport and Youth",
+      "sourceUrl": "https://www.moec.gov.cy/"
+    },
+    {
+      "giscoId": "CZ",
+      "country": "Czechia",
+      "category": "optional_or_private",
+      "note": "There is no general national uniform requirement; some private schools adopt their own policies.",
+      "sourceLabel": "Eurydice – Czechia",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/czechia/overview"
+    },
+    {
+      "giscoId": "DE",
+      "country": "Germany",
+      "category": "not_used",
+      "note": "Uniforms are not customary in public schools, though some private schools use them.",
+      "sourceLabel": "Eurydice – Germany",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/germany/overview"
+    },
+    {
+      "giscoId": "DK",
+      "country": "Denmark",
+      "category": "not_used",
+      "note": "Public schools do not generally use uniforms; individual private schools may have separate dress policies.",
+      "sourceLabel": "Eurydice – Denmark",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/denmark/overview"
+    },
+    {
+      "giscoId": "EE",
+      "country": "Estonia",
+      "category": "optional_or_private",
+      "note": "No mandate applies in state schools; uniforms are more common in private schools and traditional caps remain popular.",
+      "sourceLabel": "Eurydice – Estonia",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/estonia/overview"
+    },
+    {
+      "giscoId": "EL",
+      "country": "Greece",
+      "category": "optional_or_private",
+      "note": "School uniforms are not a general public-school requirement, though some private schools use them.",
+      "sourceLabel": "Eurydice – Greece",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/greece/overview"
+    },
+    {
+      "giscoId": "ES",
+      "country": "Spain",
+      "category": "optional_or_private",
+      "note": "Uniforms are generally a school choice and are more prevalent in private and concertado schools.",
+      "sourceLabel": "Eurydice – Spain",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/spain/overview"
+    },
+    {
+      "giscoId": "FI",
+      "country": "Finland",
+      "category": "not_used",
+      "note": "Public-school students cannot be required to wear uniforms; ordinary clothing is the norm.",
+      "sourceLabel": "Eurydice – Finland",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/finland/overview"
+    },
+    {
+      "giscoId": "MC",
+      "country": "Monaco",
+      "category": "optional_or_private",
+      "note": "Uniforms are not set as a general national requirement; school policies and private provision may differ.",
+      "sourceLabel": "Government of Monaco – Education",
+      "sourceUrl": "https://www.gouv.mc/"
+    },
+    {
+      "giscoId": "MD",
+      "country": "Moldova",
+      "category": "optional_or_private",
+      "note": "Uniforms are not required nationally; individual schools may establish clothing rules.",
+      "sourceLabel": "Government of the Republic of Moldova",
+      "sourceUrl": "https://gov.md/en"
+    },
+    {
+      "giscoId": "ME",
+      "country": "Montenegro",
+      "category": "optional_or_private",
+      "note": "There is no single national uniform policy, and school requirements may vary locally.",
+      "sourceLabel": "Eurydice – Montenegro",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/montenegro/overview"
+    },
+    {
+      "giscoId": "HR",
+      "country": "Croatia",
+      "category": "optional_or_private",
+      "note": "Uniforms are not generally required nationally; individual schools may choose their own dress rules.",
+      "sourceLabel": "Eurydice – Croatia",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/croatia/overview"
+    },
+    {
+      "giscoId": "HU",
+      "country": "Hungary",
+      "category": "optional_or_private",
+      "note": "Uniform use varies by school, with private institutions and local rules accounting for exceptions.",
+      "sourceLabel": "Eurydice – Hungary",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/hungary/overview"
+    },
+    {
+      "giscoId": "IE",
+      "country": "Ireland",
+      "category": "standard",
+      "note": "Uniforms are common, but each school sets its own policy and requirements.",
+      "sourceLabel": "Department of Education",
+      "sourceUrl": "https://www.gov.ie/en/department-of-education/"
+    },
+    {
+      "giscoId": "IM",
+      "country": "Isle of Man",
+      "category": "optional_or_private",
+      "note": "Uniforms are widely used in schools, with requirements set by each school rather than a single island-wide design.",
+      "sourceLabel": "Isle of Man Department of Education, Sport and Culture",
+      "sourceUrl": "https://www.gov.im/categories/education-training-and-skills/"
+    },
+    {
+      "giscoId": "IS",
+      "country": "Iceland",
+      "category": "not_used",
+      "note": "Uniforms are not generally used in public schools; some private providers may set separate dress rules.",
+      "sourceLabel": "Eurydice – Iceland",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/iceland/overview"
+    },
+    {
+      "giscoId": "IT",
+      "country": "Italy",
+      "category": "optional_or_private",
+      "note": "No standard uniform is required, though some primary schools use traditional smocks (grembiule).",
+      "sourceLabel": "Eurydice – Italy",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/italy/overview"
+    },
+    {
+      "giscoId": "JE",
+      "country": "Jersey",
+      "category": "optional_or_private",
+      "note": "Many schools use uniforms, with each school setting its own policy and uniform design.",
+      "sourceLabel": "Government of Jersey – Education",
+      "sourceUrl": "https://www.gov.je/Education/"
+    },
+    {
+      "giscoId": "LI",
+      "country": "Liechtenstein",
+      "category": "optional_or_private",
+      "note": "There is no general uniform requirement; school-level and private-school practices may differ.",
+      "sourceLabel": "Eurydice – Liechtenstein",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/liechtenstein/overview"
+    },
+    {
+      "giscoId": "LT",
+      "country": "Lithuania",
+      "category": "optional_or_private",
+      "note": "Uniform use is determined locally, and a number of schools have adopted their own uniform rules.",
+      "sourceLabel": "Eurydice – Lithuania",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/lithuania/overview"
+    },
+    {
+      "giscoId": "LU",
+      "country": "Luxembourg",
+      "category": "optional_or_private",
+      "note": "There is no general uniform requirement in public education; individual institutions may set dress rules.",
+      "sourceLabel": "Eurydice – Luxembourg",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/luxembourg/overview"
+    },
+    {
+      "giscoId": "LV",
+      "country": "Latvia",
+      "category": "optional_or_private",
+      "note": "Uniform policies are set by individual schools rather than through a universal national requirement.",
+      "sourceLabel": "Eurydice – Latvia",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/latvia/overview"
+    },
+    {
+      "giscoId": "RO",
+      "country": "Romania",
+      "category": "optional_or_private",
+      "note": "Uniforms are school-specific and may be used by individual public or private institutions.",
+      "sourceLabel": "Eurydice – Romania",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/romania/overview"
+    },
+    {
+      "giscoId": "RS",
+      "country": "Serbia",
+      "category": "optional_or_private",
+      "note": "Uniform use is not a single national rule; individual schools may adopt their own requirements.",
+      "sourceLabel": "Eurydice – Serbia",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/serbia/overview"
+    },
+    {
+      "giscoId": "MK",
+      "country": "North Macedonia",
+      "category": "optional_or_private",
+      "note": "Uniform practice varies between schools, with local institutions setting any requirements.",
+      "sourceLabel": "Ministry of Education and Science of North Macedonia",
+      "sourceUrl": "https://mon.gov.mk/"
+    },
+    {
+      "giscoId": "MT",
+      "country": "Malta",
+      "category": "standard",
+      "note": "Uniforms are standard in state schools, with each school specifying its own uniform.",
+      "sourceLabel": "Eurydice – Malta",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/malta/overview"
+    },
+    {
+      "giscoId": "NL",
+      "country": "Netherlands",
+      "category": "not_used",
+      "note": "Uniforms are not typical in Dutch state schools, though some private or international schools may prescribe them.",
+      "sourceLabel": "Eurydice – Netherlands",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/netherlands/overview"
+    },
+    {
+      "giscoId": "NO",
+      "country": "Norway",
+      "category": "not_used",
+      "note": "Uniforms are not customary in public schools; a limited number of private schools may set dress rules.",
+      "sourceLabel": "Eurydice – Norway",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/norway/overview"
+    },
+    {
+      "giscoId": "PL",
+      "country": "Poland",
+      "category": "optional_or_private",
+      "note": "Schools may choose whether to require uniforms, so practice differs between institutions.",
+      "sourceLabel": "Eurydice – Poland",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/poland/overview"
+    },
+    {
+      "giscoId": "PT",
+      "country": "Portugal",
+      "category": "optional_or_private",
+      "note": "There is no universal uniform requirement; individual and private schools may adopt their own dress policies.",
+      "sourceLabel": "Eurydice – Portugal",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/portugal/overview"
+    },
+    {
+      "giscoId": "UA",
+      "country": "Ukraine",
+      "category": "optional_or_private",
+      "note": "Uniforms are not a universal national requirement, and schools may establish local appearance rules.",
+      "sourceLabel": "Eurydice – Ukraine",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/ukraine/overview"
+    },
+    {
+      "giscoId": "UK",
+      "country": "United Kingdom",
+      "category": "standard",
+      "note": "Standard in over 90% of state schools, set at school level rather than national law.",
+      "sourceLabel": "UK Department for Education",
+      "sourceUrl": "https://www.gov.uk/government/publications/school-uniform/school-uniforms"
+    },
+    {
+      "giscoId": "SE",
+      "country": "Sweden",
+      "category": "not_used",
+      "note": "Uniforms are not customary in public schools; schools generally follow a non-uniform dress practice.",
+      "sourceLabel": "Eurydice – Sweden",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/sweden/overview"
+    },
+    {
+      "giscoId": "SI",
+      "country": "Slovenia",
+      "category": "optional_or_private",
+      "note": "There is no general public-school uniform requirement; private and individual school practices may differ.",
+      "sourceLabel": "Eurydice – Slovenia",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/slovenia/overview"
+    },
+    {
+      "giscoId": "SK",
+      "country": "Slovakia",
+      "category": "optional_or_private",
+      "note": "Uniform policies are set locally, and requirements differ among schools.",
+      "sourceLabel": "Eurydice – Slovakia",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/slovakia/overview"
+    },
+    {
+      "giscoId": "SM",
+      "country": "San Marino",
+      "category": "optional_or_private",
+      "note": "No universal uniform requirement is identified; school-level rules and provider practices may vary.",
+      "sourceLabel": "Government of San Marino",
+      "sourceUrl": "https://www.gov.sm/"
+    },
+    {
+      "giscoId": "TR",
+      "country": "Türkiye",
+      "category": "standard",
+      "note": "Uniforms remain common, while schools set their uniform specifications within national rules.",
+      "sourceLabel": "Eurydice – Türkiye",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/turkiye/overview"
+    },
+    {
+      "giscoId": "VA",
+      "country": "Vatican City",
+      "category": "optional_or_private",
+      "note": "School dress requirements are institution-specific; no general uniform policy applies across the territory.",
+      "sourceLabel": "Vatican City State",
+      "sourceUrl": "https://vaticanstate.va/"
+    }
+  ]
+}

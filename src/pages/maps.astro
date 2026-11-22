@@ -18,6 +18,9 @@ import { mapStrategies } from '../lib/mapStrategies';
 				tabindex="0"
 				aria-controls="map-panel"
 				data-map-strategy="renewable"
+				data-track="map-tab-switch"
+				data-dataset="renewable"
+				data-testid="map-tab-renewable"
 			>
 				Renewable Energy
 			</button>
@@ -30,8 +33,26 @@ import { mapStrategies } from '../lib/mapStrategies';
 				tabindex="-1"
 				aria-controls="map-panel"
 				data-map-strategy="childcare"
+				data-track="map-tab-switch"
+				data-dataset="childcare"
+				data-testid="map-tab-childcare"
 			>
 				Childcare Costs
+			</button>
+			<button
+				id="school-uniforms-tab"
+				class="map-tab"
+				type="button"
+				role="tab"
+				aria-selected="false"
+				tabindex="-1"
+				aria-controls="map-panel"
+				data-map-strategy="school-uniforms"
+				data-track="map-tab-switch"
+				data-dataset="school-uniforms"
+				data-testid="map-tab-school-uniforms"
+			>
+				School Uniforms
 			</button>
 		</div>
 
@@ -53,7 +74,12 @@ import { mapStrategies } from '../lib/mapStrategies';
 				<p class="description" id="metric-description">{mapStrategies.renewable.description}</p>
 				<div class="source-details">
 					<p class="note">
-						Source: <a id="source-link" href={mapStrategies.renewable.sourceUrl}>
+						Source: <a
+							id="source-link"
+							href={mapStrategies.renewable.sourceUrl}
+							data-track="map-source-link"
+							data-testid="map-source-link"
+						>
 							{mapStrategies.renewable.sourceLabel}
 						</a>.{' '}
 						<span id="source-detail">{mapStrategies.renewable.sourceDetail}</span>
@@ -90,7 +116,7 @@ import { mapStrategies } from '../lib/mapStrategies';
 	const map = document.querySelector<HTMLElement>('[data-testid="leaflet-map"]');
 
 	function isMapStrategyKey(value: string | undefined): value is MapStrategyKey {
-		return value === 'renewable' || value === 'childcare';
+		return value === 'renewable' || value === 'childcare' || value === 'school-uniforms';
 	}
 
 	function selectStrategy(key: MapStrategyKey): void {

@@ -1,5 +1,5 @@
 Feature: European data maps
-  Visitors can explore renewable energy and childcare cost data by country.
+  Visitors can explore renewable energy, childcare cost, and school uniform policy data by country.
 
   Scenario: View the interactive choropleth
     Given I open the Maps page
@@ -38,3 +38,12 @@ Feature: European data maps
     Then the popup shows Estonia's childcare cost from OECD
     When I hover Türkiye
     Then Türkiye's tooltip explains that OECD data is unavailable
+
+  Scenario: Explore school uniform policies
+    Given I open the Maps page
+    When I switch to the School Uniforms map
+    Then the school uniform heading, legend, and map load without browser errors
+    When I hover the UK
+    Then the tooltip shows the country and policy category
+    When I select the UK
+    Then the UK popup shows its policy note and source link

@@ -34,9 +34,9 @@ Then('the home page shows three focus areas', async ({ homePage }) => {
 	await expect(cards).toHaveCount(3);
 	await expect(cards.nth(0).getByRole('heading', { name: 'Test Automation & Reliability' }))
 		.toBeVisible();
-	await expect(cards.nth(1).getByRole('heading', { name: 'Interactive European Maps' }))
+	await expect(cards.nth(1).getByRole('heading', { name: 'Clean Patterns & AI Validation' }))
 		.toBeVisible();
-	await expect(cards.nth(2).getByRole('heading', { name: 'Clean Patterns & AI Validation' }))
+	await expect(cards.nth(2).getByRole('heading', { name: 'Interactive European Maps' }))
 		.toBeVisible();
 });
 

@@ -15,7 +15,12 @@ import Layout from '../layouts/Layout.astro';
 			turn public datasets into interactive maps.
 		</p>
 		<div class="actions">
-			<a class="button button-primary" href="/maps">
+			<a
+				class="button button-primary"
+				href="/maps"
+				data-track="cta-explore-maps"
+				data-testid="hero-explore-maps"
+			>
 				Explore Maps
 				<svg aria-hidden="true" focusable="false" viewBox="0 0 20 20">
 					<path
@@ -28,7 +33,12 @@ import Layout from '../layouts/Layout.astro';
 					/>
 				</svg>
 			</a>
-			<a class="button button-secondary" href="/about">Learn more about me</a>
+			<a
+				class="button button-secondary"
+				href="/about"
+				data-track="cta-about-me"
+				data-testid="hero-about-me"
+			>Learn more about me</a>
 		</div>
 	</section>
 
@@ -39,26 +49,26 @@ import Layout from '../layouts/Layout.astro';
 				<p class="card-tag">01 / QUALITY</p>
 				<h3>Test Automation &amp; Reliability</h3>
 				<p>
-					Designing scalable Playwright and .NET/C# frameworks for reliable automation. Building
-					CI/CD pipelines and end-to-end system performance checks.
+					Designing scalable Playwright and .NET/C# frameworks, CI/CD quality pipelines, and
+					end-to-end performance checks for reliable software delivery.
 				</p>
 			</article>
 
 			<article class="highlight-card">
-				<p class="card-tag">02 / GEOSPATIAL</p>
-				<h3>Interactive European Maps</h3>
-				<p>
-					Visualizing comparative social policy and public spending datasets. Using Leaflet,
-					Eurostat GISCO boundaries, and OECD data.
-				</p>
-			</article>
-
-			<article class="highlight-card">
-				<p class="card-tag">03 / ARCHITECTURE</p>
+				<p class="card-tag">02 / ARCHITECTURE</p>
 				<h3>Clean Patterns &amp; AI Validation</h3>
 				<p>
-					Applying Adapter, Strategy, and Page Object Model patterns. Building deterministic
-					guardrails for AI-assisted workflows.
+					Applying Adapter, Strategy, and Page Object Model patterns alongside deterministic
+					guardrails and unit-tested contracts for AI-assisted workflows.
+				</p>
+			</article>
+
+			<article class="highlight-card">
+				<p class="card-tag">03 / GEOSPATIAL</p>
+				<h3>Interactive European Maps</h3>
+				<p>
+					Visualizing comparative European energy, childcare, and education policy datasets with
+					Leaflet, Eurostat GISCO boundaries, and OECD data.
 				</p>
 			</article>
 		</div>
