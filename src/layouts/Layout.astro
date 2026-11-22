@@ -4,6 +4,7 @@ interface Props {
 }
 
 const { title = 'Zlata Popelnuh' } = Astro.props;
+const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 ---
 
 <!doctype html>
@@ -21,15 +22,28 @@ const { title = 'Zlata Popelnuh' } = Astro.props;
 			<nav aria-label="Main navigation">
 				<a class="brand" href="/">Zlata Popelnuh</a>
 				<div class="nav-links">
-					<a href="/">Home</a>
-					<a href="/about">About</a>
-					<a href="/maps">Maps</a>
+					<a
+						href="/"
+						class={currentPathname === '/' ? 'active' : undefined}
+						aria-current={currentPathname === '/' ? 'page' : undefined}>Home</a
+					>
+					<a
+						href="/about"
+						class={currentPathname === '/about' ? 'active' : undefined}
+						aria-current={currentPathname === '/about' ? 'page' : undefined}>About</a
+					>
+					<a
+						href="/maps"
+						class={currentPathname === '/maps' ? 'active' : undefined}
+						aria-current={currentPathname === '/maps' ? 'page' : undefined}>Maps</a
+					>
 				</div>
 			</nav>
 		</header>
 		<main>
 			<slot />
 		</main>
+		<footer>© 2026 Zlata Popelnuh · Built with Astro &amp; tested with Playwright</footer>
 	</body>
 </html>
 
@@ -47,6 +61,8 @@ const { title = 'Zlata Popelnuh' } = Astro.props;
 	:global(body) {
 		margin: 0;
 		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
 	}
 
 	header {
@@ -78,16 +94,34 @@ const { title = 'Zlata Popelnuh' } = Astro.props;
 	}
 
 	.nav-links a {
+		padding: 8px 0 6px;
+		border-bottom: 2px solid transparent;
 		color: #555b6b;
 		font-weight: 600;
+		transition: color 160ms ease, border-color 160ms ease;
 	}
 
-	.nav-links a:hover {
-		color: #635bff;
+	.nav-links a:hover,
+	.nav-links a.active {
+		color: #4f46e5;
+	}
+
+	.nav-links a.active {
+		border-bottom-color: #4f46e5;
+		font-weight: 700;
 	}
 
 	main {
 		width: min(100% - 40px, 960px);
 		margin: 0 auto;
+		flex: 1;
+	}
+
+	footer {
+		padding: 17px 20px;
+		border-top: 1px solid #e6e8ef;
+		color: #64748b;
+		font-size: 0.85rem;
+		text-align: center;
 	}
 </style>

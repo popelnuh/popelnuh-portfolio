@@ -4,58 +4,230 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout title="Home | Zlata Popelnuh">
 	<section class="hero">
-		<p class="eyebrow">Quality, testing, and automation</p>
-		<h1>Welcome</h1>
-		<p class="intro">I’m Zlata Popelnuh, a quality and test automation lead based in Scotland.</p>
-		<a class="button" href="/about">Learn more about me</a>
+		<p class="eyebrow">QUALITY ENGINEERING · GEOSPATIAL DATA</p>
+		<h1>
+			Testing complex systems.<br />{' '}
+			Mapping data.
+		</h1>
+		<p class="intro">
+			I’m Zlata Popelnuh, a Scotland-based Senior Test Automation Engineer with a background in
+			GIS. I build resilient test frameworks, validate system reliability and performance, and
+			turn public datasets into interactive maps.
+		</p>
+		<div class="actions">
+			<a class="button button-primary" href="/maps">
+				Explore Maps
+				<svg aria-hidden="true" focusable="false" viewBox="0 0 20 20">
+					<path
+						d="M4.167 10h11.666m-5-5 5 5-5 5"
+						fill="none"
+						stroke="currentColor"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="1.7"
+					/>
+				</svg>
+			</a>
+			<a class="button button-secondary" href="/about">Learn more about me</a>
+		</div>
+	</section>
+
+	<section class="highlights" aria-labelledby="focus-heading">
+		<h2 id="focus-heading">Focus Areas</h2>
+		<div class="highlight-grid">
+			<article class="highlight-card">
+				<p class="card-tag">01 / QUALITY</p>
+				<h3>Test Automation &amp; Reliability</h3>
+				<p>
+					Designing scalable Playwright and .NET/C# frameworks for reliable automation. Building
+					CI/CD pipelines and end-to-end system performance checks.
+				</p>
+			</article>
+
+			<article class="highlight-card">
+				<p class="card-tag">02 / GEOSPATIAL</p>
+				<h3>Interactive European Maps</h3>
+				<p>
+					Visualizing comparative social policy and public spending datasets. Using Leaflet,
+					Eurostat GISCO boundaries, and OECD data.
+				</p>
+			</article>
+
+			<article class="highlight-card">
+				<p class="card-tag">03 / ARCHITECTURE</p>
+				<h3>Clean Patterns &amp; AI Validation</h3>
+				<p>
+					Applying Adapter, Strategy, and Page Object Model patterns. Building deterministic
+					guardrails for AI-assisted workflows.
+				</p>
+			</article>
+		</div>
 	</section>
 </Layout>
 
 <style>
 	.hero {
-		min-height: calc(100vh - 72px);
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		justify-content: center;
-		padding: 64px 0;
+		padding: 72px 0 56px;
+	}
+
+	.eyebrow,
+	.card-tag {
+		color: #635bff;
+		font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+			'Courier New', monospace;
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
 	}
 
 	.eyebrow {
-		margin: 0 0 12px;
-		color: #635bff;
-		font-size: 0.85rem;
-		font-weight: 750;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
+		margin: 0 0 18px;
 	}
 
 	h1 {
+		max-width: 860px;
 		margin: 0;
-		font-size: clamp(3.5rem, 10vw, 7rem);
-		line-height: 0.95;
-		letter-spacing: -0.06em;
+		color: #0f172a;
+		font-size: clamp(2.5rem, 6vw, 4.25rem);
+		line-height: 1.08;
+		letter-spacing: -0.04em;
+		text-wrap: balance;
 	}
 
 	.intro {
-		max-width: 620px;
-		margin: 28px 0 32px;
-		color: #555b6b;
-		font-size: clamp(1.1rem, 3vw, 1.35rem);
-		line-height: 1.6;
+		max-width: 760px;
+		margin: 22px 0 28px;
+		color: #334155;
+		font-size: clamp(1.05rem, 2vw, 1.2rem);
+		font-weight: 400;
+		line-height: 1.7;
+	}
+
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px;
 	}
 
 	.button {
-		padding: 13px 18px;
-		border-radius: 10px;
-		background: #635bff;
-		color: white;
+		display: inline-flex;
+		min-height: 46px;
+		align-items: center;
+		justify-content: center;
+		gap: 9px;
+		padding: 11px 17px;
+		border: 1px solid transparent;
+		border-radius: 9px;
 		font-weight: 700;
 		text-decoration: none;
-		box-shadow: 0 10px 24px rgba(99, 91, 255, 0.18);
+		transition:
+			transform 160ms ease,
+			background-color 160ms ease,
+			border-color 160ms ease,
+			box-shadow 160ms ease;
 	}
 
-	.button:hover {
+	.button svg {
+		width: 18px;
+		height: 18px;
+	}
+
+	.button-primary {
+		background: #635bff;
+		color: white;
+		box-shadow: 0 8px 20px rgba(99, 91, 255, 0.18);
+	}
+
+	.button-primary:hover {
+		transform: translateY(-1px);
 		background: #5048e5;
+	}
+
+	.button-secondary {
+		border-color: #e2e8f0;
+		background: white;
+		color: #0f172a;
+	}
+
+	.button-secondary:hover {
+		transform: translateY(-2px);
+		border-color: #635bff;
+		box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+	}
+
+	.button:focus-visible {
+		outline: 3px solid rgba(99, 91, 255, 0.3);
+		outline-offset: 3px;
+	}
+
+	.highlights {
+		padding: 28px 0 72px;
+		border-top: 1px solid #e2e8f0;
+	}
+
+	.highlights h2 {
+		margin: 0 0 18px;
+		color: #0f172a;
+		font-size: 1.35rem;
+		letter-spacing: -0.02em;
+	}
+
+	.highlight-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 18px;
+	}
+
+	.highlight-card {
+		padding: 21px 22px 23px;
+		border: 1px solid #e2e8f0;
+		border-top: 3px solid #635bff;
+		border-radius: 12px;
+		background: #fff;
+		box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+	}
+
+	.card-tag {
+		margin: 0 0 13px;
+		font-size: 0.7rem;
+	}
+
+	.highlight-card h3 {
+		margin: 0 0 10px;
+		color: #0f172a;
+		font-size: 1.08rem;
+		line-height: 1.35;
+	}
+
+	.highlight-card > p:last-child {
+		margin: 0;
+		color: #334155;
+		font-size: 0.94rem;
+		font-weight: 400;
+		line-height: 1.65;
+	}
+
+	@media (max-width: 760px) {
+		.hero {
+			padding: 56px 0 42px;
+		}
+
+		.highlight-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.highlights {
+			padding-bottom: 56px;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.button {
+			transition: none;
+		}
+
+		.button:hover {
+			transform: none;
+		}
 	}
 </style>
