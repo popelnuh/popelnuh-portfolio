@@ -2,11 +2,13 @@
 interface Props {
 	boundariesUrl?: string;
 	metricsUrl?: string;
+	childcareMetricsUrl?: string;
 }
 
 const {
 	boundariesUrl = '/data/europe-countries.geojson',
 	metricsUrl = '/data/renewable-energy.json',
+	childcareMetricsUrl = '/data/oecd-childcare-costs.json',
 } = Astro.props;
 ---
 
@@ -16,6 +18,7 @@ const {
 		data-testid="leaflet-map"
 		data-boundaries-url={boundariesUrl}
 		data-metrics-url={metricsUrl}
+		data-childcare-metrics-url={childcareMetricsUrl}
 		role="region"
 		aria-label="European countries by renewable energy share"
 	></div>
@@ -25,44 +28,117 @@ const {
 <script>
 	import * as L from 'leaflet';
 	import 'leaflet/dist/leaflet.css';
+	import { loadChildcareMapData, fetchMapJson } from '../lib/mapRepository';
+	import { mapStrategies, type MapStrategyKey } from '../lib/mapStrategies';
 	import {
 		joinRenewableEnergyData,
-		NO_DATA_COLOR,
-		type CountryBoundaries,
 		type RenewableEnergyDataset,
 	} from '../lib/renewableEnergyAdapter';
+	import type {
+		CountryBoundaries,
+		MapMetricBoundaries,
+		MapMetricProperties,
+	} from '../lib/mapTypes';
 
 	for (const container of document.querySelectorAll<HTMLElement>('[data-testid="leaflet-map"]')) {
 		const status = container.parentElement?.querySelector<HTMLElement>('.map-status');
 		const boundariesUrl = container.dataset.boundariesUrl ?? '/data/europe-countries.geojson';
 		const metricsUrl = container.dataset.metricsUrl ?? '/data/renewable-energy.json';
+		const childcareMetricsUrl =
+			container.dataset.childcareMetricsUrl ?? '/data/oecd-childcare-costs.json';
 		const map = L.map(container);
+		let countriesLayer: L.GeoJSON | null = null;
+		let loadSequence = 0;
+		let defaultView: { center: L.LatLng; zoom: number } | null = null;
+
+		const DEFAULT_EUROPE_CENTER: L.LatLngExpression = [54, 15];
+		const DEFAULT_EUROPE_ZOOM = 4;
+
+		class ResetViewControl extends L.Control {
+			onAdd(controlMap: L.Map): HTMLElement {
+				const control = L.DomUtil.create(
+					'div',
+					'leaflet-bar leaflet-reset-view-control',
+				);
+				const button = L.DomUtil.create(
+					'button',
+					'reset-view-button',
+					control,
+				) as HTMLButtonElement;
+
+				button.type = 'button';
+				button.textContent = 'Reset view';
+				button.title = 'Reset map view to Europe';
+				button.setAttribute('aria-label', 'Reset view');
+				button.dataset.testid = 'reset-view-control';
+				button.addEventListener('click', () => {
+					controlMap.setView(
+						defaultView?.center ?? DEFAULT_EUROPE_CENTER,
+						defaultView?.zoom ?? DEFAULT_EUROPE_ZOOM,
+						{ animate: true },
+					);
+				});
+				L.DomEvent.disableClickPropagation(control);
+				L.DomEvent.disableScrollPropagation(control);
+
+				return control;
+			}
+		}
+
+		new ResetViewControl({ position: 'topleft' }).addTo(map);
 
 		map.attributionControl.setPrefix(false);
 		map.attributionControl.addAttribution(
 			'&copy; EuroGeographics for the administrative boundaries',
 		);
 
-		void Promise.all([fetch(boundariesUrl), fetch(metricsUrl)])
-			.then(async ([boundariesResponse, metricsResponse]) => {
-				if (!boundariesResponse.ok) {
-					throw new Error(`Boundary request failed with status ${boundariesResponse.status}`);
+		const updateMap = async (strategyKey: MapStrategyKey): Promise<void> => {
+			const sequence = ++loadSequence;
+			const strategy = mapStrategies[strategyKey];
+			if (status) status.textContent = `Loading ${strategy.title.toLowerCase()} map…`;
+
+			try {
+				let boundaries: MapMetricBoundaries;
+				let referenceYear: number;
+				let indicator: string;
+
+				if (strategyKey === 'renewable') {
+					const [rawBoundaries, metrics] = await Promise.all([
+						fetchMapJson<CountryBoundaries>(boundariesUrl),
+						fetchMapJson<RenewableEnergyDataset>(metricsUrl),
+					]);
+					boundaries = joinRenewableEnergyData(rawBoundaries, metrics);
+					referenceYear = metrics.referenceYear;
+					indicator = metrics.indicator;
+				} else {
+					const { boundaries: rawBoundaries, dataset, recordsByCNTR_ID } =
+						await loadChildcareMapData(boundariesUrl, childcareMetricsUrl);
+					boundaries = {
+						...rawBoundaries,
+						features: rawBoundaries.features.map((feature) => {
+							const record = recordsByCNTR_ID[feature.properties.CNTR_ID];
+							return {
+								...feature,
+								properties: {
+									...feature.properties,
+									metricValue: record?.value ?? null,
+									estimated: false,
+								},
+							};
+						}),
+					};
+					referenceYear = dataset.referenceYear;
+					indicator = dataset.indicator;
 				}
-				if (!metricsResponse.ok) {
-					throw new Error(`Metric request failed with status ${metricsResponse.status}`);
-				}
-				const [boundaries, metrics] = await Promise.all([
-					boundariesResponse.json() as Promise<CountryBoundaries>,
-					metricsResponse.json() as Promise<RenewableEnergyDataset>,
-				]);
-				return { boundaries: joinRenewableEnergyData(boundaries, metrics), metrics };
-			})
-			.then(({ boundaries, metrics }) => {
-				const countries = L.geoJSON(boundaries, {
+
+				if (sequence !== loadSequence) return;
+
+				countriesLayer?.remove();
+				const countries = L.geoJSON<MapMetricProperties>(boundaries, {
 					style: (feature) => ({
 						color: '#ffffff',
 						weight: 1.5,
-						fillColor: feature?.properties?.choropleth_color ?? NO_DATA_COLOR,
+						fillColor: strategy.colorScale(feature?.properties?.metricValue ?? null),
 						fillOpacity: 0.8,
 					}),
 					onEachFeature: (feature, layer) => {
@@ -70,18 +146,26 @@ const {
 						const countryName =
 							properties?.NAME_ENGL ?? properties?.CNTR_NAME ?? properties?.CNTR_ID ?? 'Unknown country';
 						const countryId = properties?.CNTR_ID ?? 'unknown';
-						const value = properties?.renewable_energy_pct ?? null;
-						const popup = document.createElement('div');
-						const name = document.createElement('strong');
-						const metric = document.createElement('p');
+						const value = properties?.metricValue ?? null;
+						const metricText = strategy.formatTooltip({
+							value,
+							year: referenceYear,
+							estimated: properties?.estimated ?? false,
+							indicator,
+							unit: strategy.unitLabel,
+						});
+						const createTooltipContent = (): HTMLDivElement => {
+							const content = document.createElement('div');
+							const name = document.createElement('strong');
+							const metric = document.createElement('p');
+							name.textContent = countryName;
+							metric.textContent = metricText;
+							content.append(name, metric);
+							return content;
+						};
 
-						name.textContent = countryName;
-						metric.textContent =
-							value === null
-								? `${metrics.indicator}: no data`
-								: `${metrics.indicator} (${metrics.referenceYear}): ${value.toFixed(1)}${metrics.unit}${properties?.estimated ? ' (estimate)' : ''}`;
-						popup.append(name, metric);
-						layer.bindPopup(popup);
+						layer.bindPopup(createTooltipContent());
+						layer.bindTooltip(createTooltipContent(), { sticky: true });
 
 						if (layer instanceof L.Path) {
 							layer.on('add', () => {
@@ -97,6 +181,8 @@ const {
 						}
 					},
 				}).addTo(map);
+				countriesLayer = countries;
+				container.setAttribute('aria-label', strategy.ariaLabel);
 
 				const bounds = countries.getBounds();
 				if (!bounds.isValid()) {
@@ -104,12 +190,27 @@ const {
 				}
 
 				map.fitBounds(bounds, { padding: [16, 16] });
+				if (!defaultView) {
+					defaultView = { center: map.getCenter(), zoom: map.getZoom() };
+				}
 				if (status) status.textContent = 'Map data loaded. Select a country for details.';
-			})
-			.catch((error: unknown) => {
-				console.error(`Unable to load map data from ${boundariesUrl} and ${metricsUrl}`, error);
+			} catch (error: unknown) {
+				if (sequence !== loadSequence) return;
+				console.error(
+					`Unable to load ${strategy.title.toLowerCase()} map data from ${boundariesUrl}`,
+					error,
+				);
 				if (status) status.textContent = 'Map data could not be loaded.';
-			});
+			}
+		};
+
+		container.addEventListener('map:strategy-change', (event) => {
+			if (!(event instanceof CustomEvent)) return;
+			if (event.detail !== 'renewable' && event.detail !== 'childcare') return;
+			void updateMap(event.detail);
+		});
+
+		void updateMap('renewable');
 	}
 </script>
 
@@ -121,14 +222,64 @@ const {
 	.leaflet-map {
 		width: 100%;
 		height: 500px;
-		border: 1px solid #dfe2ea;
+		border: 1px solid var(--border-subtle);
 		border-radius: 12px;
 		background: #eef2f4;
 	}
 
 	.map-status {
 		margin: 10px 0 0;
-		color: #555b6b;
+		color: var(--text-body);
 		font-size: 0.9rem;
+	}
+
+	:global(.leaflet-reset-view-control) {
+		overflow: hidden;
+		border: 1px solid var(--border-subtle);
+		border-radius: 4px;
+		background: #fff;
+		box-shadow: 0 1px 5px rgb(15 23 42 / 25%);
+		transition: border-color 160ms ease;
+	}
+
+	:global(.leaflet-reset-view-control:hover) {
+		border-color: var(--accent);
+	}
+
+	:global(.leaflet-reset-view-control .reset-view-button) {
+		display: block;
+		width: auto;
+		min-width: 88px;
+		height: 32px;
+		border: 0;
+		padding: 0 10px;
+		background: #fff;
+		color: var(--text-body);
+		font: 600 0.75rem/32px system-ui, sans-serif;
+		text-align: center;
+		white-space: nowrap;
+		cursor: pointer;
+		transition:
+			background-color 160ms ease,
+			color 160ms ease;
+	}
+
+	:global(.leaflet-reset-view-control .reset-view-button:hover) {
+		background: var(--accent-soft);
+		color: var(--accent);
+	}
+
+	:global(.leaflet-reset-view-control .reset-view-button:focus-visible) {
+		position: relative;
+		z-index: 1;
+		outline: 2px solid var(--accent);
+		outline-offset: -3px;
+	}
+
+	@media (max-width: 767px) {
+		.leaflet-map {
+			height: 58vh;
+			min-height: 360px;
+		}
 	}
 </style>

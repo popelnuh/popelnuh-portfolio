@@ -8,12 +8,11 @@ Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0
 
 ## Tech Stack
 
-- Astro
-- Leaflet
-- TypeScript
-- Playwright Test
-- Azure Static Web Apps
-- GitHub Actions
+- Astro and TypeScript for a statically generated portfolio
+- Leaflet for interactive map rendering
+- Vitest for fast tests of data and map logic
+- Playwright Test for browser integration and end-to-end coverage
+- Azure Static Web Apps and GitHub Actions for deployment
 
 ## Project Structure
 
@@ -25,6 +24,7 @@ Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0
 ├── public/
 │   ├── data/
 │   │   ├── europe-countries.geojson
+│   │   ├── oecd-childcare-costs.json
 │   │   └── renewable-energy.json
 │   ├── favicon.ico
 │   └── favicon.svg
@@ -38,12 +38,20 @@ Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0
 │   ├── layouts/
 │   │   └── Layout.astro
 │   ├── lib/
-│   │   └── renewableEnergyAdapter.ts
+│   │   ├── adapters/
+│   │   │   └── oecdToGiscoAdapter.ts
+│   │   ├── README.md
+│   │   ├── mapRepository.ts
+│   │   ├── mapStrategies.ts
+│   │   ├── mapTypes.ts
+│   │   ├── renewableEnergyAdapter.ts
+│   │   └── *.test.ts
 │   └── pages/
 │       ├── about.astro
 │       ├── index.astro
 │       └── maps.astro
 ├── tests/
+│   ├── README.md
 │   ├── components/
 │   │   └── NavBarComponent.ts
 │   ├── features/
@@ -64,12 +72,13 @@ Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0
 ├── package.json
 ├── package-lock.json
 ├── playwright.config.ts
+├── vitest.config.ts
 └── tsconfig.json
 ```
 
 ## Map Data
 
-`public/data/europe-countries.geojson` contains European country geometries selected from the GISCO 2024 1:20 million dataset by `CNTR_ID`. `public/data/renewable-energy.json` stores 2023 Eurostat `nrg_ind_ren` (`REN`, `PC`) values keyed by `CNTR_ID`; the UK value is an estimate because Eurostat has no 2023 UK observation. The adapter joins the two files and assigns the neutral no-data color to countries without a metric. Boundary attribution is displayed on the map.
+`public/data/europe-countries.geojson` contains European country geometries selected from the GISCO 2024 1:20 million dataset by `CNTR_ID`. The maps page switches between the 2024 Eurostat `nrg_ind_ren` renewable-energy data and OECD net childcare costs for a couple with two children aged 2 and 3 (reference person at 100% and spouse at 67% of average wage). Renewable values use the latest common year to avoid mixing incomplete 2025 observations; the UK has no Eurostat value and is shown as no data. The childcare figures are percentages of disposable household income. `oecdToGiscoAdapter.ts` maps OECD ISO3 codes to GISCO IDs, including the `GBR` → `UK` and `GRC` → `EL` exceptions. The map repository caches fetched JSON and adapted childcare records for the lifetime of the page; countries without an OECD observation are shown in gray and identified in the tooltip.
 
 ## Local Development
 
@@ -80,28 +89,44 @@ npm ci
 npm run dev
 ```
 
-Astro serves the site locally at `http://localhost:4321/`. To create and preview a production build:
-
-```sh
-npm run build
-npm run preview
-```
-
-Check Astro and TypeScript diagnostics with:
+Astro serves the site locally at `http://localhost:4321/`. Common validation commands:
 
 ```sh
 npm run check
+npm run test:unit
+npm run test:unit:watch
+npm run test:e2e
+npm run build
+```
+
+To preview a production build:
+
+```sh
+npm run preview
 ```
 
 ## Testing & CI/CD
 
-Install the Playwright Chromium browser once, then run the end-to-end tests. The test
-command generates Playwright tests from the Gherkin feature files before running them:
+### Testing strategy
+
+The test pyramid keeps fast, deterministic logic checks below a smaller set of real-browser
+checks:
+
+- **Vitest unit tests** cover adapters, validation, map color thresholds, and tooltip formatting
+  without starting Astro or Leaflet.
+- **Playwright POM tests** cover rendered pages, map interactions, and data-loading behavior in a
+  browser. Gherkin features describe user flows and step definitions use shared page objects.
+
+Run the unit suite directly with `npm run test:unit`. Install the Playwright Chromium browser once,
+then run the Gherkin-generated end-to-end suite:
 
 ```sh
 npx playwright install chromium
 npm run test:e2e
 ```
+
+GitHub Actions runs Vitest before installing the browser and running Playwright. The deployment
+job runs only after the test job passes.
 
 ### Playwright MCP
 

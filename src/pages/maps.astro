@@ -1,35 +1,145 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import LeafletMap from '../components/LeafletMap.astro';
+import { mapStrategies } from '../lib/mapStrategies';
 ---
 
 <Layout title="Maps | Zlata Popelnuh">
 	<section class="maps">
 		<p class="eyebrow">Geospatial data</p>
 		<h1>Maps</h1>
-		<p class="description">Renewable energy share in gross final energy consumption, 2023.</p>
+		<div class="map-switcher" role="tablist" aria-label="Map datasets">
+			<button
+				id="renewable-tab"
+				class="map-tab active"
+				type="button"
+				role="tab"
+				aria-selected="true"
+				tabindex="0"
+				aria-controls="map-panel"
+				data-map-strategy="renewable"
+			>
+				Renewable Energy
+			</button>
+			<button
+				id="childcare-tab"
+				class="map-tab"
+				type="button"
+				role="tab"
+				aria-selected="false"
+				tabindex="-1"
+				aria-controls="map-panel"
+				data-map-strategy="childcare"
+			>
+				Childcare Costs
+			</button>
+		</div>
 
-		<ul class="legend" aria-label="Renewable energy share legend">
-			<li><span class="swatch no-data"></span>No data</li>
-			<li><span class="swatch lowest"></span>&lt; 15%</li>
-			<li><span class="swatch low"></span>15–24.9%</li>
-			<li><span class="swatch medium"></span>25–39.9%</li>
-			<li><span class="swatch high"></span>40–59.9%</li>
-			<li><span class="swatch highest"></span>60%+</li>
-		</ul>
-		<p class="note">
-			Source: <a href="https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/nrg_ind_ren">
-				Eurostat nrg_ind_ren
-			</a>. The UK value is an estimate; gray indicates countries without a value in this sample.
-		</p>
-		<p class="note boundary-note">
-			Boundaries: <a href="https://gisco-services.ec.europa.eu/">Eurostat GISCO, 2024</a>.
-			&copy; EuroGeographics for the administrative boundaries.
-		</p>
+		<div id="map-panel" role="tabpanel" aria-labelledby="renewable-tab">
+			<h2 id="metric-title">{mapStrategies.renewable.title}</h2>
+			<ul class="legend" id="metric-legend" aria-label={mapStrategies.renewable.legendLabel}>
+				{
+					mapStrategies.renewable.legendIntervals.map((item) => (
+						<li>
+							<span class="swatch" style={`background-color: ${item.color}`}></span>
+							{item.label}
+						</li>
+					))
+				}
+			</ul>
+			<LeafletMap />
 
-		<LeafletMap />
+			<div class="metadata-bar">
+				<p class="description" id="metric-description">{mapStrategies.renewable.description}</p>
+				<div class="source-details">
+					<p class="note">
+						Source: <a id="source-link" href={mapStrategies.renewable.sourceUrl}>
+							{mapStrategies.renewable.sourceLabel}
+						</a>.{' '}
+						<span id="source-detail">{mapStrategies.renewable.sourceDetail}</span>
+					</p>
+					<p class="note boundary-note">
+						Boundaries: <a href="https://gisco-services.ec.europa.eu/">Eurostat GISCO, 2024</a>.
+						&copy; EuroGeographics for the administrative boundaries.
+					</p>
+				</div>
+			</div>
+		</div>
 	</section>
 </Layout>
+
+<script>
+	import { mapStrategies, type MapStrategyKey } from '../lib/mapStrategies';
+
+	const tabs = document.querySelectorAll<HTMLButtonElement>('[data-map-strategy]');
+	const title = document.querySelector<HTMLElement>('#metric-title');
+	const description = document.querySelector<HTMLElement>('#metric-description');
+	const legend = document.querySelector<HTMLUListElement>('#metric-legend');
+	const sourceLink = document.querySelector<HTMLAnchorElement>('#source-link');
+	const sourceDetail = document.querySelector<HTMLElement>('#source-detail');
+	const panel = document.querySelector<HTMLElement>('#map-panel');
+	const map = document.querySelector<HTMLElement>('[data-testid="leaflet-map"]');
+
+	function isMapStrategyKey(value: string | undefined): value is MapStrategyKey {
+		return value === 'renewable' || value === 'childcare';
+	}
+
+	function selectStrategy(key: MapStrategyKey): void {
+		const strategy = mapStrategies[key];
+		if (!title || !description || !legend || !sourceLink || !sourceDetail || !panel || !map) return;
+
+		title.textContent = strategy.title;
+		description.textContent = strategy.description;
+		legend.setAttribute('aria-label', strategy.legendLabel);
+		legend.replaceChildren(
+			...strategy.legendIntervals.map((item) => {
+				const entry = document.createElement('li');
+				const swatch = document.createElement('span');
+				swatch.className = 'swatch';
+				swatch.style.backgroundColor = item.color;
+				entry.append(swatch, document.createTextNode(item.label));
+				return entry;
+			}),
+		);
+		sourceLink.href = strategy.sourceUrl;
+		sourceLink.textContent = strategy.sourceLabel;
+		sourceDetail.textContent = strategy.sourceDetail;
+		panel.setAttribute('aria-labelledby', `${key}-tab`);
+
+		for (const tab of tabs) {
+			const selected = tab.dataset.mapStrategy === key;
+			tab.setAttribute('aria-selected', String(selected));
+			tab.setAttribute('tabindex', selected ? '0' : '-1');
+			tab.classList.toggle('active', selected);
+		}
+
+		map.dispatchEvent(new CustomEvent('map:strategy-change', { detail: key }));
+	}
+
+	for (const tab of tabs) {
+		tab.addEventListener('click', () => {
+			const key = tab.dataset.mapStrategy;
+			if (isMapStrategyKey(key)) selectStrategy(key);
+		});
+		tab.addEventListener('keydown', (event) => {
+			const tabList = Array.from(tabs);
+			const currentIndex = tabList.indexOf(tab);
+			let nextIndex: number | undefined;
+
+			if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabList.length;
+			if (event.key === 'ArrowLeft') nextIndex = (currentIndex + tabList.length - 1) % tabList.length;
+			if (event.key === 'Home') nextIndex = 0;
+			if (event.key === 'End') nextIndex = tabList.length - 1;
+			if (nextIndex === undefined) return;
+
+			event.preventDefault();
+			const nextTab = tabList[nextIndex];
+			nextTab?.focus();
+			const key = nextTab?.dataset.mapStrategy;
+			if (isMapStrategyKey(key)) selectStrategy(key);
+		});
+	}
+</script>
 
 <style>
 	.maps {
@@ -38,7 +148,7 @@ import LeafletMap from '../components/LeafletMap.astro';
 
 	.eyebrow {
 		margin: 0 0 10px;
-		color: #635bff;
+		color: var(--accent-muted);
 		font-size: 0.85rem;
 		font-weight: 750;
 		letter-spacing: 0.12em;
@@ -52,11 +162,69 @@ import LeafletMap from '../components/LeafletMap.astro';
 		line-height: 1;
 	}
 
+	.map-switcher {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin: 28px 0 24px;
+	}
+
+	.map-tab {
+		border: 1px solid var(--border-subtle);
+		border-radius: 999px;
+		padding: 9px 16px;
+		background: #fff;
+		color: var(--text-body);
+		font: inherit;
+		font-size: 0.92rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition:
+			background-color 160ms ease,
+			border-color 160ms ease,
+			color 160ms ease;
+	}
+
+	.map-tab:hover,
+	.map-tab.active {
+		border-color: var(--accent);
+		background: var(--accent-soft);
+		color: var(--accent);
+	}
+
+	.map-tab:focus-visible {
+		outline: 3px solid rgb(30 41 59 / 28%);
+		outline-offset: 2px;
+	}
+
+	h2 {
+		margin: 0;
+		color: var(--text-primary);
+		font-size: clamp(1.35rem, 3vw, 1.75rem);
+		letter-spacing: -0.03em;
+	}
+
 	.description {
-		margin: 16px 0 20px;
-		color: #555b6b;
+		margin: 0;
+		color: var(--text-body);
 		font-size: 1.05rem;
 		line-height: 1.6;
+	}
+
+	.metadata-bar {
+		display: grid;
+		grid-template-columns: minmax(0, 1.3fr) minmax(15rem, 1fr);
+		gap: 18px 28px;
+		margin-top: 16px;
+		padding: 16px 18px;
+		border: 1px solid var(--border-subtle);
+		border-radius: 12px;
+		background: #fff;
+	}
+
+	.source-details {
+		display: grid;
+		gap: 8px;
 	}
 
 	.legend {
@@ -65,59 +233,43 @@ import LeafletMap from '../components/LeafletMap.astro';
 		gap: 12px 20px;
 		margin: 0;
 		padding: 0;
-		color: #555b6b;
+		color: var(--text-body);
 		font-size: 0.9rem;
 		list-style: none;
 	}
 
-	.legend li {
+	.legend :global(li) {
 		display: flex;
 		align-items: center;
 		gap: 7px;
 	}
 
-	.swatch {
+	.legend :global(.swatch) {
+		display: inline-block;
+		flex: 0 0 14px;
 		width: 14px;
 		height: 14px;
-		border: 1px solid rgba(23, 26, 36, 0.12);
+		border: 1px solid var(--border-subtle);
 		border-radius: 3px;
-	}
-
-	.lowest {
-		background: #e6eceb;
-	}
-
-	.no-data {
-		background: #e5e7eb;
-	}
-
-	.low {
-		background: #bfd4d8;
-	}
-
-	.medium {
-		background: #92bac8;
-	}
-
-	.high {
-		background: #5f98b5;
-	}
-
-	.highest {
-		background: #2f6f9f;
 	}
 
 	.note {
 		margin: 14px 0 0;
-		color: #6b7280;
+		color: var(--accent-muted);
 		font-size: 0.88rem;
 	}
 
 	.boundary-note {
-		margin: 6px 0 22px;
+		margin: 0;
 	}
 
 	.note a {
 		color: inherit;
+	}
+
+	@media (max-width: 700px) {
+		.metadata-bar {
+			grid-template-columns: 1fr;
+		}
 	}
 </style>

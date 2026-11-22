@@ -1,11 +1,10 @@
 import type { FeatureCollection, Geometry } from 'geojson';
+import type {
+	CountryBoundaries,
+	MapMetricProperties,
+} from './mapTypes';
 
-export interface CountryBoundaryProperties {
-	CNTR_ID: string;
-	CNTR_NAME?: string;
-	NAME_ENGL?: string;
-	[key: string]: unknown;
-}
+export type { CountryBoundaries, CountryBoundaryProperties } from './mapTypes';
 
 export interface RenewableEnergyDataset {
 	dataset: string;
@@ -17,13 +16,11 @@ export interface RenewableEnergyDataset {
 	valuesByCNTR_ID: Record<string, number>;
 }
 
-export interface JoinedCountryProperties extends CountryBoundaryProperties {
+export interface JoinedCountryProperties extends MapMetricProperties {
 	renewable_energy_pct: number | null;
 	choropleth_color: string;
-	estimated: boolean;
 }
 
-export type CountryBoundaries = FeatureCollection<Geometry, CountryBoundaryProperties>;
 export type JoinedCountryBoundaries = FeatureCollection<Geometry, JoinedCountryProperties>;
 
 export const NO_DATA_COLOR = '#e5e7eb';
@@ -58,6 +55,7 @@ export function joinRenewableEnergyData(
 				...feature,
 				properties: {
 					...properties,
+					metricValue: value,
 					renewable_energy_pct: value,
 					choropleth_color: getRenewableEnergyColor(value),
 					estimated: metrics.estimatedCNTR_IDs.includes(properties.CNTR_ID),
