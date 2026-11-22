@@ -9,6 +9,7 @@ export class HomePage {
 	readonly exploreMapsLink: Locator;
 	readonly focusAreas: Locator;
 	readonly svgFavicon: Locator;
+	readonly faviconLinks: Locator;
 	readonly descriptionMeta: Locator;
 	readonly ogTitleMeta: Locator;
 	readonly ogDescriptionMeta: Locator;
@@ -23,6 +24,7 @@ export class HomePage {
 		this.exploreMapsLink = page.getByRole('link', { name: 'Explore Maps' });
 		this.focusAreas = page.getByRole('region', { name: 'Focus Areas' });
 		this.svgFavicon = page.locator('link[rel="icon"][type="image/svg+xml"]');
+		this.faviconLinks = page.locator('link[rel="icon"]');
 		this.descriptionMeta = page.locator('meta[name="description"]');
 		this.ogTitleMeta = page.locator('meta[property="og:title"]');
 		this.ogDescriptionMeta = page.locator('meta[property="og:description"]');

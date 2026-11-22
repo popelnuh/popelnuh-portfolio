@@ -12,6 +12,8 @@ export class AboutPage {
 	readonly aboutGrid: Locator;
 	readonly glanceHeading: Locator;
 	readonly location: Locator;
+	readonly certification: Locator;
+	readonly experience: Locator;
 	readonly coreStack: Locator;
 	readonly footer: Locator;
 
@@ -26,6 +28,8 @@ export class AboutPage {
 		this.aboutGrid = page.locator('.about-grid');
 		this.glanceHeading = page.getByRole('heading', { name: 'At a Glance', exact: true });
 		this.location = page.getByText('55.86° N, 4.25° W · Scotland, UK', { exact: true });
+		this.certification = page.getByText('ISTQB · CSM · Azure (AZ-900)', { exact: true });
+		this.experience = page.getByText('10+ years in QA & Automation', { exact: true });
 		this.coreStack = page.getByRole('list', { name: 'Core technologies' });
 		this.footer = page.getByRole('contentinfo');
 	}

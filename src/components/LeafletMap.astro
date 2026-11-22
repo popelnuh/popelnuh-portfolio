@@ -217,6 +217,7 @@ const {
 <style>
 	.map-shell {
 		width: 100%;
+		min-height: 500px;
 	}
 
 	.leaflet-map {
@@ -277,6 +278,10 @@ const {
 	}
 
 	@media (max-width: 767px) {
+		.map-shell {
+			min-height: max(360px, 58vh);
+		}
+
 		.leaflet-map {
 			height: 58vh;
 			min-height: 360px;

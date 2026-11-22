@@ -71,7 +71,16 @@ import { mapStrategies } from '../lib/mapStrategies';
 <script>
 	import { mapStrategies, type MapStrategyKey } from '../lib/mapStrategies';
 
-	const tabs = document.querySelectorAll<HTMLButtonElement>('[data-map-strategy]');
+	const datasetTabList = document.querySelector<HTMLDivElement>(
+		'[role="tablist"][aria-label="Map datasets"]',
+	);
+	const tabs = datasetTabList
+		? Array.from(
+				datasetTabList.querySelectorAll<HTMLButtonElement>(
+					'button[role="tab"][data-map-strategy]',
+				),
+			)
+		: [];
 	const title = document.querySelector<HTMLElement>('#metric-title');
 	const description = document.querySelector<HTMLElement>('#metric-description');
 	const legend = document.querySelector<HTMLUListElement>('#metric-legend');
@@ -122,18 +131,17 @@ import { mapStrategies } from '../lib/mapStrategies';
 			if (isMapStrategyKey(key)) selectStrategy(key);
 		});
 		tab.addEventListener('keydown', (event) => {
-			const tabList = Array.from(tabs);
-			const currentIndex = tabList.indexOf(tab);
+			const currentIndex = tabs.indexOf(tab);
 			let nextIndex: number | undefined;
 
-			if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabList.length;
-			if (event.key === 'ArrowLeft') nextIndex = (currentIndex + tabList.length - 1) % tabList.length;
+			if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabs.length;
+			if (event.key === 'ArrowLeft') nextIndex = (currentIndex + tabs.length - 1) % tabs.length;
 			if (event.key === 'Home') nextIndex = 0;
-			if (event.key === 'End') nextIndex = tabList.length - 1;
+			if (event.key === 'End') nextIndex = tabs.length - 1;
 			if (nextIndex === undefined) return;
 
 			event.preventDefault();
-			const nextTab = tabList[nextIndex];
+			const nextTab = tabs[nextIndex];
 			nextTab?.focus();
 			const key = nextTab?.dataset.mapStrategy;
 			if (isMapStrategyKey(key)) selectStrategy(key);

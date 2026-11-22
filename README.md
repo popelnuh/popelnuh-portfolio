@@ -26,7 +26,6 @@ Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0
 │   │   ├── europe-countries.geojson
 │   │   ├── oecd-childcare-costs.json
 │   │   └── renewable-energy.json
-│   ├── favicon.ico
 │   └── favicon.svg
 ├── src/
 │   ├── assets/

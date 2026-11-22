@@ -12,6 +12,13 @@ Then('the map is visible', async ({ mapsPage }) => {
 	await expect(mapsPage.heading).toBeVisible();
 	await expect(mapsPage.map).toBeVisible();
 	await expect(mapsPage.leafletContainer).toBeVisible();
+	await expect(mapsPage.mapShell).toHaveCSS('min-height', '500px');
+});
+
+Then('the map dataset tabs are rendered with Renewable Energy selected', async ({ mapsPage }) => {
+	await expect(mapsPage.tabList).toBeVisible();
+	await expect(mapsPage.renewableTab).toHaveAttribute('aria-selected', 'true');
+	await expect(mapsPage.childcareTab).toHaveAttribute('aria-selected', 'false');
 });
 
 Then('Spain is available on the map', async ({ mapsPage }) => {
@@ -71,8 +78,14 @@ When('I switch to the Childcare Costs map', async ({ mapsPage }) => {
 	await mapsPage.selectChildcareMap();
 });
 
+When('I select Childcare Costs with the keyboard', async ({ mapsPage }) => {
+	await mapsPage.selectChildcareMapByKeyboard();
+});
+
 Then('the childcare heading, legend, and source are shown', async ({ mapsPage }) => {
 	await expect(mapsPage.status).toHaveText('Map data loaded. Select a country for details.');
+	await expect(mapsPage.childcareTab).toHaveAttribute('aria-selected', 'true');
+	await expect(mapsPage.renewableTab).toHaveAttribute('aria-selected', 'false');
 	await expect(mapsPage.childcareHeading).toBeVisible();
 	await expect(mapsPage.childcareLegend).toBeVisible();
 	await expect(mapsPage.childcareLegend).toContainText('15%+');

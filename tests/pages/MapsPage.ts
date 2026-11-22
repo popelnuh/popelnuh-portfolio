@@ -6,12 +6,15 @@ type CountryId = 'ES' | 'EE' | 'EL' | 'UK' | 'TR';
 export class MapsPage {
 	readonly nav: NavBarComponent;
 	readonly heading: Locator;
+	readonly tabList: Locator;
+	readonly renewableTab: Locator;
 	readonly childcareTab: Locator;
 	readonly childcareHeading: Locator;
 	readonly childcareLegend: Locator;
 	readonly childcareSwatch: Locator;
 	readonly childcareSource: Locator;
 	readonly map: Locator;
+	readonly mapShell: Locator;
 	readonly resetViewControl: Locator;
 	readonly zoomInControl: Locator;
 	readonly leafletContainer: Locator;
@@ -28,7 +31,9 @@ export class MapsPage {
 	constructor(private readonly page: Page) {
 		this.nav = new NavBarComponent(page);
 		this.heading = page.getByRole('heading', { name: 'Maps', exact: true });
-		this.childcareTab = page.getByRole('tab', { name: 'Childcare Costs' });
+		this.tabList = page.getByRole('tablist', { name: 'Map datasets' });
+		this.renewableTab = this.tabList.getByRole('tab', { name: 'Renewable Energy' });
+		this.childcareTab = this.tabList.getByRole('tab', { name: 'Childcare Costs' });
 		this.childcareHeading = page.getByRole('heading', {
 			name: 'Net Childcare Costs Across Europe',
 		});
@@ -36,6 +41,7 @@ export class MapsPage {
 		this.childcareSwatch = this.childcareLegend.locator('.swatch').first();
 		this.childcareSource = page.getByRole('link', { name: 'OECD Data Explorer' });
 		this.map = page.getByTestId('leaflet-map');
+		this.mapShell = page.locator('.map-shell');
 		this.resetViewControl = page.getByRole('button', { name: 'Reset view', exact: true });
 		this.zoomInControl = this.map.locator('.leaflet-control-zoom-in');
 		this.leafletContainer = page.locator('.leaflet-container');
@@ -60,6 +66,11 @@ export class MapsPage {
 
 	async selectChildcareMap(): Promise<void> {
 		await this.childcareTab.click();
+	}
+
+	async selectChildcareMapByKeyboard(): Promise<void> {
+		await this.renewableTab.focus();
+		await this.renewableTab.press('ArrowRight');
 	}
 
 	async zoomInAndReset(): Promise<void> {
