@@ -16,8 +16,7 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		<meta property="og:title" content={title} />
@@ -61,19 +60,34 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 					target="_blank"
 					rel="noopener noreferrer">Playwright</a
 				>
-				<a
-					class="actions-badge"
-					href="https://github.com/popelnuh/popelnuh-portfolio/actions"
-					target="_blank"
-					rel="noopener noreferrer"
-					aria-label="GitHub Actions workflow status"
-				>
-					<img
-						src="https://github.com/popelnuh/popelnuh-portfolio/actions/workflows/azure-static-web-apps-salmon-water-0ad7f5510.yml/badge.svg"
-						alt="GitHub Actions status"
-						height="20"
-					/>
-				</a>
+				<div class="actions-badges">
+					<a
+						class="actions-badge"
+						href="https://github.com/popelnuh/popelnuh-portfolio/actions/workflows/azure-static-web-apps-salmon-water-0ad7f5510.yml"
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label="CI/CD workflow status"
+					>
+						<img
+							src="https://img.shields.io/github/actions/workflow/status/popelnuh/popelnuh-portfolio/azure-static-web-apps-salmon-water-0ad7f5510.yml?branch=main&amp;style=flat-square&amp;label=CI%2FCD&amp;labelColor=0f172a&amp;color=10b981"
+							alt="CI/CD status"
+							height="20"
+						/>
+					</a>
+					<a
+						class="actions-badge"
+						href="https://github.com/popelnuh/popelnuh-portfolio/actions/workflows/unit-tests.yml"
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label="Unit tests workflow status"
+					>
+						<img
+							src="https://img.shields.io/github/actions/workflow/status/popelnuh/popelnuh-portfolio/unit-tests.yml?branch=main&amp;style=flat-square&amp;label=Unit%20Tests&amp;labelColor=0f172a&amp;color=10b981"
+							alt="Unit tests status"
+							height="20"
+						/>
+					</a>
+				</div>
 			</div>
 		</footer>
 	</body>
@@ -185,11 +199,16 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 		color: var(--accent);
 	}
 
-	.actions-badge {
-		display: inline-flex;
+	.actions-badges {
+		display: flex;
 		flex: 0 0 auto;
 		align-items: center;
-		margin-left: 4px;
+		gap: 8px;
+	}
+
+	.actions-badge {
+		display: inline-flex;
+		align-items: center;
 		line-height: 0;
 	}
 

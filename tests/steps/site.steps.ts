@@ -14,7 +14,8 @@ Then('the home page introduces the portfolio', async ({ homePage }) => {
 });
 
 Then('the home page exposes favicon and social metadata', async ({ homePage }) => {
-	await expect(homePage.svgFavicon).toHaveAttribute('href', '/favicon.svg');
+	await expect(homePage.faviconLinks).toHaveCount(1);
+	await expect(homePage.svgFavicon).toHaveAttribute('href', '/favicon.svg?v=2');
 	await expect(homePage.descriptionMeta).toHaveAttribute(
 		'content',
 		'Senior Test Automation Engineer & GIS specialist. Interactive European data maps, clean architecture, and Playwright automation.',
@@ -53,18 +54,24 @@ Then('the About page shows the profile and location', async ({ aboutPage }) => {
 	await expect(aboutPage.bioCard).toBeVisible();
 	await expect(aboutPage.glanceHeading).toBeVisible();
 	await expect(aboutPage.location).toBeVisible();
+	await expect(aboutPage.certification).toBeVisible();
+	await expect(aboutPage.experience).toBeVisible();
 });
 
 Then('the About page lists its core stack', async ({ aboutPage }) => {
 	await expect(aboutPage.coreStack.getByRole('listitem')).toHaveText([
 		'Playwright',
+		'.NET (C#)',
 		'TypeScript',
-		'C#',
 		'Python',
+		'JMeter',
+		'SpecFlow / BDD',
+		'RestSharp',
 		'Azure DevOps',
-		'GIS',
-		'QGIS',
-		'Astro',
+		'AWS',
+		'Docker',
+		'SQL',
+		'GIS / Leaflet',
 	]);
 });
 
@@ -102,21 +109,36 @@ Then('the site footer is visible', async ({ aboutPage }) => {
 	);
 	await expect(playwrightLink).toHaveAttribute('target', '_blank');
 	await expect(playwrightLink).toHaveAttribute('rel', 'noopener noreferrer');
-	const actionsBadge = aboutPage.footer.getByRole('link', {
-		name: 'GitHub Actions workflow status',
-	});
-	await expect(actionsBadge).toHaveAttribute(
+	const badges = aboutPage.footer.locator('.actions-badges');
+	await expect(badges).toHaveCSS('gap', '8px');
+	await expect(badges).toHaveCSS('align-items', 'center');
+	const cicdBadge = aboutPage.footer.getByRole('link', { name: 'CI/CD workflow status' });
+	await expect(cicdBadge).toHaveAttribute(
 		'href',
-		'https://github.com/popelnuh/popelnuh-portfolio/actions',
+		'https://github.com/popelnuh/popelnuh-portfolio/actions/workflows/azure-static-web-apps-salmon-water-0ad7f5510.yml',
 	);
-	const badgeImage = actionsBadge.getByRole('img', { name: 'GitHub Actions status' });
-	await expect(badgeImage).toHaveAttribute(
+	await expect(cicdBadge).toHaveAttribute('target', '_blank');
+	await expect(cicdBadge).toHaveAttribute('rel', 'noopener noreferrer');
+	const cicdImage = cicdBadge.getByRole('img', { name: 'CI/CD status' });
+	await expect(cicdImage).toHaveAttribute(
 		'src',
-		'https://github.com/popelnuh/popelnuh-portfolio/actions/workflows/azure-static-web-apps-salmon-water-0ad7f5510.yml/badge.svg',
+		'https://img.shields.io/github/actions/workflow/status/popelnuh/popelnuh-portfolio/azure-static-web-apps-salmon-water-0ad7f5510.yml?branch=main&style=flat-square&label=CI%2FCD&labelColor=0f172a&color=10b981',
 	);
-	await expect(badgeImage).not.toHaveAttribute('width');
-	await expect(badgeImage).toHaveCSS('height', '20px');
-	await expect(actionsBadge).toHaveCSS('flex-shrink', '0');
+	await expect(cicdImage).toHaveCSS('height', '20px');
+
+	const unitBadge = aboutPage.footer.getByRole('link', { name: 'Unit tests workflow status' });
+	await expect(unitBadge).toHaveAttribute(
+		'href',
+		'https://github.com/popelnuh/popelnuh-portfolio/actions/workflows/unit-tests.yml',
+	);
+	await expect(unitBadge).toHaveAttribute('target', '_blank');
+	await expect(unitBadge).toHaveAttribute('rel', 'noopener noreferrer');
+	const unitImage = unitBadge.getByRole('img', { name: 'Unit tests status' });
+	await expect(unitImage).toHaveAttribute(
+		'src',
+		'https://img.shields.io/github/actions/workflow/status/popelnuh/popelnuh-portfolio/unit-tests.yml?branch=main&style=flat-square&label=Unit%20Tests&labelColor=0f172a&color=10b981',
+	);
+	await expect(unitImage).toHaveCSS('height', '20px');
 });
 
 Then('the profile grid has two columns on desktop', async ({ aboutPage }) => {

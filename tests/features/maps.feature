@@ -4,6 +4,7 @@ Feature: European data maps
   Scenario: View the interactive choropleth
     Given I open the Maps page
     Then the map is visible
+    And the map dataset tabs are rendered with Renewable Energy selected
     And Spain is available on the map
     And the reset view control is available and works without browser errors
     And countries without a metric are styled as no data
@@ -18,6 +19,11 @@ Feature: European data maps
     And the popup reports that the UK has no data
     When I select Türkiye
     Then the popup reports that Türkiye has no data
+
+  Scenario: Navigate map datasets with the keyboard
+    Given I open the Maps page
+    When I select Childcare Costs with the keyboard
+    Then the childcare heading, legend, and source are shown
 
   Scenario: Explore childcare costs and missing OECD data
     Given I open the Maps page
