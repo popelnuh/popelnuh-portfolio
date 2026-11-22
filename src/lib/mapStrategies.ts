@@ -1,6 +1,11 @@
 import { getRenewableEnergyColor, NO_DATA_COLOR } from './renewableEnergyAdapter';
+import type { MapMetricValue } from './mapTypes';
+import {
+	isSafeHttpsUrl,
+	type SchoolUniformCategory,
+} from './adapters/schoolUniformsAdapter';
 
-export type MapStrategyKey = 'renewable' | 'childcare';
+export type MapStrategyKey = 'renewable' | 'childcare' | 'school-uniforms';
 
 export interface MapLegendItem {
 	label: string;
@@ -8,11 +13,22 @@ export interface MapLegendItem {
 }
 
 export interface MapTooltipContext {
-	value: number | null;
-	year: number;
+	country: string;
+	value: MapMetricValue;
+	year?: number;
 	estimated: boolean;
 	indicator: string;
 	unit: string;
+	note?: string;
+	sourceLabel?: string;
+	sourceUrl?: string;
+}
+
+export interface MapPopupDetails {
+	valueLabel: string;
+	note?: string;
+	sourceLabel?: string;
+	sourceUrl?: string;
 }
 
 export interface MapRenderingStrategy {
@@ -25,11 +41,25 @@ export interface MapRenderingStrategy {
 	sourceDetail: string;
 	unitLabel: string;
 	legendIntervals: readonly MapLegendItem[];
-	colorScale: (value: number | null) => string;
+	colorScale: (value: MapMetricValue) => string;
 	formatTooltip: (context: MapTooltipContext) => string;
+	formatPopup?: (context: MapTooltipContext) => MapPopupDetails;
 }
 
 export const CHILDCARE_NO_DATA_COLOR = '#e2e8f0';
+export const SCHOOL_UNIFORMS_NO_DATA_COLOR = '#f1f5f9';
+
+const SCHOOL_UNIFORM_CATEGORY_LABELS: Record<SchoolUniformCategory, string> = {
+	standard: 'Standard in state schools',
+	optional_or_private: 'Mostly private / optional',
+	not_used: 'Not used in state schools',
+};
+
+const SCHOOL_UNIFORM_CATEGORY_COLORS: Record<SchoolUniformCategory, string> = {
+	standard: '#0f766e',
+	optional_or_private: '#d4a373',
+	not_used: '#cbd5e1',
+};
 
 export function getChildcareCostColor(value: number | null): string {
 	if (value === null || !Number.isFinite(value)) return CHILDCARE_NO_DATA_COLOR;
@@ -38,6 +68,67 @@ export function getChildcareCostColor(value: number | null): string {
 	if (value >= 5) return '#feb24c';
 	return '#ffeda0';
 }
+
+export function getSchoolUniformCategoryLabel(value: MapMetricValue): string {
+	if (typeof value !== 'string' || !isSchoolUniformCategory(value)) {
+		return 'No policy data available';
+	}
+	return SCHOOL_UNIFORM_CATEGORY_LABELS[value];
+}
+
+export function getSchoolUniformColor(value: MapMetricValue): string {
+	if (typeof value !== 'string' || !isSchoolUniformCategory(value)) {
+		return SCHOOL_UNIFORMS_NO_DATA_COLOR;
+	}
+	return SCHOOL_UNIFORM_CATEGORY_COLORS[value];
+}
+
+export function formatSchoolUniformPopup(context: MapTooltipContext): MapPopupDetails {
+	if (context.value === null) {
+		return {
+			valueLabel: 'No policy data available',
+			note: 'No curated school-uniform policy entry is available for this country.',
+		};
+	}
+
+	const details: MapPopupDetails = {
+		valueLabel: getSchoolUniformCategoryLabel(context.value),
+	};
+	if (context.note?.trim()) details.note = context.note.trim();
+	if (context.sourceLabel?.trim() && isSafeHttpsUrl(context.sourceUrl)) {
+		details.sourceLabel = context.sourceLabel.trim();
+		details.sourceUrl = context.sourceUrl;
+	}
+	return details;
+}
+
+function isSchoolUniformCategory(value: string): value is SchoolUniformCategory {
+	return Object.prototype.hasOwnProperty.call(SCHOOL_UNIFORM_CATEGORY_LABELS, value);
+}
+
+export const schoolUniformsStrategy: MapRenderingStrategy = {
+	title: 'School Uniform Policies Across Europe',
+	description:
+		'Curated qualitative policy data compiled from Eurydice (European Commission) and national education ministry guidance (2024–2026), reflecting prevailing de facto practice in state schools rather than national legal mandates.',
+	ariaLabel: 'European countries by school uniform policy',
+	legendLabel: 'School uniform policy legend',
+	sourceUrl: 'https://eurydice.eacea.ec.europa.eu/national-education-systems',
+	sourceLabel: 'Eurydice – European Commission',
+	sourceDetail: 'Selected-country popups include policy notes and country-specific source links.',
+	unitLabel: 'policy category',
+	legendIntervals: [
+		{ label: 'No data', color: SCHOOL_UNIFORMS_NO_DATA_COLOR },
+		{ label: 'Standard in state schools', color: SCHOOL_UNIFORM_CATEGORY_COLORS.standard },
+		{
+			label: 'Mostly private / optional',
+			color: SCHOOL_UNIFORM_CATEGORY_COLORS.optional_or_private,
+		},
+		{ label: 'Not used in state schools', color: SCHOOL_UNIFORM_CATEGORY_COLORS.not_used },
+	],
+	colorScale: getSchoolUniformColor,
+	formatTooltip: ({ value }) => getSchoolUniformCategoryLabel(value),
+	formatPopup: formatSchoolUniformPopup,
+};
 
 export const mapStrategies: Record<MapStrategyKey, MapRenderingStrategy> = {
 	renewable: {
@@ -59,11 +150,12 @@ export const mapStrategies: Record<MapStrategyKey, MapRenderingStrategy> = {
 			{ label: '40–59.9%', color: '#5f98b5' },
 			{ label: '60%+', color: '#2f6f9f' },
 		],
-		colorScale: getRenewableEnergyColor,
+		colorScale: (value) =>
+			typeof value === 'number' ? getRenewableEnergyColor(value) : NO_DATA_COLOR,
 		formatTooltip: ({ value, year, estimated, indicator, unit }) =>
-			value === null
+			typeof value !== 'number'
 				? `${indicator}: no data`
-				: `${indicator} (${year}): ${value.toFixed(1)}${unit}${estimated ? ' (estimate)' : ''}`,
+				: `${indicator}${year === undefined ? '' : ` (${year})`}: ${value.toFixed(1)}${unit}${estimated ? ' (estimate)' : ''}`,
 	},
 	childcare: {
 		title: 'Net Childcare Costs Across Europe',
@@ -83,8 +175,12 @@ export const mapStrategies: Record<MapStrategyKey, MapRenderingStrategy> = {
 			{ label: '10–14.9%', color: '#f03b20' },
 			{ label: '15%+', color: '#bd0026' },
 		],
-		colorScale: getChildcareCostColor,
+		colorScale: (value) =>
+			typeof value === 'number' ? getChildcareCostColor(value) : CHILDCARE_NO_DATA_COLOR,
 		formatTooltip: ({ value, year, unit }) =>
-			value === null ? 'No OECD data available' : `${value.toFixed(1)}${unit} (${year})`,
+			typeof value !== 'number'
+				? 'No OECD data available'
+				: `${value.toFixed(1)}${unit}${year === undefined ? '' : ` (${year})`}`,
 	},
+	'school-uniforms': schoolUniformsStrategy,
 };

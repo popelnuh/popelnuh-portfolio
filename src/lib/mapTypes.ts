@@ -15,9 +15,14 @@ export interface MapMetricRecord {
 	estimated?: boolean;
 }
 
+export type MapMetricValue = number | string | null;
+
 export interface MapMetricProperties extends CountryBoundaryProperties {
-	metricValue: number | null;
+	metricValue: MapMetricValue;
 	estimated: boolean;
+	policyNote?: string;
+	sourceLabel?: string;
+	sourceUrl?: string;
 }
 
 export type CountryBoundaries = FeatureCollection<Geometry, CountryBoundaryProperties>;

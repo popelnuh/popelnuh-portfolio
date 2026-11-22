@@ -3,12 +3,14 @@ interface Props {
 	boundariesUrl?: string;
 	metricsUrl?: string;
 	childcareMetricsUrl?: string;
+	schoolUniformsUrl?: string;
 }
 
 const {
 	boundariesUrl = '/data/europe-countries.geojson',
 	metricsUrl = '/data/renewable-energy.json',
 	childcareMetricsUrl = '/data/oecd-childcare-costs.json',
+	schoolUniformsUrl = '/data/europe-school-uniforms.json',
 } = Astro.props;
 ---
 
@@ -19,6 +21,7 @@ const {
 		data-boundaries-url={boundariesUrl}
 		data-metrics-url={metricsUrl}
 		data-childcare-metrics-url={childcareMetricsUrl}
+		data-school-uniforms-url={schoolUniformsUrl}
 		role="region"
 		aria-label="European countries by renewable energy share"
 	></div>
@@ -28,8 +31,13 @@ const {
 <script>
 	import * as L from 'leaflet';
 	import 'leaflet/dist/leaflet.css';
-	import { loadChildcareMapData, fetchMapJson } from '../lib/mapRepository';
+	import {
+		fetchMapJson,
+		loadChildcareMapData,
+		loadSchoolUniformMapData,
+	} from '../lib/mapRepository';
 	import { mapStrategies, type MapStrategyKey } from '../lib/mapStrategies';
+	import { isSafeHttpsUrl } from '../lib/adapters/schoolUniformsAdapter';
 	import {
 		joinRenewableEnergyData,
 		type RenewableEnergyDataset,
@@ -46,6 +54,8 @@ const {
 		const metricsUrl = container.dataset.metricsUrl ?? '/data/renewable-energy.json';
 		const childcareMetricsUrl =
 			container.dataset.childcareMetricsUrl ?? '/data/oecd-childcare-costs.json';
+		const schoolUniformsUrl =
+			container.dataset.schoolUniformsUrl ?? '/data/europe-school-uniforms.json';
 		const map = L.map(container);
 		let countriesLayer: L.GeoJSON | null = null;
 		let loadSequence = 0;
@@ -70,7 +80,8 @@ const {
 				button.textContent = 'Reset view';
 				button.title = 'Reset map view to Europe';
 				button.setAttribute('aria-label', 'Reset view');
-				button.dataset.testid = 'reset-view-control';
+				button.dataset.track = 'map-reset-view';
+				button.dataset.testid = 'map-reset-view';
 				button.addEventListener('click', () => {
 					controlMap.setView(
 						defaultView?.center ?? DEFAULT_EUROPE_CENTER,
@@ -99,8 +110,8 @@ const {
 
 			try {
 				let boundaries: MapMetricBoundaries;
-				let referenceYear: number;
-				let indicator: string;
+				let referenceYear: number | undefined;
+				let indicator = strategy.title;
 
 				if (strategyKey === 'renewable') {
 					const [rawBoundaries, metrics] = await Promise.all([
@@ -110,7 +121,7 @@ const {
 					boundaries = joinRenewableEnergyData(rawBoundaries, metrics);
 					referenceYear = metrics.referenceYear;
 					indicator = metrics.indicator;
-				} else {
+				} else if (strategyKey === 'childcare') {
 					const { boundaries: rawBoundaries, dataset, recordsByCNTR_ID } =
 						await loadChildcareMapData(boundariesUrl, childcareMetricsUrl);
 					boundaries = {
@@ -129,6 +140,26 @@ const {
 					};
 					referenceYear = dataset.referenceYear;
 					indicator = dataset.indicator;
+				} else {
+					const { boundaries: rawBoundaries, recordsByGiscoId } =
+						await loadSchoolUniformMapData(boundariesUrl, schoolUniformsUrl);
+					boundaries = {
+						...rawBoundaries,
+						features: rawBoundaries.features.map((feature) => {
+							const record = recordsByGiscoId[feature.properties.CNTR_ID];
+							return {
+								...feature,
+								properties: {
+									...feature.properties,
+									metricValue: record?.category ?? null,
+									estimated: false,
+									policyNote: record?.note,
+									sourceLabel: record?.sourceLabel,
+									sourceUrl: record?.sourceUrl,
+								},
+							};
+						}),
+					};
 				}
 
 				if (sequence !== loadSequence) return;
@@ -147,13 +178,19 @@ const {
 							properties?.NAME_ENGL ?? properties?.CNTR_NAME ?? properties?.CNTR_ID ?? 'Unknown country';
 						const countryId = properties?.CNTR_ID ?? 'unknown';
 						const value = properties?.metricValue ?? null;
-						const metricText = strategy.formatTooltip({
+						const tooltipContext = {
+							country: countryName,
 							value,
 							year: referenceYear,
 							estimated: properties?.estimated ?? false,
 							indicator,
 							unit: strategy.unitLabel,
-						});
+							note: properties?.policyNote,
+							sourceLabel: properties?.sourceLabel,
+							sourceUrl: properties?.sourceUrl,
+						};
+						const metricText = strategy.formatTooltip(tooltipContext);
+						const popupDetails = strategy.formatPopup?.(tooltipContext);
 						const createTooltipContent = (): HTMLDivElement => {
 							const content = document.createElement('div');
 							const name = document.createElement('strong');
@@ -163,8 +200,38 @@ const {
 							content.append(name, metric);
 							return content;
 						};
+						const createPopupContent = (): HTMLDivElement => {
+							const content = document.createElement('div');
+							const name = document.createElement('strong');
+							const metric = document.createElement('p');
+							name.textContent = countryName;
+							metric.textContent = popupDetails?.valueLabel ?? metricText;
+							content.append(name, metric);
 
-						layer.bindPopup(createTooltipContent());
+							if (popupDetails?.note) {
+								const note = document.createElement('p');
+								note.textContent = popupDetails.note;
+								content.append(note);
+							}
+
+							if (
+								popupDetails?.sourceLabel &&
+								isSafeHttpsUrl(popupDetails.sourceUrl)
+							) {
+								const source = document.createElement('p');
+								const link = document.createElement('a');
+								link.href = popupDetails.sourceUrl;
+								link.target = '_blank';
+								link.rel = 'noopener noreferrer';
+								link.textContent = popupDetails.sourceLabel;
+								source.append('Source: ', link);
+								content.append(source);
+							}
+
+							return content;
+						};
+
+						layer.bindPopup(createPopupContent());
 						layer.bindTooltip(createTooltipContent(), { sticky: true });
 
 						if (layer instanceof L.Path) {
@@ -206,7 +273,13 @@ const {
 
 		container.addEventListener('map:strategy-change', (event) => {
 			if (!(event instanceof CustomEvent)) return;
-			if (event.detail !== 'renewable' && event.detail !== 'childcare') return;
+			if (
+				event.detail !== 'renewable' &&
+				event.detail !== 'childcare' &&
+				event.detail !== 'school-uniforms'
+			) {
+				return;
+			}
 			void updateMap(event.detail);
 		});
 

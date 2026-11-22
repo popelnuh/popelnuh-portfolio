@@ -9,10 +9,14 @@ export class MapsPage {
 	readonly tabList: Locator;
 	readonly renewableTab: Locator;
 	readonly childcareTab: Locator;
+	readonly schoolUniformsTab: Locator;
 	readonly childcareHeading: Locator;
 	readonly childcareLegend: Locator;
 	readonly childcareSwatch: Locator;
 	readonly childcareSource: Locator;
+	readonly schoolUniformsHeading: Locator;
+	readonly schoolUniformsLegend: Locator;
+	readonly uniformSourceLink: Locator;
 	readonly map: Locator;
 	readonly mapShell: Locator;
 	readonly resetViewControl: Locator;
@@ -34,12 +38,19 @@ export class MapsPage {
 		this.tabList = page.getByRole('tablist', { name: 'Map datasets' });
 		this.renewableTab = this.tabList.getByRole('tab', { name: 'Renewable Energy' });
 		this.childcareTab = this.tabList.getByRole('tab', { name: 'Childcare Costs' });
+		this.schoolUniformsTab = this.tabList.getByRole('tab', { name: 'School Uniforms' });
 		this.childcareHeading = page.getByRole('heading', {
 			name: 'Net Childcare Costs Across Europe',
 		});
 		this.childcareLegend = page.getByRole('list', { name: 'Net childcare cost legend' });
 		this.childcareSwatch = this.childcareLegend.locator('.swatch').first();
 		this.childcareSource = page.getByRole('link', { name: 'OECD Data Explorer' });
+		this.schoolUniformsHeading = page.getByRole('heading', {
+			name: 'School Uniform Policies Across Europe',
+		});
+		this.schoolUniformsLegend = page.getByRole('list', {
+			name: 'School uniform policy legend',
+		});
 		this.map = page.getByTestId('leaflet-map');
 		this.mapShell = page.locator('.map-shell');
 		this.resetViewControl = page.getByRole('button', { name: 'Reset view', exact: true });
@@ -49,6 +60,9 @@ export class MapsPage {
 		this.ukRegion = this.map.getByTestId('map-region-UK');
 		this.countryWithoutMetric = this.map.getByTestId('map-region-TR');
 		this.popup = page.locator('.leaflet-popup').last();
+		this.uniformSourceLink = this.popup.getByRole('link', {
+			name: 'UK Department for Education',
+		});
 		this.tooltip = page.locator('.leaflet-tooltip').last();
 		this.attribution = this.map.locator('.leaflet-control-attribution');
 		this.status = page.locator('.map-status');
@@ -68,6 +82,10 @@ export class MapsPage {
 		await this.childcareTab.click();
 	}
 
+	async selectSchoolUniformsMap(): Promise<void> {
+		await this.schoolUniformsTab.click();
+	}
+
 	async selectChildcareMapByKeyboard(): Promise<void> {
 		await this.renewableTab.focus();
 		await this.renewableTab.press('ArrowRight');
@@ -80,6 +98,10 @@ export class MapsPage {
 
 	async selectCountry(countryId: CountryId): Promise<void> {
 		await this.map.getByTestId(`map-region-${countryId}`).click();
+	}
+
+	async hoverCountry(countryId: CountryId): Promise<void> {
+		await this.map.getByTestId(`map-region-${countryId}`).hover();
 	}
 
 	async hoverCountryWithoutOECDData(): Promise<void> {

@@ -20,10 +20,12 @@ Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0
 .
 ├── .github/
 │   └── workflows/
-│       └── azure-static-web-apps-salmon-water-0ad7f5510.yml
+│       ├── azure-static-web-apps-salmon-water-0ad7f5510.yml
+│       └── unit-tests.yml
 ├── public/
 │   ├── data/
 │   │   ├── europe-countries.geojson
+│   │   ├── europe-school-uniforms.json
 │   │   ├── oecd-childcare-costs.json
 │   │   └── renewable-energy.json
 │   └── favicon.svg
@@ -38,7 +40,8 @@ Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0
 │   │   └── Layout.astro
 │   ├── lib/
 │   │   ├── adapters/
-│   │   │   └── oecdToGiscoAdapter.ts
+│   │   │   ├── oecdToGiscoAdapter.ts
+│   │   │   └── schoolUniformsAdapter.ts
 │   │   ├── README.md
 │   │   ├── mapRepository.ts
 │   │   ├── mapStrategies.ts
@@ -77,7 +80,7 @@ Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0
 
 ## Map Data
 
-`public/data/europe-countries.geojson` contains European country geometries selected from the GISCO 2024 1:20 million dataset by `CNTR_ID`. The maps page switches between the 2024 Eurostat `nrg_ind_ren` renewable-energy data and OECD net childcare costs for a couple with two children aged 2 and 3 (reference person at 100% and spouse at 67% of average wage). Renewable values use the latest common year to avoid mixing incomplete 2025 observations; the UK has no Eurostat value and is shown as no data. The childcare figures are percentages of disposable household income. `oecdToGiscoAdapter.ts` maps OECD ISO3 codes to GISCO IDs, including the `GBR` → `UK` and `GRC` → `EL` exceptions. The map repository caches fetched JSON and adapted childcare records for the lifetime of the page; countries without an OECD observation are shown in gray and identified in the tooltip.
+`public/data/europe-countries.geojson` contains European country geometries selected from the GISCO 2024 1:20 million dataset by `CNTR_ID`. The maps page switches among 2024 Eurostat renewable-energy data, OECD net childcare costs, and a curated qualitative school-uniform policy dataset. The uniform map describes prevailing de facto practice in state schools, with per-country notes and source links in popups. Adapters normalize the source records and the repository caches fetched data for the lifetime of the page.
 
 ## Local Development
 
