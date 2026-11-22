@@ -13,5 +13,6 @@ Choose the smallest test layer that proves the behavior:
   navigation, or the integration of multiple modules. Assert observable outcomes rather than
   implementation details.
 
-Run the suites with `npm run test:unit` and `npm run test:e2e`. The latter generates specs from the
-Gherkin files before starting Playwright.
+Run `npm run lint:tests` to enforce Playwright-specific rules, `npm run test:unit` for Vitest, and
+`npm run test:e2e` for browser tests. The E2E command generates specs from the Gherkin files before
+starting Playwright.

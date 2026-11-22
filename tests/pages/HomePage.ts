@@ -19,17 +19,17 @@ export class HomePage {
 	constructor(private readonly page: Page) {
 		this.nav = new NavBarComponent(page);
 		this.heading = page.getByRole('heading', { level: 1 });
-		this.intro = page.locator('.intro');
+		this.intro = page.getByText('I’m Zlata Popelnuh', { exact: false });
 		this.aboutLink = page.getByRole('link', { name: 'Learn more about me', exact: true });
 		this.exploreMapsLink = page.getByRole('link', { name: 'Explore Maps' });
 		this.focusAreas = page.getByRole('region', { name: 'Focus Areas' });
-		this.svgFavicon = page.locator('link[rel="icon"][type="image/svg+xml"]');
-		this.faviconLinks = page.locator('link[rel="icon"]');
-		this.descriptionMeta = page.locator('meta[name="description"]');
-		this.ogTitleMeta = page.locator('meta[property="og:title"]');
-		this.ogDescriptionMeta = page.locator('meta[property="og:description"]');
-		this.ogTypeMeta = page.locator('meta[property="og:type"]');
-		this.twitterCardMeta = page.locator('meta[name="twitter:card"]');
+		this.svgFavicon = page.getByTestId('favicon-link');
+		this.faviconLinks = page.getByTestId('favicon-link');
+		this.descriptionMeta = page.getByTestId('description-meta');
+		this.ogTitleMeta = page.getByTestId('og-title-meta');
+		this.ogDescriptionMeta = page.getByTestId('og-description-meta');
+		this.ogTypeMeta = page.getByTestId('og-type-meta');
+		this.twitterCardMeta = page.getByTestId('twitter-card-meta');
 	}
 
 	async goto(): Promise<void> {

@@ -24,8 +24,8 @@ export class AboutPage {
 		this.githubLink = page.getByRole('link', { name: 'GitHub', exact: true });
 		this.emailLink = page.getByRole('link', { name: 'popelnuh@gmail.com', exact: true });
 		this.emailStatus = page.getByRole('status');
-		this.bioCard = page.locator('.bio-card');
-		this.aboutGrid = page.locator('.about-grid');
+		this.bioCard = page.getByTestId('about-bio-card');
+		this.aboutGrid = page.getByTestId('about-grid');
 		this.glanceHeading = page.getByRole('heading', { name: 'At a Glance', exact: true });
 		this.location = page.getByText('55.86° N, 4.25° W · Scotland, UK', { exact: true });
 		this.certification = page.getByText('ISTQB · CSM · Azure (AZ-900)', { exact: true });

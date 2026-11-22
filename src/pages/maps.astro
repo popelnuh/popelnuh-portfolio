@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import LeafletMap from '../components/LeafletMap.astro';
+import WorldTravelMap from '../components/WorldTravelMap.astro';
 import { mapStrategies } from '../lib/mapStrategies';
 ---
 
@@ -8,89 +9,113 @@ import { mapStrategies } from '../lib/mapStrategies';
 	<section class="maps">
 		<p class="eyebrow">Geospatial data</p>
 		<h1>Maps</h1>
-		<div class="map-switcher" role="tablist" aria-label="Map datasets">
-			<button
-				id="renewable-tab"
-				class="map-tab active"
-				type="button"
-				role="tab"
-				aria-selected="true"
-				tabindex="0"
-				aria-controls="map-panel"
-				data-map-strategy="renewable"
-				data-track="map-tab-switch"
-				data-dataset="renewable"
-				data-testid="map-tab-renewable"
+		<nav class="page-contents" aria-label="Page contents">
+			<a href="#european-maps" data-track="maps-toc-link" data-testid="maps-toc-european-maps">
+				European Data Maps
+			</a>
+			<a
+				href="#world-travel-map"
+				data-track="maps-toc-link"
+				data-testid="maps-toc-world-travel-map"
 			>
-				Renewable Energy
-			</button>
-			<button
-				id="childcare-tab"
-				class="map-tab"
-				type="button"
-				role="tab"
-				aria-selected="false"
-				tabindex="-1"
-				aria-controls="map-panel"
-				data-map-strategy="childcare"
-				data-track="map-tab-switch"
-				data-dataset="childcare"
-				data-testid="map-tab-childcare"
-			>
-				Childcare Costs
-			</button>
-			<button
-				id="school-uniforms-tab"
-				class="map-tab"
-				type="button"
-				role="tab"
-				aria-selected="false"
-				tabindex="-1"
-				aria-controls="map-panel"
-				data-map-strategy="school-uniforms"
-				data-track="map-tab-switch"
-				data-dataset="school-uniforms"
-				data-testid="map-tab-school-uniforms"
-			>
-				School Uniforms
-			</button>
-		</div>
+				World Travel Map
+			</a>
+		</nav>
 
-		<div id="map-panel" role="tabpanel" aria-labelledby="renewable-tab">
-			<h2 id="metric-title">{mapStrategies.renewable.title}</h2>
-			<ul class="legend" id="metric-legend" aria-label={mapStrategies.renewable.legendLabel}>
-				{
-					mapStrategies.renewable.legendIntervals.map((item) => (
-						<li>
-							<span class="swatch" style={`background-color: ${item.color}`}></span>
-							{item.label}
-						</li>
-					))
-				}
-			</ul>
-			<LeafletMap />
+		<section id="european-maps" aria-labelledby="european-maps-heading">
+			<h2 id="european-maps-heading" class="section-title">European Data Maps</h2>
+			<div class="map-switcher" role="tablist" aria-label="Map datasets">
+				<button
+					id="renewable-tab"
+					class="map-tab active"
+					type="button"
+					role="tab"
+					aria-selected="true"
+					tabindex="0"
+					aria-controls="map-panel"
+					data-map-strategy="renewable"
+					data-track="map-tab-switch"
+					data-dataset="renewable"
+					data-testid="map-tab-renewable"
+				>
+					Renewable Energy
+				</button>
+				<button
+					id="childcare-tab"
+					class="map-tab"
+					type="button"
+					role="tab"
+					aria-selected="false"
+					tabindex="-1"
+					aria-controls="map-panel"
+					data-map-strategy="childcare"
+					data-track="map-tab-switch"
+					data-dataset="childcare"
+					data-testid="map-tab-childcare"
+				>
+					Childcare Costs
+				</button>
+				<button
+					id="school-uniforms-tab"
+					class="map-tab"
+					type="button"
+					role="tab"
+					aria-selected="false"
+					tabindex="-1"
+					aria-controls="map-panel"
+					data-map-strategy="school-uniforms"
+					data-track="map-tab-switch"
+					data-dataset="school-uniforms"
+					data-testid="map-tab-school-uniforms"
+				>
+					School Uniforms
+				</button>
+			</div>
 
-			<div class="metadata-bar">
-				<p class="description" id="metric-description">{mapStrategies.renewable.description}</p>
-				<div class="source-details">
-					<p class="note">
-						Source: <a
-							id="source-link"
-							href={mapStrategies.renewable.sourceUrl}
-							data-track="map-source-link"
-							data-testid="map-source-link"
-						>
-							{mapStrategies.renewable.sourceLabel}
-						</a>.{' '}
-						<span id="source-detail">{mapStrategies.renewable.sourceDetail}</span>
+			<div id="map-panel" role="tabpanel" aria-labelledby="renewable-tab">
+				<h2 id="metric-title">{mapStrategies.renewable.title}</h2>
+				<ul class="legend" id="metric-legend" aria-label={mapStrategies.renewable.legendLabel}>
+					{
+						mapStrategies.renewable.legendIntervals.map((item) => (
+							<li>
+								<span
+									class="swatch"
+									style={`background-color: ${item.color}`}
+									data-testid="map-legend-swatch"
+								></span>
+								{item.label}
+							</li>
+						))
+					}
+				</ul>
+				<LeafletMap />
+
+				<div class="metadata-bar">
+					<p class="description" id="metric-description">
+						{mapStrategies.renewable.description}
 					</p>
-					<p class="note boundary-note">
-						Boundaries: <a href="https://gisco-services.ec.europa.eu/">Eurostat GISCO, 2024</a>.
-						&copy; EuroGeographics for the administrative boundaries.
-					</p>
+					<div class="source-details">
+						<p class="note">
+							Source: <a
+								id="source-link"
+								href={mapStrategies.renewable.sourceUrl}
+								data-track="map-source-link"
+								data-testid="map-source-link"
+							>
+								{mapStrategies.renewable.sourceLabel}
+							</a>.{' '}
+							<span id="source-detail">{mapStrategies.renewable.sourceDetail}</span>
+						</p>
+						<p class="note boundary-note">
+							Boundaries: <a href="https://gisco-services.ec.europa.eu/">Eurostat GISCO, 2024</a>.
+							&copy; EuroGeographics for the administrative boundaries.
+						</p>
+					</div>
 				</div>
 			</div>
-		</div>
+		</section>
+
+		<WorldTravelMap />
 	</section>
 </Layout>
 
@@ -132,6 +157,7 @@ import { mapStrategies } from '../lib/mapStrategies';
 				const swatch = document.createElement('span');
 				swatch.className = 'swatch';
 				swatch.style.backgroundColor = item.color;
+				swatch.dataset.testid = 'map-legend-swatch';
 				entry.append(swatch, document.createTextNode(item.label));
 				return entry;
 			}),
@@ -194,6 +220,45 @@ import { mapStrategies } from '../lib/mapStrategies';
 		font-size: clamp(2.75rem, 7vw, 4.5rem);
 		letter-spacing: -0.05em;
 		line-height: 1;
+	}
+
+	:global(html) {
+		scroll-behavior: smooth;
+	}
+
+	.page-contents {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px 18px;
+		margin: 16px 0 34px;
+		font-size: 0.9rem;
+	}
+
+	.page-contents a {
+		color: var(--accent-muted);
+		text-decoration-color: var(--border-subtle);
+		text-underline-offset: 3px;
+	}
+
+	.page-contents a:hover {
+		color: var(--accent);
+		text-decoration-color: var(--accent);
+	}
+
+	.page-contents a:focus-visible {
+		outline: 3px solid rgb(30 41 59 / 28%);
+		outline-offset: 3px;
+	}
+
+	#european-maps {
+		scroll-margin-top: 24px;
+	}
+
+	.section-title {
+		margin: 0 0 14px;
+		color: var(--text-primary);
+		font-size: 1.05rem;
+		letter-spacing: -0.02em;
 	}
 
 	.map-switcher {
@@ -304,6 +369,12 @@ import { mapStrategies } from '../lib/mapStrategies';
 	@media (max-width: 700px) {
 		.metadata-bar {
 			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(html) {
+			scroll-behavior: auto;
 		}
 	}
 </style>

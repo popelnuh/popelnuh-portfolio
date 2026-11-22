@@ -16,13 +16,13 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" data-testid="favicon-link" />
 		<meta name="generator" content={Astro.generator} />
-		<meta name="description" content={description} />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:type" content="website" />
-		<meta name="twitter:card" content="summary" />
+		<meta name="description" content={description} data-testid="description-meta" />
+		<meta property="og:title" content={title} data-testid="og-title-meta" />
+		<meta property="og:description" content={description} data-testid="og-description-meta" />
+		<meta property="og:type" content="website" data-testid="og-type-meta" />
+		<meta name="twitter:card" content="summary" data-testid="twitter-card-meta" />
 		<title>{title}</title>
 	</head>
 	<body>
@@ -68,7 +68,7 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 					data-track="footer-playwright-repo"
 					data-testid="footer-playwright-repo">Playwright</a
 				>
-				<div class="actions-badges">
+				<div class="actions-badges" data-testid="footer-badges">
 					<a
 						class="actions-badge"
 						href="https://github.com/popelnuh/popelnuh-portfolio/actions/workflows/azure-static-web-apps-salmon-water-0ad7f5510.yml"

@@ -13,6 +13,7 @@
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
     "test:e2e": "bddgen && playwright test",
+    "lint:tests": "eslint tests --max-warnings 0",
     "check": "astro check"
   },
   "dependencies": {
@@ -21,11 +22,15 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.65.1",
     "@types/leaflet": "^1.9.22",
     "@types/node": "^26.6.6",
+    "eslint": "^10.15.0",
+    "eslint-plugin-playwright": "^2.12.2",
     "playwright-bdd": "^9.2.1",
     "typescript": "^6.0.3",
+    "typescript-eslint": "^8.73.0",
     "vitest": "^5.1.1"
   }
 }

@@ -6,6 +6,10 @@ type CountryId = 'ES' | 'EE' | 'EL' | 'UK' | 'TR';
 export class MapsPage {
 	readonly nav: NavBarComponent;
 	readonly heading: Locator;
+	readonly pageContents: Locator;
+	readonly europeanContentsLink: Locator;
+	readonly worldContentsLink: Locator;
+	readonly europeanMapSection: Locator;
 	readonly tabList: Locator;
 	readonly renewableTab: Locator;
 	readonly childcareTab: Locator;
@@ -29,12 +33,28 @@ export class MapsPage {
 	readonly tooltip: Locator;
 	readonly attribution: Locator;
 	readonly status: Locator;
-	readonly geoJsonRegions: Locator;
+	readonly worldTravelMap: Locator;
+	readonly worldMapShell: Locator;
+	readonly worldMapStatus: Locator;
+	readonly worldResetViewControl: Locator;
+	readonly worldMapHeading: Locator;
+	readonly worldCountryCount: Locator;
+	readonly franceWorldRegion: Locator;
+	readonly norwayWorldRegion: Locator;
+	readonly unitedStatesWorldRegion: Locator;
+	readonly chinaWorldRegion: Locator;
+	readonly vaticanWorldMarker: Locator;
 	private readonly browserErrors: string[] = [];
 
 	constructor(private readonly page: Page) {
 		this.nav = new NavBarComponent(page);
 		this.heading = page.getByRole('heading', { name: 'Maps', exact: true });
+		this.pageContents = page.getByRole('navigation', { name: 'Page contents' });
+		this.europeanContentsLink = this.pageContents.getByRole('link', {
+			name: 'European Data Maps',
+		});
+		this.worldContentsLink = this.pageContents.getByRole('link', { name: 'World Travel Map' });
+		this.europeanMapSection = page.getByRole('region', { name: 'European Data Maps' });
 		this.tabList = page.getByRole('tablist', { name: 'Map datasets' });
 		this.renewableTab = this.tabList.getByRole('tab', { name: 'Renewable Energy' });
 		this.childcareTab = this.tabList.getByRole('tab', { name: 'Childcare Costs' });
@@ -43,7 +63,7 @@ export class MapsPage {
 			name: 'Net Childcare Costs Across Europe',
 		});
 		this.childcareLegend = page.getByRole('list', { name: 'Net childcare cost legend' });
-		this.childcareSwatch = this.childcareLegend.locator('.swatch').first();
+		this.childcareSwatch = page.getByTestId('map-legend-swatch').first();
 		this.childcareSource = page.getByRole('link', { name: 'OECD Data Explorer' });
 		this.schoolUniformsHeading = page.getByRole('heading', {
 			name: 'School Uniform Policies Across Europe',
@@ -52,21 +72,37 @@ export class MapsPage {
 			name: 'School uniform policy legend',
 		});
 		this.map = page.getByTestId('leaflet-map');
-		this.mapShell = page.locator('.map-shell');
-		this.resetViewControl = page.getByRole('button', { name: 'Reset view', exact: true });
-		this.zoomInControl = this.map.locator('.leaflet-control-zoom-in');
-		this.leafletContainer = page.locator('.leaflet-container');
+		this.mapShell = page.getByTestId('map-shell');
+		this.resetViewControl = this.mapShell.getByRole('button', { name: 'Reset view', exact: true });
+		this.zoomInControl = this.map.getByRole('button', { name: 'Zoom in' });
+		this.leafletContainer = page.getByRole('region', { name: /European countries by/ });
 		this.spainRegion = this.map.getByTestId('map-region-ES');
 		this.ukRegion = this.map.getByTestId('map-region-UK');
 		this.countryWithoutMetric = this.map.getByTestId('map-region-TR');
-		this.popup = page.locator('.leaflet-popup').last();
+		this.popup = page.getByTestId('map-country-popup').last();
 		this.uniformSourceLink = this.popup.getByRole('link', {
 			name: 'UK Department for Education',
 		});
-		this.tooltip = page.locator('.leaflet-tooltip').last();
-		this.attribution = this.map.locator('.leaflet-control-attribution');
-		this.status = page.locator('.map-status');
-		this.geoJsonRegions = this.map.locator('svg path[data-testid^="map-region-"]');
+		this.tooltip = page.getByRole('tooltip').last();
+		this.attribution = page.getByText(
+			'© EuroGeographics for the administrative boundaries',
+			{ exact: true },
+		);
+		this.status = this.mapShell.getByRole('status');
+		this.worldTravelMap = page.getByTestId('world-travel-map');
+		this.worldMapShell = page.getByTestId('world-map-shell');
+		this.worldMapStatus = page.getByRole('status').last();
+		this.worldResetViewControl = this.worldMapShell.getByRole('button', {
+			name: 'Reset view',
+			exact: true,
+		});
+		this.worldMapHeading = page.getByRole('heading', { name: 'Countries Visited', exact: true });
+		this.worldCountryCount = page.getByText('38 countries', { exact: true });
+		this.franceWorldRegion = this.worldTravelMap.getByTestId('world-region-FRA');
+		this.norwayWorldRegion = this.worldTravelMap.getByTestId('world-region-NOR');
+		this.unitedStatesWorldRegion = this.worldTravelMap.getByTestId('world-region-USA');
+		this.chinaWorldRegion = this.worldTravelMap.getByTestId('world-region-CHN');
+		this.vaticanWorldMarker = this.worldTravelMap.getByTestId('world-region-VAT');
 
 		page.on('pageerror', (error) => this.browserErrors.push(error.message));
 		page.on('console', (message) => {
@@ -76,6 +112,10 @@ export class MapsPage {
 
 	async goto(): Promise<void> {
 		await this.page.goto('/maps');
+	}
+
+	async followWorldContentsLink(): Promise<void> {
+		await this.worldContentsLink.click();
 	}
 
 	async selectChildcareMap(): Promise<void> {

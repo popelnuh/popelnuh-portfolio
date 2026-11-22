@@ -109,7 +109,7 @@ Then('the site footer is visible', async ({ aboutPage }) => {
 	);
 	await expect(playwrightLink).toHaveAttribute('target', '_blank');
 	await expect(playwrightLink).toHaveAttribute('rel', 'noopener noreferrer');
-	const badges = aboutPage.footer.locator('.actions-badges');
+	const badges = aboutPage.footer.getByTestId('footer-badges');
 	await expect(badges).toHaveCSS('gap', '8px');
 	await expect(badges).toHaveCSS('align-items', 'center');
 	const cicdBadge = aboutPage.footer.getByRole('link', { name: 'CI/CD workflow status' });

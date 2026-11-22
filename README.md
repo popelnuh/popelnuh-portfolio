@@ -27,7 +27,9 @@ Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0
 │   │   ├── europe-countries.geojson
 │   │   ├── europe-school-uniforms.json
 │   │   ├── oecd-childcare-costs.json
-│   │   └── renewable-energy.json
+│   │   ├── renewable-energy.json
+│   │   ├── visited-countries.json
+│   │   └── world-countries-110m.geojson
 │   └── favicon.svg
 ├── src/
 │   ├── assets/
@@ -80,7 +82,7 @@ Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0
 
 ## Map Data
 
-`public/data/europe-countries.geojson` contains European country geometries selected from the GISCO 2024 1:20 million dataset by `CNTR_ID`. The maps page switches among 2024 Eurostat renewable-energy data, OECD net childcare costs, and a curated qualitative school-uniform policy dataset. The uniform map describes prevailing de facto practice in state schools, with per-country notes and source links in popups. Adapters normalize the source records and the repository caches fetched data for the lifetime of the page.
+`public/data/europe-countries.geojson` contains European country geometries selected from the GISCO 2024 1:20 million dataset by `CNTR_ID`. The maps page switches among 2024 Eurostat renewable-energy data, OECD net childcare costs, and a curated qualitative school-uniform policy dataset. A separate Natural Earth 1:110m world map highlights 38 visited countries; Vatican City is shown with a pin because microstates are omitted at that scale. Natural Earth boundaries are public domain (CC0). The uniform map describes prevailing de facto practice in state schools, with per-country notes and source links in popups. Adapters normalize the source records and the repository caches fetched data for the lifetime of the page.
 
 ## Local Development
 
@@ -95,6 +97,7 @@ Astro serves the site locally at `http://localhost:4321/`. Common validation com
 
 ```sh
 npm run check
+npm run lint:tests
 npm run test:unit
 npm run test:unit:watch
 npm run test:e2e
@@ -127,28 +130,34 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-GitHub Actions runs Vitest before installing the browser and running Playwright. The deployment
-job runs only after the test job passes.
+GitHub Actions runs ESLint and Vitest before installing the browser and running Playwright. The
+deployment job runs only after the test job passes.
 
 ### Playwright MCP
 
-The workspace Playwright MCP server is configured in the root [`.mcp.json`](./.mcp.json):
+The workspace Playwright MCP server is configured in [`.vscode/mcp.json`](./.vscode/mcp.json).
+It launches headless in an isolated profile and only allows requests to the local Astro origin
+(`http://localhost:4321`):
 
 ```json
 {
-  "mcpServers": {
+  "servers": {
     "playwright": {
-      "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@playwright/mcp@latest"],
-      "tools": ["*"]
+      "args": [
+        "-y",
+        "@playwright/mcp@latest",
+        "--headless",
+        "--isolated",
+        "--allowed-origins",
+        "http://localhost:4321"
+      ]
     }
   }
 }
 ```
 
-The config file also contains commented examples for stdio, HTTP, and SSE server options. Start
-the site with `npm run dev`, then use prompts like these in Copilot:
+Start the site with `npm run dev`, then use prompts like these in Copilot:
 
 - “Open `http://localhost:4321/maps`. Inspect the map, legend, navigation, and attribution. Report usability issues without changing files.”
 - “On `/maps`, click Spain, the UK, and Türkiye. Report each popup value and whether the no-data country is styled as expected.”
@@ -168,7 +177,9 @@ npm run test:e2e -- --reporter=html         # Generate an HTML report
 npx playwright show-report                  # View the latest HTML report
 ```
 
-The GitHub Actions workflow runs the Playwright tests on pushes to `main` and active pull requests. A passing test job gates the Azure Static Web Apps build and deployment; pushes to `main` deploy the site, and pull requests use preview deployments.
+The GitHub Actions workflow runs the test lint gate and Playwright tests on pushes to `main` and
+active pull requests. A passing test job gates the Azure Static Web Apps build and deployment;
+pushes to `main` deploy the site, and pull requests use preview deployments.
 
 ## Roadmap
 
