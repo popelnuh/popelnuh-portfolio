@@ -14,7 +14,7 @@ const {
 } = Astro.props;
 ---
 
-<div class="map-shell">
+<div class="map-shell" data-testid="map-shell">
 	<div
 		class="leaflet-map"
 		data-testid="leaflet-map"
@@ -232,6 +232,9 @@ const {
 						};
 
 						layer.bindPopup(createPopupContent());
+						layer.on('popupopen', (event: L.PopupEvent) => {
+							event.popup.getElement()?.setAttribute('data-testid', 'map-country-popup');
+						});
 						layer.bindTooltip(createTooltipContent(), { sticky: true });
 
 						if (layer instanceof L.Path) {

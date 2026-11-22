@@ -1,0 +1,271 @@
+<section id="world-travel-map" class="world-travel-map" aria-labelledby="world-map-heading">
+	<div class="section-heading">
+		<div>
+			<p class="eyebrow">Travel</p>
+			<h2 id="world-map-heading">Countries Visited</h2>
+		</div>
+		<p class="country-count" aria-label="38 countries visited">38 countries</p>
+	</div>
+	<p class="map-note">
+		Explore the countries visited. Vatican City is shown as a pin because microstates are omitted
+		from the Natural Earth 1:110m polygons.
+	</p>
+	<div class="world-map-shell" data-testid="world-map-shell">
+		<div
+			class="world-map"
+			data-testid="world-travel-map"
+			role="region"
+			aria-label="World map showing countries visited"
+		></div>
+		<button
+			class="world-map-reset"
+			type="button"
+			data-track="world-map-reset-view"
+			data-testid="world-map-reset-view"
+		>
+			Reset view
+		</button>
+		<p class="world-map-status" role="status" aria-live="polite">Loading world map…</p>
+	</div>
+	<footer class="world-map-metadata">
+		<span>Visited countries are highlighted in teal.</span>
+		<span>
+			Boundaries: <a
+				href="https://www.naturalearthdata.com/downloads/110m-cultural-vectors/110m-admin-0-countries/"
+				target="_blank"
+				rel="noopener noreferrer"
+			>Natural Earth 1:110m, public domain (CC0)</a>.
+		</span>
+	</footer>
+</section>
+
+<script>
+	import * as L from 'leaflet';
+	import 'leaflet/dist/leaflet.css';
+	import { resolveWorldFeatureIso3 } from '../lib/worldMapAdapter';
+
+	interface VisitedCountry {
+		iso3: string;
+		name: string;
+	}
+
+	interface VisitedCountriesDataset {
+		countries: VisitedCountry[];
+	}
+
+	interface WorldFeatureProperties extends Record<string, unknown> {
+		ADMIN?: string;
+		ISO_A3?: string;
+	}
+
+	const container = document.querySelector<HTMLElement>('[data-testid="world-travel-map"]');
+	const shell = container?.closest<HTMLElement>('[data-testid="world-map-shell"]');
+	const resetButton = shell?.querySelector<HTMLButtonElement>(
+		'[data-testid="world-map-reset-view"]',
+	);
+	const status = shell?.querySelector<HTMLElement>('[role="status"]');
+
+	if (container && resetButton && status) {
+		const map = L.map(container, { minZoom: 1, maxZoom: 7 });
+		const defaultCenter: L.LatLngExpression = [20, 10];
+		const defaultZoom = 2;
+		map.setView(defaultCenter, defaultZoom);
+
+		resetButton.addEventListener('click', () => {
+			map.setView(defaultCenter, defaultZoom, { animate: true });
+		});
+
+		const mapDataUrl = '/data/world-countries-110m.geojson';
+		const visitedDataUrl = '/data/visited-countries.json';
+		void Promise.all([
+			fetch(mapDataUrl).then((response) => {
+				if (!response.ok) throw new Error(`World boundaries request failed: ${response.status}`);
+				return response.json();
+			}),
+			fetch(visitedDataUrl).then((response) => {
+				if (!response.ok) throw new Error(`Visited-country data request failed: ${response.status}`);
+				return response.json() as Promise<VisitedCountriesDataset>;
+			}),
+		])
+			.then(([world, visitedDataset]) => {
+				const visitedCodes = new Set(visitedDataset.countries.map(({ iso3 }) => iso3));
+				let worldLayer: L.GeoJSON<WorldFeatureProperties>;
+				worldLayer = L.geoJSON<WorldFeatureProperties>(world, {
+					style: (feature) => {
+						const iso3 = resolveWorldFeatureIso3(feature?.properties);
+						return {
+							color: '#ffffff',
+							weight: 0.7,
+							fillColor: iso3 && visitedCodes.has(iso3) ? '#0f766e' : '#e2e8f0',
+							fillOpacity: 0.85,
+						};
+					},
+					onEachFeature: (feature, layer) => {
+						const properties = feature.properties;
+						const name =
+							typeof properties.ADMIN === 'string' ? properties.ADMIN : 'Unknown country';
+						const iso3 = resolveWorldFeatureIso3(properties);
+						const visited = iso3 !== null && visitedCodes.has(iso3);
+						const tooltip = document.createElement('span');
+						tooltip.textContent = `${name} · ${visited ? 'Visited' : 'Not yet visited'}`;
+						layer.bindTooltip(tooltip, { sticky: true });
+						if (layer instanceof L.Path) {
+							layer.on({
+								mouseover: () =>
+									layer.setStyle({ color: '#0f172a', weight: 1.4, fillOpacity: 1 }),
+								mouseout: () => worldLayer.resetStyle(layer),
+							});
+							if (iso3) {
+								layer.on('add', () => {
+									layer.getElement()?.setAttribute('data-testid', `world-region-${iso3}`);
+								});
+							}
+						}
+					},
+				}).addTo(map);
+
+				const bounds = worldLayer.getBounds();
+				if (!bounds.isValid()) throw new Error('World boundaries contain no valid country polygons');
+				map.fitBounds(bounds, { padding: [12, 12] });
+
+				const vaticanMarker = L.circleMarker([41.9029, 12.4534], {
+					radius: 6,
+					color: '#ffffff',
+					weight: 2,
+					fillColor: '#0f766e',
+					fillOpacity: 1,
+				}).addTo(map);
+				vaticanMarker.bindTooltip('Vatican City · Visited');
+				vaticanMarker.getElement()?.setAttribute('data-testid', 'world-region-VAT');
+				status.textContent = 'World map loaded. Hover over a country to see visit status.';
+			})
+			.catch((error: unknown) => {
+				console.error(`Unable to load world travel map data from ${mapDataUrl}`, error);
+				status.textContent = 'World map data could not be loaded.';
+			});
+	}
+</script>
+
+<style>
+	.world-travel-map {
+		margin-top: 56px;
+		padding-top: 32px;
+		border-top: 1px solid var(--border-subtle);
+		scroll-margin-top: 24px;
+	}
+
+	.section-heading {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+	}
+
+	.eyebrow {
+		margin: 0 0 7px;
+		color: var(--accent-muted);
+		font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+			'Courier New', monospace;
+		font-size: 0.75rem;
+		font-weight: 650;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+	}
+
+	h2 {
+		margin: 0;
+		color: var(--text-primary);
+		font-size: clamp(1.35rem, 3vw, 1.75rem);
+		letter-spacing: -0.03em;
+	}
+
+	.country-count {
+		margin: 0;
+		padding: 6px 11px;
+		border: 1px solid var(--border-subtle);
+		border-radius: 999px;
+		background: var(--accent-soft);
+		color: var(--accent);
+		font-size: 0.84rem;
+		font-weight: 700;
+	}
+
+	.map-note {
+		max-width: 700px;
+		margin: 12px 0 16px;
+		color: var(--text-body);
+		font-size: 0.95rem;
+		line-height: 1.6;
+	}
+
+	.world-map-shell {
+		position: relative;
+		min-height: 460px;
+	}
+
+	.world-map {
+		width: 100%;
+		height: 440px;
+		border: 1px solid var(--border-subtle);
+		border-radius: 12px;
+		background: #f8fafc;
+	}
+
+	.world-map-reset {
+		position: absolute;
+		z-index: 500;
+		top: 12px;
+		left: 58px;
+		min-height: 34px;
+		padding: 0 11px;
+		border: 1px solid var(--border-subtle);
+		border-radius: 5px;
+		background: #fff;
+		color: var(--text-body);
+		font: 600 0.75rem system-ui, sans-serif;
+		cursor: pointer;
+	}
+
+	.world-map-reset:hover {
+		border-color: var(--accent);
+		background: var(--accent-soft);
+		color: var(--accent);
+	}
+
+	.world-map-reset:focus-visible {
+		outline: 3px solid rgb(30 41 59 / 28%);
+		outline-offset: 2px;
+	}
+
+	.world-map-status {
+		margin: 9px 0 0;
+		color: var(--text-body);
+		font-size: 0.9rem;
+	}
+
+	.world-map-metadata {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 8px 20px;
+		margin-top: 12px;
+		color: var(--accent-muted);
+		font-size: 0.85rem;
+	}
+
+	.world-map-metadata a {
+		color: inherit;
+	}
+
+	@media (max-width: 767px) {
+		.world-map-shell {
+			min-height: max(360px, 58vh);
+		}
+
+		.world-map {
+			height: 58vh;
+			min-height: 360px;
+		}
+	}
+</style>

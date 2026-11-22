@@ -1,5 +1,12 @@
 Feature: European data maps
-  Visitors can explore renewable energy, childcare cost, and school uniform policy data by country.
+  Visitors can explore European datasets and a world map of countries visited.
+
+  Scenario: Navigate the Maps contents and explore the world travel map
+    Given I open the Maps page
+    Then the Maps contents links point to both map sections
+    When I follow the World Travel Map contents link
+    Then the world travel map section shows 38 countries
+    And the world map renders without browser errors
 
   Scenario: View the interactive choropleth
     Given I open the Maps page

@@ -1,11 +1,14 @@
 {
-  "mcpServers": {
+  "servers": {
     "playwright": {
-      "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@playwright/mcp@latest"],
-      "tools": ["*"]
+      "args": [
+        "@playwright/mcp@latest",
+        "--headless",
+        "--isolated",
+        "--allowed-origins",
+        "http://localhost:4321"
+      ]
     }
-
   }
 }

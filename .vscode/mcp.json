@@ -1,0 +1,15 @@
+{
+  "servers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest",
+        "--headless",
+        "--isolated",
+        "--allowed-origins",
+        "http://localhost:4321"
+      ]
+    }
+  }
+}

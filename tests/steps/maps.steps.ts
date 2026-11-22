@@ -8,6 +8,36 @@ Given('I open the Maps page', async ({ mapsPage }) => {
 	await mapsPage.goto();
 });
 
+Then('the Maps contents links point to both map sections', async ({ mapsPage }) => {
+	await expect(mapsPage.europeanContentsLink).toHaveAttribute('href', '#european-maps');
+	await expect(mapsPage.worldContentsLink).toHaveAttribute('href', '#world-travel-map');
+});
+
+When('I follow the World Travel Map contents link', async ({ mapsPage }) => {
+	await mapsPage.followWorldContentsLink();
+});
+
+Then('the world travel map section shows 38 countries', async ({ mapsPage }) => {
+	await expect(mapsPage.worldMapHeading).toBeVisible();
+	await expect(mapsPage.worldCountryCount).toBeVisible();
+	await expect(mapsPage.worldTravelMap).toBeVisible();
+	await expect(mapsPage.worldMapStatus).toHaveText(
+		'World map loaded. Hover over a country to see visit status.',
+	);
+	await expect(mapsPage.worldResetViewControl).toBeVisible();
+	await expect(mapsPage.franceWorldRegion).toBeVisible();
+	await expect(mapsPage.norwayWorldRegion).toBeVisible();
+	await expect(mapsPage.vaticanWorldMarker).toBeVisible();
+	await expect(mapsPage.franceWorldRegion).toHaveAttribute('fill', '#0f766e');
+	await expect(mapsPage.unitedStatesWorldRegion).toHaveAttribute('fill', '#0f766e');
+	await expect(mapsPage.chinaWorldRegion).toHaveAttribute('fill', '#e2e8f0');
+});
+
+Then('the world map renders without browser errors', async ({ mapsPage }) => {
+	await mapsPage.worldResetViewControl.click();
+	expect(mapsPage.getErrors()).toEqual([]);
+});
+
 Then('the map is visible', async ({ mapsPage }) => {
 	await expect(mapsPage.heading).toBeVisible();
 	await expect(mapsPage.map).toBeVisible();
@@ -97,7 +127,7 @@ Then('the childcare heading, legend, and source are shown', async ({ mapsPage })
 Then('the childcare map renders without browser errors', async ({ mapsPage }) => {
 	await expect(mapsPage.countryWithoutMetric).toBeVisible();
 	await expect(mapsPage.countryWithoutMetric).toHaveAttribute('fill', '#e2e8f0');
-	await expect(mapsPage.geoJsonRegions.first()).toBeVisible();
+	await expect(mapsPage.spainRegion).toBeVisible();
 	expect(mapsPage.getErrors()).toEqual([]);
 });
 
@@ -147,7 +177,7 @@ Then('the school uniform heading, legend, and map load without browser errors', 
 		'Mostly private / optional',
 		'Not used in state schools',
 	]);
-	await expect(mapsPage.geoJsonRegions.first()).toBeVisible();
+	await expect(mapsPage.spainRegion).toBeVisible();
 	expect(mapsPage.getErrors()).toEqual([]);
 });
 
