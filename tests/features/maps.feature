@@ -3,15 +3,17 @@ Feature: European data maps
 
   Scenario: Navigate the Maps contents and explore the world travel map
     Given I open the Maps page
-    Then the Maps contents links point to both map sections
+    Then the Maps contents links point to all map sections
     When I follow the World Travel Map contents link
     Then the world travel map section shows 38 countries
+    And the Renewable Energy section follows the World Travel Map
     And the world map renders without browser errors
 
   Scenario: View the interactive choropleth
     Given I open the Maps page
+    When I navigate to the Renewable Energy section
     Then the map is visible
-    And the map dataset tabs are rendered with Renewable Energy selected
+    And the map dataset tabs are rendered with Childcare Costs selected
     And Spain is available on the map
     And the reset view control is available and works without browser errors
     And countries without a metric are styled as no data
@@ -21,7 +23,8 @@ Feature: European data maps
 
   Scenario: Identify reported and missing values
     Given I open the Maps page
-    When I select the UK
+    When I navigate to the Renewable Energy section
+    And I select the UK
     Then the UK is shown without a reported renewable-energy value
     And the popup reports that the UK has no data
     When I select Türkiye
@@ -54,3 +57,19 @@ Feature: European data maps
     Then the tooltip shows the country and policy category
     When I select the UK
     Then the UK popup shows its policy note and source link
+
+  Scenario: Explore free school meals across Europe
+    Given I open the Maps page
+    When I switch to the Free School Meals map
+    Then the free school meals heading, four-tier legend, and map load without browser errors
+    When I select Finland
+    Then the Finland popup shows its policy note and source link
+
+  Scenario: Explore summer school holidays across Europe
+    Given I open the Maps page
+    When I switch to the Summer Holidays map
+    Then the summer holidays heading, bucket legend, and map load without browser errors
+    When I hover Italy
+    Then the tooltip shows Italy's summer holiday duration
+    When I select Italy
+    Then the Italy popup shows its duration, note, and source link

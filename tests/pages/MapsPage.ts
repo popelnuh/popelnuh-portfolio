@@ -1,19 +1,22 @@
 import type { Locator, Page } from '@playwright/test';
 import { NavBarComponent } from '../components/NavBarComponent';
 
-type CountryId = 'ES' | 'EE' | 'EL' | 'UK' | 'TR';
+type CountryId = 'ES' | 'EE' | 'EL' | 'UK' | 'TR' | 'FI' | 'IT';
 
 export class MapsPage {
 	readonly nav: NavBarComponent;
 	readonly heading: Locator;
 	readonly pageContents: Locator;
-	readonly europeanContentsLink: Locator;
+	readonly educationContentsLink: Locator;
 	readonly worldContentsLink: Locator;
-	readonly europeanMapSection: Locator;
+	readonly renewableContentsLink: Locator;
+	readonly educationInsightsSection: Locator;
+	readonly renewableMapSection: Locator;
 	readonly tabList: Locator;
-	readonly renewableTab: Locator;
 	readonly childcareTab: Locator;
 	readonly schoolUniformsTab: Locator;
+	readonly freeSchoolMealsTab: Locator;
+	readonly summerHolidaysTab: Locator;
 	readonly childcareHeading: Locator;
 	readonly childcareLegend: Locator;
 	readonly childcareSwatch: Locator;
@@ -21,18 +24,38 @@ export class MapsPage {
 	readonly schoolUniformsHeading: Locator;
 	readonly schoolUniformsLegend: Locator;
 	readonly uniformSourceLink: Locator;
+	readonly freeSchoolMealsHeading: Locator;
+	readonly freeSchoolMealsLegend: Locator;
+	readonly freeSchoolMealsSource: Locator;
+	readonly freeSchoolMealsSourceLink: Locator;
+	readonly freeSchoolMealsAttribution: Locator;
+	readonly freeSchoolMealsMapRegion: Locator;
+	readonly finlandRegion: Locator;
+	readonly summerHolidaysHeading: Locator;
+	readonly summerHolidaysLegend: Locator;
+	readonly summerHolidaysSource: Locator;
+	readonly summerHolidaysAttribution: Locator;
+	readonly summerHolidaysSourceLink: Locator;
+	readonly italyRegion: Locator;
 	readonly map: Locator;
+	readonly educationMap: Locator;
 	readonly mapShell: Locator;
+	readonly educationMapShell: Locator;
 	readonly resetViewControl: Locator;
 	readonly zoomInControl: Locator;
 	readonly leafletContainer: Locator;
+	readonly educationLeafletContainer: Locator;
 	readonly spainRegion: Locator;
+	readonly educationSpainRegion: Locator;
 	readonly ukRegion: Locator;
 	readonly countryWithoutMetric: Locator;
+	readonly educationCountryWithoutMetric: Locator;
 	readonly popup: Locator;
+	readonly renewablePopup: Locator;
 	readonly tooltip: Locator;
 	readonly attribution: Locator;
 	readonly status: Locator;
+	readonly educationStatus: Locator;
 	readonly worldTravelMap: Locator;
 	readonly worldMapShell: Locator;
 	readonly worldMapStatus: Locator;
@@ -45,20 +68,31 @@ export class MapsPage {
 	readonly chinaWorldRegion: Locator;
 	readonly vaticanWorldMarker: Locator;
 	private readonly browserErrors: string[] = [];
+	private selectedMap: 'education' | 'renewable' = 'education';
 
 	constructor(private readonly page: Page) {
 		this.nav = new NavBarComponent(page);
 		this.heading = page.getByRole('heading', { name: 'Maps', exact: true });
 		this.pageContents = page.getByRole('navigation', { name: 'Page contents' });
-		this.europeanContentsLink = this.pageContents.getByRole('link', {
-			name: 'European Data Maps',
+		this.educationContentsLink = this.pageContents.getByRole('link', {
+			name: 'European Children Education Insights',
 		});
 		this.worldContentsLink = this.pageContents.getByRole('link', { name: 'World Travel Map' });
-		this.europeanMapSection = page.getByRole('region', { name: 'European Data Maps' });
+		this.renewableContentsLink = this.pageContents.getByRole('link', {
+			name: 'Renewable Energy',
+		});
+		this.educationInsightsSection = page.getByRole('region', {
+			name: 'European Children Education Insights',
+		});
+		this.renewableMapSection = page.getByRole('region', {
+			name: 'Renewable Energy',
+			exact: true,
+		});
 		this.tabList = page.getByRole('tablist', { name: 'Map datasets' });
-		this.renewableTab = this.tabList.getByRole('tab', { name: 'Renewable Energy' });
 		this.childcareTab = this.tabList.getByRole('tab', { name: 'Childcare Costs' });
 		this.schoolUniformsTab = this.tabList.getByRole('tab', { name: 'School Uniforms' });
+		this.freeSchoolMealsTab = this.tabList.getByRole('tab', { name: 'Free School Meals' });
+		this.summerHolidaysTab = this.tabList.getByRole('tab', { name: 'Summer Holidays' });
 		this.childcareHeading = page.getByRole('heading', {
 			name: 'Net Childcare Costs Across Europe',
 		});
@@ -71,27 +105,73 @@ export class MapsPage {
 		this.schoolUniformsLegend = page.getByRole('list', {
 			name: 'School uniform policy legend',
 		});
-		this.map = page.getByTestId('leaflet-map');
-		this.mapShell = page.getByTestId('map-shell');
+		this.map = this.renewableMapSection.getByTestId('leaflet-map');
+		this.educationMap = this.educationInsightsSection.getByTestId('leaflet-map');
+		this.mapShell = this.renewableMapSection.getByTestId('map-shell');
+		this.educationMapShell = this.educationInsightsSection.getByTestId('map-shell');
 		this.resetViewControl = this.mapShell.getByRole('button', { name: 'Reset view', exact: true });
 		this.zoomInControl = this.map.getByRole('button', { name: 'Zoom in' });
-		this.leafletContainer = page.getByRole('region', { name: /European countries by/ });
+		this.leafletContainer = this.renewableMapSection.getByRole('region', {
+			name: 'European countries by renewable energy share',
+		});
+		this.educationLeafletContainer = this.educationInsightsSection.getByRole('region', {
+			name: /European countries by/,
+		});
 		this.spainRegion = this.map.getByTestId('map-region-ES');
+		this.educationSpainRegion = this.educationMap.getByTestId('map-region-ES');
 		this.ukRegion = this.map.getByTestId('map-region-UK');
 		this.countryWithoutMetric = this.map.getByTestId('map-region-TR');
-		this.popup = page.getByTestId('map-country-popup').last();
+		this.educationCountryWithoutMetric = this.educationMap.getByTestId('map-region-TR');
+		this.popup = this.educationMap.getByTestId('map-country-popup').last();
+		this.renewablePopup = this.map.getByTestId('map-country-popup').last();
 		this.uniformSourceLink = this.popup.getByRole('link', {
 			name: 'UK Department for Education',
 		});
+		this.freeSchoolMealsHeading = page.getByRole('heading', {
+			name: 'Free School Meals Across Europe',
+		});
+		this.freeSchoolMealsLegend = page.getByRole('list', {
+			name: 'Free school meals policy legend',
+		});
+		this.freeSchoolMealsSource = page.getByRole('link', {
+			name: 'Eurydice – European Commission',
+		});
+		this.freeSchoolMealsSourceLink = this.popup.getByRole('link', {
+			name: 'Eurydice – Finland',
+		});
+		this.freeSchoolMealsAttribution = page.getByText(
+			/The Current State, Benefits, and Exemplary Models of School Meal Programmes in the European Union/,
+		);
+		this.freeSchoolMealsMapRegion = page.getByRole('region', {
+			name: 'European countries by free school meals provision',
+		});
+		this.finlandRegion = this.educationMap.getByTestId('map-region-FI');
+		this.summerHolidaysHeading = page.getByRole('heading', {
+			name: 'Length of Summer School Holidays Across Europe',
+		});
+		this.summerHolidaysLegend = page.getByRole('list', {
+			name: 'Summer school holiday duration legend',
+		});
+		this.summerHolidaysSource = page.getByRole('link', {
+			name: 'Eurydice – European School Calendars',
+		});
+		this.summerHolidaysAttribution = page.getByText(
+			/Shorter summer breaks do not mean fewer holidays overall/,
+		);
+		this.summerHolidaysSourceLink = this.popup.getByRole('link', {
+			name: 'Eurydice – European School Calendars',
+		});
+		this.italyRegion = this.educationMap.getByTestId('map-region-IT');
 		this.tooltip = page.getByRole('tooltip').last();
-		this.attribution = page.getByText(
+		this.attribution = this.renewableMapSection.getByText(
 			'© EuroGeographics for the administrative boundaries',
 			{ exact: true },
 		);
 		this.status = this.mapShell.getByRole('status');
+		this.educationStatus = this.educationMapShell.getByRole('status');
 		this.worldTravelMap = page.getByTestId('world-travel-map');
 		this.worldMapShell = page.getByTestId('world-map-shell');
-		this.worldMapStatus = page.getByRole('status').last();
+		this.worldMapStatus = this.worldMapShell.getByRole('status');
 		this.worldResetViewControl = this.worldMapShell.getByRole('button', {
 			name: 'Reset view',
 			exact: true,
@@ -111,6 +191,7 @@ export class MapsPage {
 	}
 
 	async goto(): Promise<void> {
+		this.selectedMap = 'education';
 		await this.page.goto('/maps');
 	}
 
@@ -118,17 +199,48 @@ export class MapsPage {
 		await this.worldContentsLink.click();
 	}
 
+	async viewRenewableEnergySection(): Promise<void> {
+		await this.renewableContentsLink.click();
+		this.selectedMap = 'renewable';
+	}
+
+	async renewableEnergySectionFollowsWorldMap(): Promise<boolean> {
+		return this.page.evaluate(() => {
+			const worldMap = document.getElementById('world-travel-map');
+			const renewableMap = document.getElementById('renewable-energy');
+			return Boolean(
+				worldMap &&
+					renewableMap &&
+					(worldMap.compareDocumentPosition(renewableMap) &
+						Node.DOCUMENT_POSITION_FOLLOWING),
+			);
+		});
+	}
+
 	async selectChildcareMap(): Promise<void> {
+		this.selectedMap = 'education';
 		await this.childcareTab.click();
 	}
 
 	async selectSchoolUniformsMap(): Promise<void> {
+		this.selectedMap = 'education';
 		await this.schoolUniformsTab.click();
 	}
 
+	async selectFreeSchoolMealsMap(): Promise<void> {
+		this.selectedMap = 'education';
+		await this.freeSchoolMealsTab.click();
+	}
+
+	async selectSummerHolidaysMap(): Promise<void> {
+		this.selectedMap = 'education';
+		await this.summerHolidaysTab.click();
+	}
+
 	async selectChildcareMapByKeyboard(): Promise<void> {
-		await this.renewableTab.focus();
-		await this.renewableTab.press('ArrowRight');
+		this.selectedMap = 'education';
+		await this.schoolUniformsTab.focus();
+		await this.schoolUniformsTab.press('ArrowLeft');
 	}
 
 	async zoomInAndReset(): Promise<void> {
@@ -137,15 +249,18 @@ export class MapsPage {
 	}
 
 	async selectCountry(countryId: CountryId): Promise<void> {
-		await this.map.getByTestId(`map-region-${countryId}`).click();
+		const map = this.selectedMap === 'renewable' ? this.map : this.educationMap;
+		await map.getByTestId(`map-region-${countryId}`).click();
 	}
 
 	async hoverCountry(countryId: CountryId): Promise<void> {
-		await this.map.getByTestId(`map-region-${countryId}`).hover();
+		const map = this.selectedMap === 'renewable' ? this.map : this.educationMap;
+		await map.getByTestId(`map-region-${countryId}`).hover();
 	}
 
 	async hoverCountryWithoutOECDData(): Promise<void> {
-		await this.countryWithoutMetric.hover();
+		this.selectedMap = 'education';
+		await this.educationCountryWithoutMetric.hover();
 	}
 
 	getErrors(): string[] {

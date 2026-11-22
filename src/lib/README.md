@@ -16,9 +16,11 @@ makes malformed input and exceptional identifiers directly testable without a br
 ## Strategy pattern
 
 `mapStrategies` supplies numeric or categorical colors, legends, tooltip formatting, and popup
-details to the shared Leaflet component. The component owns map lifecycle and interaction;
-strategies own metric presentation. Adding a metric therefore avoids duplicating map setup, while
-structured popup details allow selected countries to show notes and safe external sources.
+details to the shared Leaflet component. The European map tabs include renewable energy, childcare
+costs, school-uniform policies, free-school-meal policies, and summer school holidays. The component
+owns map lifecycle and interaction; strategies own metric presentation. Adding a metric therefore
+avoids duplicating map setup, while structured popup details allow selected countries to show notes
+and safe external sources.
 
 The strategy contract is intentionally small and can grow as new metrics need distinct behavior.
 Because color scales and tooltip formatters are pure functions, Vitest can verify thresholds,

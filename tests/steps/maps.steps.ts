@@ -8,9 +8,22 @@ Given('I open the Maps page', async ({ mapsPage }) => {
 	await mapsPage.goto();
 });
 
-Then('the Maps contents links point to both map sections', async ({ mapsPage }) => {
-	await expect(mapsPage.europeanContentsLink).toHaveAttribute('href', '#european-maps');
+Then('the Maps contents links point to all map sections', async ({ mapsPage }) => {
+	await expect(mapsPage.educationContentsLink).toHaveAttribute(
+		'href',
+		'#european-education-insights',
+	);
 	await expect(mapsPage.worldContentsLink).toHaveAttribute('href', '#world-travel-map');
+	await expect(mapsPage.renewableContentsLink).toHaveAttribute('href', '#renewable-energy');
+});
+
+When('I navigate to the Renewable Energy section', async ({ mapsPage }) => {
+	await mapsPage.viewRenewableEnergySection();
+});
+
+Then('the Renewable Energy section follows the World Travel Map', async ({ mapsPage }) => {
+	await expect(mapsPage.renewableMapSection).toBeVisible();
+	expect(await mapsPage.renewableEnergySectionFollowsWorldMap()).toBe(true);
 });
 
 When('I follow the World Travel Map contents link', async ({ mapsPage }) => {
@@ -45,10 +58,10 @@ Then('the map is visible', async ({ mapsPage }) => {
 	await expect(mapsPage.mapShell).toHaveCSS('min-height', '500px');
 });
 
-Then('the map dataset tabs are rendered with Renewable Energy selected', async ({ mapsPage }) => {
+Then('the map dataset tabs are rendered with Childcare Costs selected', async ({ mapsPage }) => {
 	await expect(mapsPage.tabList).toBeVisible();
-	await expect(mapsPage.renewableTab).toHaveAttribute('aria-selected', 'true');
-	await expect(mapsPage.childcareTab).toHaveAttribute('aria-selected', 'false');
+	await expect(mapsPage.childcareTab).toHaveAttribute('aria-selected', 'true');
+	await expect(mapsPage.schoolUniformsTab).toHaveAttribute('aria-selected', 'false');
 });
 
 Then('Spain is available on the map', async ({ mapsPage }) => {
@@ -76,9 +89,9 @@ When('I select Spain', async ({ mapsPage }) => {
 });
 
 Then("the popup shows Spain's renewable energy share", async ({ mapsPage }) => {
-	await expect(mapsPage.popup).toBeVisible();
-	await expect(mapsPage.popup).toContainText('Spain');
-	await expect(mapsPage.popup).toContainText('(2024): 25.4%');
+	await expect(mapsPage.renewablePopup).toBeVisible();
+	await expect(mapsPage.renewablePopup).toContainText('Spain');
+	await expect(mapsPage.renewablePopup).toContainText('(2024): 25.4%');
 });
 
 When('I select the UK', async ({ mapsPage }) => {
@@ -91,8 +104,8 @@ Then('the UK is shown without a reported renewable-energy value', async ({ mapsP
 });
 
 Then('the popup reports that the UK has no data', async ({ mapsPage }) => {
-	await expect(mapsPage.popup).toContainText('United Kingdom');
-	await expect(mapsPage.popup).toContainText('no data');
+	await expect(mapsPage.renewablePopup).toContainText('United Kingdom');
+	await expect(mapsPage.renewablePopup).toContainText('no data');
 });
 
 When('I select Türkiye', async ({ mapsPage }) => {
@@ -100,8 +113,8 @@ When('I select Türkiye', async ({ mapsPage }) => {
 });
 
 Then('the popup reports that Türkiye has no data', async ({ mapsPage }) => {
-	await expect(mapsPage.popup).toContainText('Türkiye');
-	await expect(mapsPage.popup).toContainText('no data');
+	await expect(mapsPage.renewablePopup).toContainText('Türkiye');
+	await expect(mapsPage.renewablePopup).toContainText('no data');
 });
 
 When('I switch to the Childcare Costs map', async ({ mapsPage }) => {
@@ -113,9 +126,11 @@ When('I select Childcare Costs with the keyboard', async ({ mapsPage }) => {
 });
 
 Then('the childcare heading, legend, and source are shown', async ({ mapsPage }) => {
-	await expect(mapsPage.status).toHaveText('Map data loaded. Select a country for details.');
+	await expect(mapsPage.educationStatus).toHaveText(
+		'Map data loaded. Select a country for details.',
+	);
 	await expect(mapsPage.childcareTab).toHaveAttribute('aria-selected', 'true');
-	await expect(mapsPage.renewableTab).toHaveAttribute('aria-selected', 'false');
+	await expect(mapsPage.schoolUniformsTab).toHaveAttribute('aria-selected', 'false');
 	await expect(mapsPage.childcareHeading).toBeVisible();
 	await expect(mapsPage.childcareLegend).toBeVisible();
 	await expect(mapsPage.childcareLegend).toContainText('15%+');
@@ -125,9 +140,9 @@ Then('the childcare heading, legend, and source are shown', async ({ mapsPage })
 });
 
 Then('the childcare map renders without browser errors', async ({ mapsPage }) => {
-	await expect(mapsPage.countryWithoutMetric).toBeVisible();
-	await expect(mapsPage.countryWithoutMetric).toHaveAttribute('fill', '#e2e8f0');
-	await expect(mapsPage.spainRegion).toBeVisible();
+	await expect(mapsPage.educationCountryWithoutMetric).toBeVisible();
+	await expect(mapsPage.educationCountryWithoutMetric).toHaveAttribute('fill', '#e2e8f0');
+	await expect(mapsPage.educationSpainRegion).toBeVisible();
 	expect(mapsPage.getErrors()).toEqual([]);
 });
 
@@ -167,8 +182,124 @@ When('I switch to the School Uniforms map', async ({ mapsPage }) => {
 	await mapsPage.selectSchoolUniformsMap();
 });
 
+When('I switch to the Free School Meals map', async ({ mapsPage }) => {
+	await mapsPage.selectFreeSchoolMealsMap();
+});
+
+When('I switch to the Summer Holidays map', async ({ mapsPage }) => {
+	await mapsPage.selectSummerHolidaysMap();
+});
+
+Then(
+	'the summer holidays heading, bucket legend, and map load without browser errors',
+	async ({ mapsPage }) => {
+		await expect(mapsPage.educationStatus).toHaveText(
+			'Map data loaded. Select a country for details.',
+		);
+		await expect(mapsPage.summerHolidaysTab).toHaveAttribute('aria-selected', 'true');
+		await expect(mapsPage.summerHolidaysHeading).toBeVisible();
+		await expect(mapsPage.summerHolidaysLegend.getByRole('listitem')).toHaveText([
+			'No data',
+			'≤ 8 weeks',
+			'> 8–10 weeks',
+			'> 10–12 weeks',
+			'> 12 weeks',
+		]);
+		await expect(mapsPage.summerHolidaysSource).toHaveAttribute(
+			'href',
+			'https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars',
+		);
+		await expect(mapsPage.summerHolidaysAttribution).toBeVisible();
+		await expect(mapsPage.educationLeafletContainer).toHaveAttribute(
+			'aria-label',
+			'European countries by primary school summer holiday duration',
+		);
+		await expect(mapsPage.italyRegion).toHaveAttribute('fill', '#0f766e');
+		expect(mapsPage.getErrors()).toEqual([]);
+	},
+);
+
+When('I hover Italy', async ({ mapsPage }) => {
+	await mapsPage.hoverCountry('IT');
+});
+
+Then("the tooltip shows Italy's summer holiday duration", async ({ mapsPage }) => {
+	await expect(mapsPage.tooltip).toContainText('Italy');
+	await expect(mapsPage.tooltip).toContainText('~13 weeks');
+});
+
+When('I select Italy', async ({ mapsPage }) => {
+	await mapsPage.selectCountry('IT');
+});
+
+Then('the Italy popup shows its duration, note, and source link', async ({ mapsPage }) => {
+	await expect(mapsPage.popup).toContainText('Italy');
+	await expect(mapsPage.popup).toContainText('~13 weeks');
+	await expect(mapsPage.popup).toContainText(
+		'among the longest summer holidays in Europe.',
+	);
+	await expect(mapsPage.summerHolidaysSourceLink).toHaveAttribute(
+		'href',
+		'https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars',
+	);
+	await expect(mapsPage.summerHolidaysSourceLink).toHaveAttribute('target', '_blank');
+	await expect(mapsPage.summerHolidaysSourceLink).toHaveAttribute(
+		'rel',
+		'noopener noreferrer',
+	);
+	expect(mapsPage.getErrors()).toEqual([]);
+});
+
+Then(
+	'the free school meals heading, four-tier legend, and map load without browser errors',
+	async ({ mapsPage }) => {
+		await expect(mapsPage.educationStatus).toHaveText(
+			'Map data loaded. Select a country for details.',
+		);
+		await expect(mapsPage.freeSchoolMealsTab).toHaveAttribute('aria-selected', 'true');
+		await expect(mapsPage.freeSchoolMealsHeading).toBeVisible();
+		await expect(mapsPage.freeSchoolMealsLegend.getByRole('listitem')).toHaveText([
+			'No data',
+			'Universal (Primary & Secondary)',
+			'Partial Universal / Transitioning',
+			'Targeted / Means-Tested',
+			'No National Programme',
+		]);
+		await expect(mapsPage.freeSchoolMealsSource).toHaveAttribute(
+			'href',
+			'https://eurydice.eacea.ec.europa.eu/national-education-systems',
+		);
+		await expect(mapsPage.freeSchoolMealsAttribution).toBeVisible();
+		await expect(mapsPage.freeSchoolMealsMapRegion).toBeVisible();
+		await expect(mapsPage.finlandRegion).toHaveAttribute('fill', '#0f766e');
+		expect(mapsPage.getErrors()).toEqual([]);
+	},
+);
+
+When('I select Finland', async ({ mapsPage }) => {
+	await mapsPage.selectCountry('FI');
+});
+
+Then('the Finland popup shows its policy note and source link', async ({ mapsPage }) => {
+	await expect(mapsPage.popup).toContainText('Finland');
+	await expect(mapsPage.popup).toContainText(
+		'Universal free hot school meals have been provided to all primary and secondary pupils since 1948.',
+	);
+	await expect(mapsPage.freeSchoolMealsSourceLink).toHaveAttribute(
+		'href',
+		'https://eurydice.eacea.ec.europa.eu/national-education-systems/finland/overview',
+	);
+	await expect(mapsPage.freeSchoolMealsSourceLink).toHaveAttribute('target', '_blank');
+	await expect(mapsPage.freeSchoolMealsSourceLink).toHaveAttribute(
+		'rel',
+		'noopener noreferrer',
+	);
+});
+
 Then('the school uniform heading, legend, and map load without browser errors', async ({ mapsPage }) => {
-	await expect(mapsPage.status).toHaveText('Map data loaded. Select a country for details.');
+	await expect(mapsPage.educationStatus).toHaveText(
+		'Map data loaded. Select a country for details.',
+	);
 	await expect(mapsPage.schoolUniformsTab).toHaveAttribute('aria-selected', 'true');
 	await expect(mapsPage.schoolUniformsHeading).toBeVisible();
 	await expect(mapsPage.schoolUniformsLegend.getByRole('listitem')).toHaveText([
@@ -177,7 +308,7 @@ Then('the school uniform heading, legend, and map load without browser errors', 
 		'Mostly private / optional',
 		'Not used in state schools',
 	]);
-	await expect(mapsPage.spainRegion).toBeVisible();
+	await expect(mapsPage.educationSpainRegion).toBeVisible();
 	expect(mapsPage.getErrors()).toEqual([]);
 });
 

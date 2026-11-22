@@ -1,0 +1,270 @@
+{
+  "dataset": "Length of Summer School Holidays Across Europe",
+  "referencePeriod": "2024–2025",
+  "values": [
+    {
+      "giscoId": "AL",
+      "country": "Albania",
+      "weeks": 13,
+      "note": "The summer break lasts about 13 weeks, with exact dates set in the annual school calendar.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "AT",
+      "country": "Austria",
+      "weeks": 9,
+      "note": "The summer holiday is about nine weeks, with regional calendars differing slightly in their start dates.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "BE",
+      "country": "Belgium",
+      "weeks": 8.5,
+      "note": "Summer holidays last about seven weeks in the French Community and about nine weeks in Flanders.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "BG",
+      "country": "Bulgaria",
+      "weeks": 12,
+      "note": "The primary-school summer break is about 12 weeks, with dates set by the national school calendar.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "CH",
+      "country": "Switzerland",
+      "weeks": 6,
+      "note": "Summer holidays are about six weeks, with dates varying by canton and school calendar.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "CY",
+      "country": "Cyprus",
+      "weeks": 11.5,
+      "note": "The summer break is about eleven and a half weeks for primary pupils.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "CZ",
+      "country": "Czechia",
+      "weeks": 9,
+      "note": "The summer holiday lasts about nine weeks and is set nationally for primary schools.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "DE",
+      "country": "Germany",
+      "weeks": 6,
+      "note": "The six-week break is staggered across federal states (Länder) to reduce travel congestion.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "DK",
+      "country": "Denmark",
+      "weeks": 6,
+      "note": "The summer break is about six weeks, offset by autumn, winter, and spring breaks.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "EE",
+      "country": "Estonia",
+      "weeks": 12,
+      "note": "Primary pupils have about twelve weeks of summer holidays before the school year begins in September.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "EL",
+      "country": "Greece",
+      "weeks": 12.5,
+      "note": "The summer break lasts about twelve and a half weeks for primary-school pupils.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "ES",
+      "country": "Spain",
+      "weeks": 11,
+      "note": "The primary-school summer break is about eleven weeks, with regional calendars setting exact dates.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "FI",
+      "country": "Finland",
+      "weeks": 10.5,
+      "note": "Summer holidays last about ten and a half weeks, while municipalities set the exact term dates.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "FR",
+      "country": "France",
+      "weeks": 8,
+      "note": "The nationwide summer break is about eight weeks, balanced by regular two-week breaks during the school year.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "HR",
+      "country": "Croatia",
+      "weeks": 11,
+      "note": "Primary pupils have about eleven weeks of summer holidays, with dates set in the annual calendar.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "HU",
+      "country": "Hungary",
+      "weeks": 11,
+      "note": "The summer break lasts about eleven weeks before the school year begins in September.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "IE",
+      "country": "Ireland",
+      "weeks": 9,
+      "note": "Primary schools have about nine weeks off, compared with about twelve to thirteen weeks for post-primary schools.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "IS",
+      "country": "Iceland",
+      "weeks": 11,
+      "note": "The summer holiday is about eleven weeks, with school calendars set locally.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "IT",
+      "country": "Italy",
+      "weeks": 13,
+      "note": "The summer break lasts about thirteen weeks, among the longest summer holidays in Europe.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "LI",
+      "country": "Liechtenstein",
+      "weeks": 6,
+      "note": "The summer holiday is about six weeks, with dates following the regional school calendar.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "LT",
+      "country": "Lithuania",
+      "weeks": 12.5,
+      "note": "Primary pupils have about twelve and a half weeks of summer holidays.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "LU",
+      "country": "Luxembourg",
+      "weeks": 8.5,
+      "note": "The summer break is about eight and a half weeks, with national dates applying across the country.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "LV",
+      "country": "Latvia",
+      "weeks": 13,
+      "note": "The primary-school summer break lasts about thirteen weeks.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "MT",
+      "country": "Malta",
+      "weeks": 12.5,
+      "note": "Primary pupils have about twelve and a half weeks of summer holidays.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "NL",
+      "country": "Netherlands",
+      "weeks": 6,
+      "note": "The six-week summer holiday is staggered across the north, centre, and south regions.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "NO",
+      "country": "Norway",
+      "weeks": 8.5,
+      "note": "The summer break is about eight and a half weeks, with dates varying among municipalities.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "PL",
+      "country": "Poland",
+      "weeks": 9.5,
+      "note": "Primary pupils have about nine and a half weeks of summer holidays.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "PT",
+      "country": "Portugal",
+      "weeks": 12.5,
+      "note": "The summer break is about twelve and a half weeks, with exact dates varying by school year and grade.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "RO",
+      "country": "Romania",
+      "weeks": 11.5,
+      "note": "The primary-school summer break lasts about eleven and a half weeks.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "SE",
+      "country": "Sweden",
+      "weeks": 9.5,
+      "note": "The summer holiday is about nine and a half weeks, with municipalities setting the school calendar.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "SI",
+      "country": "Slovenia",
+      "weeks": 10,
+      "note": "The summer break is about ten weeks for primary-school pupils.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "SK",
+      "country": "Slovakia",
+      "weeks": 9,
+      "note": "Primary pupils have about nine weeks of summer holidays.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    },
+    {
+      "giscoId": "UK",
+      "country": "United Kingdom",
+      "weeks": 6,
+      "note": "There are six weeks in England and Wales, about six to seven in Scotland, and about eight to nine in Northern Ireland.",
+      "sourceLabel": "Eurydice – European School Calendars",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars"
+    }
+  ]
+}

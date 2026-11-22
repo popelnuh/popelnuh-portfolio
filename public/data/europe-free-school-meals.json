@@ -1,0 +1,254 @@
+{
+  "dataset": "Free School Meals Across Europe",
+  "referencePeriod": "2025–2026",
+  "values": [
+    {
+      "giscoId": "AT",
+      "country": "Austria",
+      "category": "targeted",
+      "note": "Free or subsidized school meals are generally provided through local or eligibility-based schemes rather than a universal national entitlement.",
+      "sourceLabel": "Eurydice – Austria",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/austria/overview"
+    },
+    {
+      "giscoId": "BE",
+      "country": "Belgium",
+      "category": "targeted",
+      "note": "Free or reduced-price meals are generally organized through regional or local support rather than a universal national entitlement.",
+      "sourceLabel": "Eurydice – Belgium",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/belgium/overview"
+    },
+    {
+      "giscoId": "BG",
+      "country": "Bulgaria",
+      "category": "targeted",
+      "note": "Free meal support is focused on eligible pupils and locally administered programmes rather than a universal national entitlement.",
+      "sourceLabel": "Eurydice – Bulgaria",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/bulgaria/overview"
+    },
+    {
+      "giscoId": "CH",
+      "country": "Switzerland",
+      "category": "none",
+      "note": "There is no universal national school-meal entitlement; provision varies by canton and municipality.",
+      "sourceLabel": "Eurydice – Switzerland",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/switzerland/overview"
+    },
+    {
+      "giscoId": "CY",
+      "country": "Cyprus",
+      "category": "targeted",
+      "note": "Free school meals are provided through support schemes for eligible pupils rather than a universal national programme.",
+      "sourceLabel": "Eurydice – Cyprus",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/cyprus/overview"
+    },
+    {
+      "giscoId": "CZ",
+      "country": "Czechia",
+      "category": "targeted",
+      "note": "Free meal support is available to eligible children through targeted and locally administered programmes.",
+      "sourceLabel": "Eurydice – Czechia",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/czechia/overview"
+    },
+    {
+      "giscoId": "DE",
+      "country": "Germany",
+      "category": "targeted",
+      "note": "Free school meals are generally means-tested or locally subsidized rather than guaranteed universally nationwide.",
+      "sourceLabel": "Eurydice – Germany",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/germany/overview"
+    },
+    {
+      "giscoId": "DK",
+      "country": "Denmark",
+      "category": "none",
+      "note": "There is no national programme; packed lunches are the norm, with a limited 2025–2028 pilot underway.",
+      "sourceLabel": "Eurydice – Denmark",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/denmark/overview"
+    },
+    {
+      "giscoId": "EE",
+      "country": "Estonia",
+      "category": "universal",
+      "note": "Free school meals are provided broadly to pupils in general education under national and local arrangements.",
+      "sourceLabel": "Eurydice – Estonia",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/estonia/overview"
+    },
+    {
+      "giscoId": "EL",
+      "country": "Greece",
+      "category": "targeted",
+      "note": "Free meals are provided through targeted school meal programmes for pupils and areas meeting eligibility criteria.",
+      "sourceLabel": "Eurydice – Greece",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/greece/overview"
+    },
+    {
+      "giscoId": "ES",
+      "country": "Spain",
+      "category": "targeted",
+      "note": "Free or subsidized school meals are generally allocated through regional and local eligibility-based schemes.",
+      "sourceLabel": "Eurydice – Spain",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/spain/overview"
+    },
+    {
+      "giscoId": "FI",
+      "country": "Finland",
+      "category": "universal",
+      "note": "Universal free hot school meals have been provided to all primary and secondary pupils since 1948.",
+      "sourceLabel": "Eurydice – Finland",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/finland/overview"
+    },
+    {
+      "giscoId": "FR",
+      "country": "France",
+      "category": "targeted",
+      "note": "Subsidized canteen meals use income-based sliding scales, including €1 meals for low-income families.",
+      "sourceLabel": "Ministère de l'Éducation nationale",
+      "sourceUrl": "https://www.education.gouv.fr/"
+    },
+    {
+      "giscoId": "HR",
+      "country": "Croatia",
+      "category": "targeted",
+      "note": "Free school meals are targeted to eligible pupils, with programme coverage and implementation set through public schemes.",
+      "sourceLabel": "Eurydice – Croatia",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/croatia/overview"
+    },
+    {
+      "giscoId": "HU",
+      "country": "Hungary",
+      "category": "targeted",
+      "note": "Free or reduced-price meals are available to eligible children through income- and status-based support.",
+      "sourceLabel": "Eurydice – Hungary",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/hungary/overview"
+    },
+    {
+      "giscoId": "IE",
+      "country": "Ireland",
+      "category": "partial_universal",
+      "note": "Universal free hot school meals are being rolled out across all primary schools in phases.",
+      "sourceLabel": "Department of Social Protection",
+      "sourceUrl": "https://www.gov.ie/en/department-of-social-protection/services/hot-school-meals-scheme/"
+    },
+    {
+      "giscoId": "IT",
+      "country": "Italy",
+      "category": "targeted",
+      "note": "School meals are generally subsidized locally, with reduced costs or exemptions based on family income.",
+      "sourceLabel": "Eurydice – Italy",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/italy/overview"
+    },
+    {
+      "giscoId": "LT",
+      "country": "Lithuania",
+      "category": "partial_universal",
+      "note": "Free school meals cover selected primary grades, with coverage and eligibility varying by programme.",
+      "sourceLabel": "Eurydice – Lithuania",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/lithuania/overview"
+    },
+    {
+      "giscoId": "LU",
+      "country": "Luxembourg",
+      "category": "targeted",
+      "note": "School meal costs are reduced through income-based assistance rather than a universal free-meal entitlement.",
+      "sourceLabel": "Eurydice – Luxembourg",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/luxembourg/overview"
+    },
+    {
+      "giscoId": "LV",
+      "country": "Latvia",
+      "category": "partial_universal",
+      "note": "Free lunches are provided universally in designated primary grades, with other support determined by eligibility.",
+      "sourceLabel": "Eurydice – Latvia",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/latvia/overview"
+    },
+    {
+      "giscoId": "MT",
+      "country": "Malta",
+      "category": "targeted",
+      "note": "School meal assistance is provided through targeted support rather than a universal free-meal programme.",
+      "sourceLabel": "Eurydice – Malta",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/malta/overview"
+    },
+    {
+      "giscoId": "NL",
+      "country": "Netherlands",
+      "category": "none",
+      "note": "There is no national free school meals programme, and pupils generally bring lunch from home.",
+      "sourceLabel": "Eurydice – Netherlands",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/netherlands/overview"
+    },
+    {
+      "giscoId": "NO",
+      "country": "Norway",
+      "category": "none",
+      "note": "There is no national school meal programme; pupils typically bring packed lunches (matpakke).",
+      "sourceLabel": "Eurydice – Norway",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/norway/overview"
+    },
+    {
+      "giscoId": "PL",
+      "country": "Poland",
+      "category": "targeted",
+      "note": "Free meals are available to eligible pupils through social assistance and school-level programmes.",
+      "sourceLabel": "Eurydice – Poland",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/poland/overview"
+    },
+    {
+      "giscoId": "PT",
+      "country": "Portugal",
+      "category": "targeted",
+      "note": "Free or reduced-price school meals are provided according to family income and social support eligibility.",
+      "sourceLabel": "Eurydice – Portugal",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/portugal/overview"
+    },
+    {
+      "giscoId": "RO",
+      "country": "Romania",
+      "category": "targeted",
+      "note": "Free meal programmes focus on eligible pupils and participating schools rather than a universal national entitlement.",
+      "sourceLabel": "Eurydice – Romania",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/romania/overview"
+    },
+    {
+      "giscoId": "SE",
+      "country": "Sweden",
+      "category": "universal",
+      "note": "Free and nutritious school lunches are guaranteed by law for all pupils in compulsory school.",
+      "sourceLabel": "Eurydice – Sweden",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/sweden/overview"
+    },
+    {
+      "giscoId": "SI",
+      "country": "Slovenia",
+      "category": "partial_universal",
+      "note": "Free school meals are broadly available to eligible pupils, with coverage and subsidies varying by meal and income.",
+      "sourceLabel": "Eurydice – Slovenia",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/slovenia/overview"
+    },
+    {
+      "giscoId": "SK",
+      "country": "Slovakia",
+      "category": "partial_universal",
+      "note": "Publicly supported free lunches cover designated school groups, with eligibility tied to programme rules.",
+      "sourceLabel": "Eurydice – Slovakia",
+      "sourceUrl": "https://eurydice.eacea.ec.europa.eu/national-education-systems/slovakia/overview"
+    },
+    {
+      "giscoId": "UK",
+      "country": "United Kingdom",
+      "category": "partial_universal",
+      "note": "Devolved policy: universal for all primary in Wales, P1–P5 in Scotland, and Reception–Year 2 in England (plus London primary).",
+      "sourceLabel": "Scottish Government / DfE",
+      "sourceUrl": "https://www.gov.uk/apply-free-school-meals"
+    },
+    {
+      "giscoId": "UA",
+      "country": "Ukraine",
+      "category": "universal",
+      "note": "Free hot meals have been expanded to all municipal school pupils in grades 1–11.",
+      "sourceLabel": "Ministry of Education and Science of Ukraine",
+      "sourceUrl": "https://mon.gov.ua/"
+    }
+  ]
+}

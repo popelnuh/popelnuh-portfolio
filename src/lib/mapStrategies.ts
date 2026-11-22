@@ -2,10 +2,16 @@ import { getRenewableEnergyColor, NO_DATA_COLOR } from './renewableEnergyAdapter
 import type { MapMetricValue } from './mapTypes';
 import {
 	isSafeHttpsUrl,
+	type FreeSchoolMealsCategory,
 	type SchoolUniformCategory,
 } from './adapters/schoolUniformsAdapter';
 
-export type MapStrategyKey = 'renewable' | 'childcare' | 'school-uniforms';
+export type MapStrategyKey =
+	| 'renewable'
+	| 'childcare'
+	| 'school-uniforms'
+	| 'free-school-meals'
+	| 'summer-holidays';
 
 export interface MapLegendItem {
 	label: string;
@@ -48,6 +54,8 @@ export interface MapRenderingStrategy {
 
 export const CHILDCARE_NO_DATA_COLOR = '#e2e8f0';
 export const SCHOOL_UNIFORMS_NO_DATA_COLOR = '#f1f5f9';
+export const FREE_SCHOOL_MEALS_NO_DATA_COLOR = '#f1f5f9';
+export const SUMMER_HOLIDAYS_NO_DATA_COLOR = '#f1f5f9';
 
 const SCHOOL_UNIFORM_CATEGORY_LABELS: Record<SchoolUniformCategory, string> = {
 	standard: 'Standard in state schools',
@@ -55,10 +63,34 @@ const SCHOOL_UNIFORM_CATEGORY_LABELS: Record<SchoolUniformCategory, string> = {
 	not_used: 'Not used in state schools',
 };
 
+const FREE_SCHOOL_MEALS_CATEGORY_LABELS: Record<FreeSchoolMealsCategory, string> = {
+	universal: 'Universal (Primary & Secondary)',
+	partial_universal: 'Partial Universal / Transitioning',
+	targeted: 'Targeted / Means-Tested',
+	none: 'No National Programme',
+};
+
 const SCHOOL_UNIFORM_CATEGORY_COLORS: Record<SchoolUniformCategory, string> = {
 	standard: '#0f766e',
 	optional_or_private: '#d4a373',
 	not_used: '#cbd5e1',
+};
+
+const FREE_SCHOOL_MEALS_CATEGORY_COLORS: Record<FreeSchoolMealsCategory, string> = {
+	universal: '#0f766e',
+	partial_universal: '#3b82f6',
+	targeted: '#d4a373',
+	none: '#cbd5e1',
+};
+
+const CATEGORICAL_POLICY_CATEGORY_LABELS = {
+	...SCHOOL_UNIFORM_CATEGORY_LABELS,
+	...FREE_SCHOOL_MEALS_CATEGORY_LABELS,
+};
+
+const CATEGORICAL_POLICY_CATEGORY_COLORS = {
+	...SCHOOL_UNIFORM_CATEGORY_COLORS,
+	...FREE_SCHOOL_MEALS_CATEGORY_COLORS,
 };
 
 export function getChildcareCostColor(value: number | null): string {
@@ -83,16 +115,41 @@ export function getSchoolUniformColor(value: MapMetricValue): string {
 	return SCHOOL_UNIFORM_CATEGORY_COLORS[value];
 }
 
-export function formatSchoolUniformPopup(context: MapTooltipContext): MapPopupDetails {
-	if (context.value === null) {
-		return {
-			valueLabel: 'No policy data available',
-			note: 'No curated school-uniform policy entry is available for this country.',
-		};
+export function getFreeSchoolMealsCategoryLabel(value: MapMetricValue): string {
+	if (typeof value !== 'string' || !isFreeSchoolMealsCategory(value)) {
+		return 'No free school meals data available';
 	}
+	return FREE_SCHOOL_MEALS_CATEGORY_LABELS[value];
+}
 
+export function getFreeSchoolMealsColor(value: MapMetricValue): string {
+	if (typeof value !== 'string' || !isFreeSchoolMealsCategory(value)) {
+		return FREE_SCHOOL_MEALS_NO_DATA_COLOR;
+	}
+	return FREE_SCHOOL_MEALS_CATEGORY_COLORS[value];
+}
+
+export function getSummerHolidayColor(value: MapMetricValue | undefined): string {
+	if (typeof value !== 'number' || !Number.isFinite(value) || value <= 0) {
+		return SUMMER_HOLIDAYS_NO_DATA_COLOR;
+	}
+	if (value <= 8) return '#cbd5e1';
+	if (value <= 10) return '#93c5fd';
+	if (value <= 12) return '#3b82f6';
+	return '#0f766e';
+}
+
+export function formatSummerHolidayDuration(value: MapMetricValue | undefined): string {
+	if (typeof value !== 'number' || !Number.isFinite(value) || value <= 0) {
+		return 'No summer holiday data available';
+	}
+	const formattedWeeks = Number.isInteger(value) ? String(value) : value.toFixed(1);
+	return `~${formattedWeeks} weeks`;
+}
+
+export function formatSummerHolidayPopup(context: MapTooltipContext): MapPopupDetails {
 	const details: MapPopupDetails = {
-		valueLabel: getSchoolUniformCategoryLabel(context.value),
+		valueLabel: formatSummerHolidayDuration(context.value),
 	};
 	if (context.note?.trim()) details.note = context.note.trim();
 	if (context.sourceLabel?.trim() && isSafeHttpsUrl(context.sourceUrl)) {
@@ -102,9 +159,125 @@ export function formatSchoolUniformPopup(context: MapTooltipContext): MapPopupDe
 	return details;
 }
 
+function getCategoricalPolicyCategoryLabel(value: MapMetricValue): string {
+	if (typeof value !== 'string' || !isCategoricalPolicyCategory(value)) {
+		return 'No policy data available';
+	}
+	return CATEGORICAL_POLICY_CATEGORY_LABELS[value];
+}
+
+function getCategoricalPolicyColor(value: MapMetricValue): string {
+	if (typeof value !== 'string' || !isCategoricalPolicyCategory(value)) {
+		return SCHOOL_UNIFORMS_NO_DATA_COLOR;
+	}
+	return CATEGORICAL_POLICY_CATEGORY_COLORS[value];
+}
+
+export function formatSchoolUniformPopup(context: MapTooltipContext): MapPopupDetails {
+	return formatCategoricalPolicyPopup(
+		context,
+		'No curated school-uniform policy entry is available for this country.',
+	);
+}
+
+export function formatFreeSchoolMealsPopup(context: MapTooltipContext): MapPopupDetails {
+	return formatCategoricalPolicyPopup(
+		context,
+		'No curated free school meals entry is available for this country.',
+	);
+}
+
+function formatCategoricalPolicyPopup(
+	context: MapTooltipContext,
+	missingNote: string,
+): MapPopupDetails {
+	if (context.value === null) {
+		return {
+			valueLabel: 'No policy data available',
+			note: missingNote,
+		};
+	}
+
+	const details: MapPopupDetails = {
+		valueLabel: getCategoricalPolicyCategoryLabel(context.value),
+	};
+	if (context.note?.trim()) details.note = context.note.trim();
+	if (context.sourceLabel?.trim() && isSafeHttpsUrl(context.sourceUrl)) {
+		details.sourceLabel = context.sourceLabel.trim();
+		details.sourceUrl = context.sourceUrl;
+	}
+	return details;
+}
+
+function isFreeSchoolMealsCategory(value: string): value is FreeSchoolMealsCategory {
+	return Object.prototype.hasOwnProperty.call(FREE_SCHOOL_MEALS_CATEGORY_LABELS, value);
+}
+
 function isSchoolUniformCategory(value: string): value is SchoolUniformCategory {
 	return Object.prototype.hasOwnProperty.call(SCHOOL_UNIFORM_CATEGORY_LABELS, value);
 }
+
+function isCategoricalPolicyCategory(value: string): value is keyof typeof CATEGORICAL_POLICY_CATEGORY_LABELS {
+	return Object.prototype.hasOwnProperty.call(CATEGORICAL_POLICY_CATEGORY_LABELS, value);
+}
+
+export const freeSchoolMealsStrategy: MapRenderingStrategy = {
+	title: 'Free School Meals Across Europe',
+	description:
+		'Country-level categories summarize free school meal provision across EU Member States and selected neighbouring countries; areas without a record are shown as no data.',
+	ariaLabel: 'European countries by free school meals provision',
+	legendLabel: 'Free school meals policy legend',
+	sourceUrl: 'https://eurydice.eacea.ec.europa.eu/national-education-systems',
+	sourceLabel: 'Eurydice – European Commission',
+	sourceDetail:
+		'Curated with the European Commission report The Current State, Benefits, and Exemplary Models of School Meal Programmes in the European Union (March 2025), Eurydice national overviews, and national ministry guidance (2025–2026).',
+	unitLabel: 'school meals policy',
+	legendIntervals: [
+		{ label: 'No data', color: FREE_SCHOOL_MEALS_NO_DATA_COLOR },
+		{
+			label: FREE_SCHOOL_MEALS_CATEGORY_LABELS.universal,
+			color: FREE_SCHOOL_MEALS_CATEGORY_COLORS.universal,
+		},
+		{
+			label: FREE_SCHOOL_MEALS_CATEGORY_LABELS.partial_universal,
+			color: FREE_SCHOOL_MEALS_CATEGORY_COLORS.partial_universal,
+		},
+		{
+			label: FREE_SCHOOL_MEALS_CATEGORY_LABELS.targeted,
+			color: FREE_SCHOOL_MEALS_CATEGORY_COLORS.targeted,
+		},
+		{
+			label: FREE_SCHOOL_MEALS_CATEGORY_LABELS.none,
+			color: FREE_SCHOOL_MEALS_CATEGORY_COLORS.none,
+		},
+	],
+	colorScale: getFreeSchoolMealsColor,
+	formatTooltip: ({ value }) => getFreeSchoolMealsCategoryLabel(value),
+	formatPopup: formatFreeSchoolMealsPopup,
+};
+
+export const summerHolidaysStrategy: MapRenderingStrategy = {
+	title: 'Length of Summer School Holidays Across Europe',
+	description:
+		'Typical primary-school summer break duration, grouped into Eurydice duration buckets; countries without an entry are shown as no data.',
+	ariaLabel: 'European countries by primary school summer holiday duration',
+	legendLabel: 'Summer school holiday duration legend',
+	sourceUrl: 'https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars',
+	sourceLabel: 'Eurydice – European School Calendars',
+	sourceDetail:
+		'Source: Eurydice (European Commission), School Calendars in Europe. Shorter summer breaks do not mean fewer holidays overall: most European countries provide about 100–120 total holiday days per year, distributed differently across the academic calendar.',
+	unitLabel: 'weeks',
+	legendIntervals: [
+		{ label: 'No data', color: SUMMER_HOLIDAYS_NO_DATA_COLOR },
+		{ label: '≤ 8 weeks', color: '#cbd5e1' },
+		{ label: '> 8–10 weeks', color: '#93c5fd' },
+		{ label: '> 10–12 weeks', color: '#3b82f6' },
+		{ label: '> 12 weeks', color: '#0f766e' },
+	],
+	colorScale: getSummerHolidayColor,
+	formatTooltip: ({ value }) => formatSummerHolidayDuration(value),
+	formatPopup: formatSummerHolidayPopup,
+};
 
 export const schoolUniformsStrategy: MapRenderingStrategy = {
 	title: 'School Uniform Policies Across Europe',
@@ -125,8 +298,8 @@ export const schoolUniformsStrategy: MapRenderingStrategy = {
 		},
 		{ label: 'Not used in state schools', color: SCHOOL_UNIFORM_CATEGORY_COLORS.not_used },
 	],
-	colorScale: getSchoolUniformColor,
-	formatTooltip: ({ value }) => getSchoolUniformCategoryLabel(value),
+	colorScale: getCategoricalPolicyColor,
+	formatTooltip: ({ value }) => getCategoricalPolicyCategoryLabel(value),
 	formatPopup: formatSchoolUniformPopup,
 };
 
@@ -183,4 +356,6 @@ export const mapStrategies: Record<MapStrategyKey, MapRenderingStrategy> = {
 				: `${value.toFixed(1)}${unit}${year === undefined ? '' : ` (${year})`}`,
 	},
 	'school-uniforms': schoolUniformsStrategy,
+	'free-school-meals': freeSchoolMealsStrategy,
+	'summer-holidays': summerHolidaysStrategy,
 };

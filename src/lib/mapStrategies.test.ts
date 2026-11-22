@@ -1,13 +1,22 @@
 import { describe, expect, it } from 'vitest';
 import {
 	CHILDCARE_NO_DATA_COLOR,
+	FREE_SCHOOL_MEALS_NO_DATA_COLOR,
 	formatSchoolUniformPopup,
+	formatFreeSchoolMealsPopup,
+	formatSummerHolidayPopup,
+	formatSummerHolidayDuration,
 	getChildcareCostColor,
+	getFreeSchoolMealsColor,
+	getSummerHolidayColor,
 	getSchoolUniformColor,
 	getSchoolUniformCategoryLabel,
 	mapStrategies,
+	freeSchoolMealsStrategy,
+	summerHolidaysStrategy,
 	schoolUniformsStrategy,
 	SCHOOL_UNIFORMS_NO_DATA_COLOR,
+	SUMMER_HOLIDAYS_NO_DATA_COLOR,
 } from '@/lib/mapStrategies';
 import { isSafeHttpsUrl } from '@/lib/adapters/schoolUniformsAdapter';
 import type { MapTooltipContext } from '@/lib/mapStrategies';
@@ -143,6 +152,112 @@ describe('school uniforms map strategy', () => {
 			note: 'Uniform policy is set by individual schools.',
 			sourceLabel: 'UK Department for Education',
 			sourceUrl: 'https://www.gov.uk/example',
+		});
+	});
+
+	describe('summer holidays map strategy', () => {
+		it.each([
+			[8, '#cbd5e1'],
+			[8.1, '#93c5fd'],
+			[10, '#93c5fd'],
+			[10.1, '#3b82f6'],
+			[12, '#3b82f6'],
+			[12.1, '#0f766e'],
+			[null, SUMMER_HOLIDAYS_NO_DATA_COLOR],
+			[undefined, SUMMER_HOLIDAYS_NO_DATA_COLOR],
+		])('maps %s weeks to the correct Eurydice bucket', (weeks, color) => {
+			expect(getSummerHolidayColor(weeks)).toBe(color);
+			expect(summerHolidaysStrategy.colorScale(weeks ?? null)).toBe(color);
+		});
+
+		it('formats duration values for hover and selected-country details', () => {
+			const context = {
+				...schoolUniformContext({
+					country: 'Italy',
+					value: 13,
+					note: 'The summer break lasts about thirteen weeks.',
+					sourceLabel: 'Eurydice – European School Calendars',
+					sourceUrl: 'https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars',
+				}),
+				indicator: 'Summer school holiday duration',
+				unit: 'weeks',
+			};
+
+			expect(formatSummerHolidayDuration(13)).toBe('~13 weeks');
+			expect(summerHolidaysStrategy.formatTooltip(context)).toBe('~13 weeks');
+			expect(formatSummerHolidayPopup(context)).toEqual({
+				valueLabel: '~13 weeks',
+				note: 'The summer break lasts about thirteen weeks.',
+				sourceLabel: 'Eurydice – European School Calendars',
+				sourceUrl: 'https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars',
+			});
+		});
+
+		it('omits unsafe external sources from the selected-country details', () => {
+			expect(
+				formatSummerHolidayPopup(
+					schoolUniformContext({
+						value: 9,
+						note: 'Summer holidays last about nine weeks.',
+						sourceLabel: 'Unsafe source',
+						sourceUrl: 'http://example.test/source',
+					}),
+				),
+			).toEqual({
+				valueLabel: '~9 weeks',
+				note: 'Summer holidays last about nine weeks.',
+			});
+		});
+	});
+
+	describe('free school meals map strategy', () => {
+		it.each([
+			['universal', '#0f766e'],
+			['partial_universal', '#3b82f6'],
+			['targeted', '#d4a373'],
+			['none', '#cbd5e1'],
+			[null, FREE_SCHOOL_MEALS_NO_DATA_COLOR],
+			['unknown', FREE_SCHOOL_MEALS_NO_DATA_COLOR],
+			[Number.NaN, FREE_SCHOOL_MEALS_NO_DATA_COLOR],
+		])('maps category %s to its qualitative color', (category, color) => {
+			expect(getFreeSchoolMealsColor(category)).toBe(color);
+			expect(freeSchoolMealsStrategy.colorScale(category)).toBe(color);
+		});
+
+		it('uses the category label in the hover tooltip', () => {
+			expect(
+				freeSchoolMealsStrategy.formatTooltip(
+					schoolUniformContext({ value: 'partial_universal' }),
+				),
+			).toBe('Partial Universal / Transitioning');
+		});
+
+		it('formats selected-country details and includes only safe HTTPS links', () => {
+			const context = schoolUniformContext({
+				value: 'universal',
+				note: 'Universal meals are provided to all pupils.',
+				sourceLabel: 'Eurydice – Finland',
+				sourceUrl: 'https://eurydice.eacea.ec.europa.eu/national-education-systems/finland/overview',
+			});
+
+			expect(formatFreeSchoolMealsPopup(context)).toEqual({
+				valueLabel: 'Universal (Primary & Secondary)',
+				note: 'Universal meals are provided to all pupils.',
+				sourceLabel: 'Eurydice – Finland',
+				sourceUrl:
+					'https://eurydice.eacea.ec.europa.eu/national-education-systems/finland/overview',
+			});
+			for (const sourceUrl of ['http://example.test/source', 'javascript:alert(1)']) {
+				expect(
+					formatFreeSchoolMealsPopup({
+						...context,
+						sourceUrl,
+					}),
+				).toEqual({
+					valueLabel: 'Universal (Primary & Secondary)',
+					note: 'Universal meals are provided to all pupils.',
+				});
+			}
 		});
 	});
 
