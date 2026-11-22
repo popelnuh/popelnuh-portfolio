@@ -46,13 +46,19 @@ Live site: [salmon-water-0ad7f5510.8.azurestaticapps.net](https://salmon-water-0
 ├── tests/
 │   ├── components/
 │   │   └── NavBarComponent.ts
+│   ├── features/
+│   │   ├── about.feature
+│   │   ├── home.feature
+│   │   └── maps.feature
 │   ├── fixtures/
 │   │   └── test.ts
 │   ├── pages/
 │   │   ├── AboutPage.ts
 │   │   ├── HomePage.ts
 │   │   └── MapsPage.ts
-│   └── pages.spec.ts
+│   ├── steps/
+│   │   ├── maps.steps.ts
+│   │   └── site.steps.ts
 ├── .mcp.json
 ├── astro.config.mjs
 ├── package.json
@@ -89,7 +95,8 @@ npm run check
 
 ## Testing & CI/CD
 
-Install the Playwright Chromium browser once, then run the end-to-end tests:
+Install the Playwright Chromium browser once, then run the end-to-end tests. The test
+command generates Playwright tests from the Gherkin feature files before running them:
 
 ```sh
 npx playwright install chromium
@@ -98,7 +105,23 @@ npm run test:e2e
 
 ### Playwright MCP
 
-The workspace Playwright MCP server is configured in `.mcp.json`. Start the site with `npm run dev`, then use prompts like these in Copilot:
+The workspace Playwright MCP server is configured in the root [`.mcp.json`](./.mcp.json):
+
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"],
+      "tools": ["*"]
+    }
+  }
+}
+```
+
+The config file also contains commented examples for stdio, HTTP, and SSE server options. Start
+the site with `npm run dev`, then use prompts like these in Copilot:
 
 - “Open `http://localhost:4321/maps`. Inspect the map, legend, navigation, and attribution. Report usability issues without changing files.”
 - “On `/maps`, click Spain, the UK, and Türkiye. Report each popup value and whether the no-data country is styled as expected.”

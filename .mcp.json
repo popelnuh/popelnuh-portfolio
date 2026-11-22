@@ -6,5 +6,6 @@
       "args": ["-y", "@playwright/mcp@latest"],
       "tools": ["*"]
     }
+
   }
 }

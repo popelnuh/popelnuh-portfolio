@@ -10,6 +10,7 @@ node_modules/
 # Playwright
 playwright-report/
 test-results/
+.features-gen/
 
 # logs
 npm-debug.log*

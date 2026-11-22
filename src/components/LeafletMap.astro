@@ -38,11 +38,10 @@ const {
 		const metricsUrl = container.dataset.metricsUrl ?? '/data/renewable-energy.json';
 		const map = L.map(container);
 
-		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			maxZoom: 19,
-			attribution:
-				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | &copy; EuroGeographics for the administrative boundaries',
-		}).addTo(map);
+		map.attributionControl.setPrefix(false);
+		map.attributionControl.addAttribution(
+			'&copy; EuroGeographics for the administrative boundaries',
+		);
 
 		void Promise.all([fetch(boundariesUrl), fetch(metricsUrl)])
 			.then(async ([boundariesResponse, metricsResponse]) => {
