@@ -45,31 +45,37 @@ import Layout from '../layouts/Layout.astro';
 	<section class="highlights" aria-labelledby="focus-heading">
 		<h2 id="focus-heading">Focus Areas</h2>
 		<div class="highlight-grid">
-			<article class="highlight-card">
-				<p class="card-tag">01 / QUALITY</p>
-				<h3>Test Automation &amp; Reliability</h3>
-				<p>
-					Designing scalable Playwright and .NET/C# frameworks, CI/CD quality pipelines, and
-					end-to-end performance checks for reliable software delivery.
-				</p>
+			<article>
+				<a class="highlight-card" href="/quality" data-testid="focus-quality-link">
+					<p class="card-tag">01 / QUALITY</p>
+					<h3>Test Automation &amp; Reliability</h3>
+					<p>
+						Designing scalable Playwright and .NET/C# frameworks, CI/CD quality pipelines, and
+						end-to-end performance checks for reliable software delivery.
+					</p>
+				</a>
 			</article>
 
-			<article class="highlight-card">
-				<p class="card-tag">02 / ARCHITECTURE</p>
-				<h3>Clean Patterns &amp; AI Validation</h3>
-				<p>
-					Applying Adapter, Strategy, and Page Object Model patterns alongside deterministic
-					guardrails and unit-tested contracts for AI-assisted workflows.
-				</p>
+			<article>
+				<a class="highlight-card" href="/quality" data-testid="focus-architecture-link">
+					<p class="card-tag">02 / ARCHITECTURE</p>
+					<h3>Clean Patterns &amp; AI Validation</h3>
+					<p>
+						Applying Adapter, Strategy, and Page Object Model patterns alongside deterministic
+						guardrails and unit-tested contracts for AI-assisted workflows.
+					</p>
+				</a>
 			</article>
 
-			<article class="highlight-card">
-				<p class="card-tag">03 / GEOSPATIAL</p>
-				<h3>Interactive European Maps</h3>
-				<p>
-					Visualizing comparative European energy, childcare, and education policy datasets with
-					Leaflet, Eurostat GISCO boundaries, and OECD data.
-				</p>
+			<article>
+				<a class="highlight-card" href="/maps" data-testid="focus-geospatial-link">
+					<p class="card-tag">03 / GEOSPATIAL</p>
+					<h3>Interactive European Maps</h3>
+					<p>
+						Visualizing comparative European energy, childcare, and education policy datasets with
+						Leaflet, Eurostat GISCO boundaries, and OECD data.
+					</p>
+				</a>
 			</article>
 		</div>
 	</section>
@@ -189,12 +195,29 @@ import Layout from '../layouts/Layout.astro';
 	}
 
 	.highlight-card {
+		display: block;
+		height: 100%;
 		padding: 21px 22px 23px;
 		border: 1px solid var(--border-subtle);
 		border-top: 3px solid var(--accent);
 		border-radius: 12px;
 		background: #fff;
 		box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+		color: inherit;
+		text-decoration: none;
+		transition:
+			transform 160ms ease,
+			box-shadow 160ms ease;
+	}
+
+	.highlight-card:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 14px 28px rgba(15, 23, 42, 0.09);
+	}
+
+	.highlight-card:focus-visible {
+		outline: 3px solid rgba(30, 41, 59, 0.28);
+		outline-offset: 3px;
 	}
 
 	.card-tag {
@@ -237,6 +260,14 @@ import Layout from '../layouts/Layout.astro';
 		}
 
 		.button:hover {
+			transform: none;
+		}
+
+		.highlight-card {
+			transition: none;
+		}
+
+		.highlight-card:hover {
 			transform: none;
 		}
 	}

@@ -40,6 +40,12 @@ Then('the home page shows three focus areas', async ({ homePage }) => {
 		.toBeVisible();
 });
 
+Then('the focus area cards link to their destinations', async ({ homePage }) => {
+	await expect(homePage.qualityFocusLink).toHaveAttribute('href', '/quality');
+	await expect(homePage.architectureFocusLink).toHaveAttribute('href', '/quality');
+	await expect(homePage.geospatialFocusLink).toHaveAttribute('href', '/maps');
+});
+
 Then('the home page offers Maps and About links', async ({ homePage }) => {
 	await expect(homePage.exploreMapsLink).toHaveAttribute('href', '/maps');
 	await expect(homePage.aboutLink).toHaveAttribute('href', '/about');

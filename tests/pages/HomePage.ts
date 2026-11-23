@@ -8,6 +8,9 @@ export class HomePage {
 	readonly aboutLink: Locator;
 	readonly exploreMapsLink: Locator;
 	readonly focusAreas: Locator;
+	readonly qualityFocusLink: Locator;
+	readonly architectureFocusLink: Locator;
+	readonly geospatialFocusLink: Locator;
 	readonly svgFavicon: Locator;
 	readonly faviconLinks: Locator;
 	readonly descriptionMeta: Locator;
@@ -23,6 +26,9 @@ export class HomePage {
 		this.aboutLink = page.getByRole('link', { name: 'Learn more about me', exact: true });
 		this.exploreMapsLink = page.getByRole('link', { name: 'Explore Maps' });
 		this.focusAreas = page.getByRole('region', { name: 'Focus Areas' });
+		this.qualityFocusLink = page.getByTestId('focus-quality-link');
+		this.architectureFocusLink = page.getByTestId('focus-architecture-link');
+		this.geospatialFocusLink = page.getByTestId('focus-geospatial-link');
 		this.svgFavicon = page.getByTestId('favicon-link');
 		this.faviconLinks = page.getByTestId('favicon-link');
 		this.descriptionMeta = page.getByTestId('description-meta');
@@ -38,5 +44,9 @@ export class HomePage {
 
 	async openAbout(): Promise<void> {
 		await this.aboutLink.click();
+	}
+
+	async openQualityFromFocusCard(): Promise<void> {
+		await this.qualityFocusLink.click();
 	}
 }
