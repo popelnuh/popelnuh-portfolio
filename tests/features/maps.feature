@@ -115,3 +115,21 @@ Feature: European data maps
     Given I open the Maps page
     When I switch to the Free School Meals map
     Then the Maps URL includes dataset "free-school-meals"
+
+  Scenario: Keep the URL in sync while switching map datasets
+    Given I open the Maps page
+    When I switch to the Childcare Costs map
+    Then the selected map tab and URL match dataset "childcare"
+    When I switch to the School Uniforms map
+    Then the selected map tab and URL match dataset "school-uniforms"
+    When I switch to the Free School Meals map
+    Then the selected map tab and URL match dataset "free-school-meals"
+    When I switch to the Summer Holidays map
+    Then the selected map tab and URL match dataset "summer-holidays"
+    When I switch to the School Starting Age map
+    Then the selected map tab and URL match dataset "school-starting-age"
+    When I switch to the Teacher Qualifications map
+    Then the selected map tab and URL match dataset "teacher-qualifications"
+    When I switch to the Religion in Schools map
+    Then the selected map tab and URL match dataset "religious-education"
+    And the map dataset tab flow completes without browser errors

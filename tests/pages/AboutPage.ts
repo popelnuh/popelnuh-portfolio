@@ -16,6 +16,9 @@ export class AboutPage {
 	readonly experience: Locator;
 	readonly coreStack: Locator;
 	readonly footer: Locator;
+	readonly liveE2EBadge: Locator;
+	readonly liveE2EBadgeImage: Locator;
+	readonly liveE2EReportLink: Locator;
 
 	constructor(private readonly page: Page) {
 		this.nav = new NavBarComponent(page);
@@ -32,6 +35,9 @@ export class AboutPage {
 		this.experience = page.getByText('10+ years in QA & Automation', { exact: true });
 		this.coreStack = page.getByRole('list', { name: 'Core technologies' });
 		this.footer = page.getByRole('contentinfo');
+		this.liveE2EBadge = page.getByTestId('footer-live-e2e-badge');
+		this.liveE2EBadgeImage = this.liveE2EBadge.getByRole('img', { name: 'Live E2E status' });
+		this.liveE2EReportLink = page.getByTestId('footer-live-e2e-report');
 	}
 
 	async goto(): Promise<void> {

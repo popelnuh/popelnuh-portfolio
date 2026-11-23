@@ -18,12 +18,15 @@ export default defineConfig({
 			testDir: bddTestDir,
 		},
 	],
+	reporter: [['html', { open: 'never' }]],
 	use: {
-		baseURL: 'http://localhost:4321',
+		baseURL: process.env.BASE_URL || 'http://localhost:4321',
 	},
-	webServer: {
-		command: 'npm run dev',
-		url: 'http://localhost:4321',
-		reuseExistingServer: !process.env.CI,
-	},
+	webServer: process.env.BASE_URL
+		? undefined
+		: {
+				command: 'npm run dev',
+				url: 'http://localhost:4321',
+				reuseExistingServer: !process.env.CI,
+			},
 });

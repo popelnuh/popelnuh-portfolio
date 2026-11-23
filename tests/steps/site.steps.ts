@@ -139,6 +139,25 @@ Then('the site footer is visible', async ({ aboutPage }) => {
 		'https://img.shields.io/github/actions/workflow/status/popelnuh/popelnuh-portfolio/unit-tests.yml?branch=main&style=flat-square&label=Unit%20Tests&labelColor=0f172a&color=10b981',
 	);
 	await expect(unitImage).toHaveCSS('height', '20px');
+
+	await expect(aboutPage.liveE2EBadge).toHaveAttribute(
+		'href',
+		'https://github.com/popelnuh/popelnuh-portfolio/actions/workflows/scheduled-e2e.yml',
+	);
+	await expect(aboutPage.liveE2EBadge).toHaveAttribute('target', '_blank');
+	await expect(aboutPage.liveE2EBadge).toHaveAttribute('rel', 'noopener noreferrer');
+	await expect(aboutPage.liveE2EBadgeImage).toHaveAttribute(
+		'src',
+		'https://img.shields.io/github/actions/workflow/status/popelnuh/popelnuh-portfolio/scheduled-e2e.yml?branch=main&style=flat-square&label=Live%20E2E&labelColor=0f172a&color=10b981',
+	);
+	await expect(aboutPage.liveE2EBadgeImage).toHaveCSS('height', '20px');
+	await expect(aboutPage.liveE2EReportLink).toHaveText('Latest Test Report');
+	await expect(aboutPage.liveE2EReportLink).toHaveAttribute(
+		'href',
+		'https://popelnuh.github.io/popelnuh-portfolio/',
+	);
+	await expect(aboutPage.liveE2EReportLink).toHaveAttribute('target', '_blank');
+	await expect(aboutPage.liveE2EReportLink).toHaveAttribute('rel', 'noopener noreferrer');
 });
 
 Then('the profile grid has two columns on desktop', async ({ aboutPage }) => {

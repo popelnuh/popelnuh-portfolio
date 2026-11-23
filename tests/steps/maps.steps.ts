@@ -16,6 +16,15 @@ Then('the Maps URL includes dataset {string}', async ({ mapsPage }, datasetKey) 
 	expect(new URL(mapsPage.getCurrentUrl()).searchParams.get('dataset')).toBe(datasetKey);
 });
 
+Then('the selected map tab and URL match dataset {string}', async ({ mapsPage }, datasetKey) => {
+	await expect(mapsPage.selectedDatasetTab).toHaveAttribute('data-dataset', datasetKey);
+	expect(new URL(mapsPage.getCurrentUrl()).searchParams.get('dataset')).toBe(datasetKey);
+});
+
+Then('the map dataset tab flow completes without browser errors', async ({ mapsPage }) => {
+	expect(mapsPage.getErrors()).toEqual([]);
+});
+
 Then('the Maps contents links point to all map sections', async ({ mapsPage }) => {
 	await expect(mapsPage.educationContentsLink).toHaveAttribute(
 		'href',

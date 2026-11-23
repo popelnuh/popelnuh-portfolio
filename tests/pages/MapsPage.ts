@@ -20,6 +20,7 @@ export class MapsPage {
 	readonly schoolStartingAgeTab: Locator;
 	readonly teacherQualificationsTab: Locator;
 	readonly religiousEducationTab: Locator;
+	readonly selectedDatasetTab: Locator;
 	readonly childcareHeading: Locator;
 	readonly childcareLegend: Locator;
 	readonly childcareSwatch: Locator;
@@ -123,6 +124,7 @@ export class MapsPage {
 		this.religiousEducationTab = this.tabList.getByRole('tab', {
 			name: 'Religion in Schools',
 		});
+		this.selectedDatasetTab = this.tabList.getByRole('tab', { selected: true });
 		this.childcareHeading = page.getByRole('heading', {
 			name: 'Net Childcare Costs Across Europe',
 		});
