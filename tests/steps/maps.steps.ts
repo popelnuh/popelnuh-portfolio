@@ -8,6 +8,14 @@ Given('I open the Maps page', async ({ mapsPage }) => {
 	await mapsPage.goto();
 });
 
+Given('I open the Maps page with dataset {string}', async ({ mapsPage }, datasetKey) => {
+	await mapsPage.gotoDataset(datasetKey);
+});
+
+Then('the Maps URL includes dataset {string}', async ({ mapsPage }, datasetKey) => {
+	expect(new URL(mapsPage.getCurrentUrl()).searchParams.get('dataset')).toBe(datasetKey);
+});
+
 Then('the Maps contents links point to all map sections', async ({ mapsPage }) => {
 	await expect(mapsPage.educationContentsLink).toHaveAttribute(
 		'href',

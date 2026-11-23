@@ -240,6 +240,7 @@ import { mapStrategies } from '../lib/mapStrategies';
 <script>
 	import { mapStrategies, type MapStrategyKey } from '../lib/mapStrategies';
 	import { selectCategoricalPolicyDataset } from '../lib/mapRepository';
+	import { buildDatasetUrl, resolveDatasetFromSearch } from '../lib/urlState';
 
 	const datasetTabList = document.querySelector<HTMLDivElement>(
 		'[role="tablist"][aria-label="Map datasets"]',
@@ -247,10 +248,11 @@ import { mapStrategies } from '../lib/mapStrategies';
 	const tabs = datasetTabList
 		? Array.from(
 				datasetTabList.querySelectorAll<HTMLButtonElement>(
-					'button[role="tab"][data-map-strategy]',
+					'button[role="tab"][data-dataset]',
 				),
 			)
 		: [];
+	const datasetKeys = tabs.map((tab) => tab.dataset.dataset).filter(isMapStrategyKey);
 	const title = document.querySelector<HTMLElement>('#metric-title');
 	const description = document.querySelector<HTMLElement>('#metric-description');
 	const legend = document.querySelector<HTMLUListElement>('#metric-legend');
@@ -281,7 +283,7 @@ import { mapStrategies } from '../lib/mapStrategies';
 		);
 	}
 
-	function selectStrategy(key: MapStrategyKey): void {
+	function selectStrategy(key: MapStrategyKey, updateUrl = false): void {
 		const strategy = mapStrategies[key];
 		if (!title || !description || !legend || !sourceLink || !sourceDetail || !panel || !map) return;
 		selectedStrategyKey = key;
@@ -307,10 +309,14 @@ import { mapStrategies } from '../lib/mapStrategies';
 		map.setAttribute('aria-label', strategy.ariaLabel);
 
 		for (const tab of tabs) {
-			const selected = tab.dataset.mapStrategy === key;
+			const selected = tab.dataset.dataset === key;
 			tab.setAttribute('aria-selected', String(selected));
 			tab.setAttribute('tabindex', selected ? '0' : '-1');
 			tab.classList.toggle('active', selected);
+		}
+
+		if (updateUrl) {
+			window.history.replaceState(null, '', buildDatasetUrl(window.location.href, key));
 		}
 
 		const rendererStrategyKey =
@@ -334,8 +340,8 @@ import { mapStrategies } from '../lib/mapStrategies';
 
 	for (const tab of tabs) {
 		tab.addEventListener('click', () => {
-			const key = tab.dataset.mapStrategy;
-			if (isMapStrategyKey(key)) selectStrategy(key);
+			const key = tab.dataset.dataset;
+			if (isMapStrategyKey(key)) selectStrategy(key, true);
 		});
 		tab.addEventListener('keydown', (event) => {
 			const currentIndex = tabs.indexOf(tab);
@@ -350,9 +356,19 @@ import { mapStrategies } from '../lib/mapStrategies';
 			event.preventDefault();
 			const nextTab = tabs[nextIndex];
 			nextTab?.focus();
-			const key = nextTab?.dataset.mapStrategy;
-			if (isMapStrategyKey(key)) selectStrategy(key);
+			const key = nextTab?.dataset.dataset;
+			if (isMapStrategyKey(key)) selectStrategy(key, true);
 		});
+	}
+
+	const defaultDatasetKey = tabs[0]?.dataset.dataset;
+	if (defaultDatasetKey && isMapStrategyKey(defaultDatasetKey)) {
+		const initialDatasetKey = resolveDatasetFromSearch(
+			window.location.search,
+			datasetKeys,
+			defaultDatasetKey,
+		);
+		if (isMapStrategyKey(initialDatasetKey)) selectStrategy(initialDatasetKey);
 	}
 </script>
 

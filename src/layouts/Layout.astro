@@ -45,6 +45,21 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 						data-testid="nav-about">About</a
 					>
 					<a
+						href="/blog"
+						class={
+							currentPathname === '/blog' || currentPathname.startsWith('/blog/')
+								? 'active'
+								: undefined
+						}
+						aria-current={
+							currentPathname === '/blog' || currentPathname.startsWith('/blog/')
+								? 'page'
+								: undefined
+						}
+						data-track="nav-blog"
+						data-testid="nav-blog">Blog</a
+					>
+					<a
 						href="/maps"
 						class={currentPathname === '/maps' ? 'active' : undefined}
 						aria-current={currentPathname === '/maps' ? 'page' : undefined}
