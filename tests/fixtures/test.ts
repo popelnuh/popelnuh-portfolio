@@ -4,12 +4,14 @@ import { AboutPage } from '../pages/AboutPage';
 import { BlogPage } from '../pages/BlogPage';
 import { HomePage } from '../pages/HomePage';
 import { MapsPage } from '../pages/MapsPage';
+import { QualityPage } from '../pages/QualityPage';
 
 type PageFixtures = {
 	aboutPage: AboutPage;
 	blogPage: BlogPage;
 	homePage: HomePage;
 	mapsPage: MapsPage;
+	qualityPage: QualityPage;
 };
 
 export const test = base.extend<PageFixtures>({
@@ -24,6 +26,9 @@ export const test = base.extend<PageFixtures>({
 	},
 	mapsPage: async ({ page }, use) => {
 		await use(new MapsPage(page));
+	},
+	qualityPage: async ({ page }, use) => {
+		await use(new QualityPage(page));
 	},
 });
 
