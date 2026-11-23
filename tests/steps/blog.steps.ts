@@ -28,7 +28,7 @@ Then('the starter essay shows its title, reading time, and prose', async ({ blog
 	await expect(blogPage.essayHeading).toBeVisible();
 	await expect(blogPage.readingTime).toBeVisible();
 	await expect(blogPage.essayArticle).toContainText(
-		'School feels familiar almost everywhere',
+		'I have frequently noticed odd differences in how my British partner and I experienced our school years.',
 	);
 	expect(blogPage.getErrors()).toEqual([]);
 });

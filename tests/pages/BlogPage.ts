@@ -19,10 +19,10 @@ export class BlogPage {
 		this.publishedEssays = page.getByRole('list', { name: 'Published essays' });
 		this.essayCards = page.getByTestId('blog-post-card');
 		this.starterEssayLink = page.getByRole('link', {
-			name: /The Invisible Defaults of European Schooling/,
+			name: /Comparing School Years Across Europe/,
 		});
 		this.essayHeading = page.getByRole('heading', {
-			name: 'The Invisible Defaults of European Schooling',
+			name: 'Comparing School Years Across Europe',
 			level: 1,
 		});
 		this.readingTime = page.getByText(/^\d+ min read$/, { exact: true });
