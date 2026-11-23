@@ -11,7 +11,7 @@ export class NavBarComponent {
 
 		this.homeLink = navigation.getByRole('link', { name: 'Home', exact: true });
 		this.aboutLink = navigation.getByRole('link', { name: 'About', exact: true });
-		this.blogLink = navigation.getByRole('link', { name: 'Blog', exact: true });
+		this.blogLink = page.getByTestId('nav-blog');
 		this.mapsLink = navigation.getByRole('link', { name: 'Maps', exact: true });
 	}
 }

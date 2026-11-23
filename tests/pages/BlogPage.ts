@@ -15,19 +15,16 @@ export class BlogPage {
 
 	constructor(private readonly page: Page) {
 		this.nav = new NavBarComponent(page);
-		this.heading = page.getByRole('heading', { name: 'Blog', exact: true });
-		this.publishedEssays = page.getByRole('list', { name: 'Published essays' });
+		this.heading = page.getByTestId('blog-heading');
+		this.publishedEssays = page.getByTestId('blog-published-essays');
 		this.essayCards = page.getByTestId('blog-post-card');
-		this.starterEssayLink = page.getByRole('link', {
-			name: /Comparing School Years Across Europe/,
-		});
-		this.essayHeading = page.getByRole('heading', {
-			name: 'Comparing School Years Across Europe',
-			level: 1,
-		});
-		this.readingTime = page.getByText(/^\d+ min read$/, { exact: true });
-		this.essayArticle = page.getByRole('article');
-		this.relatedMapLink = page.getByRole('link', { name: 'Explore the interactive map' });
+		this.starterEssayLink = page
+			.getByTestId('blog-post-entry-european-school-differences')
+			.getByTestId('blog-post-card');
+		this.essayHeading = page.getByTestId('blog-essay-title');
+		this.readingTime = page.getByTestId('blog-reading-time');
+		this.essayArticle = page.getByTestId('blog-essay-content');
+		this.relatedMapLink = page.getByTestId('blog-related-map-link');
 
 		page.on('pageerror', (error) => this.browserErrors.push(error.message));
 		page.on('console', (message) => {

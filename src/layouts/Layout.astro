@@ -114,7 +114,29 @@ const currentPathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 							height="20"
 						/>
 					</a>
+					<a
+						class="actions-badge"
+						href="https://github.com/popelnuh/popelnuh-portfolio/actions/workflows/scheduled-e2e.yml"
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label="Live E2E workflow status"
+						data-track="footer-live-e2e-badge"
+						data-testid="footer-live-e2e-badge"
+					>
+						<img
+							src="https://img.shields.io/github/actions/workflow/status/popelnuh/popelnuh-portfolio/scheduled-e2e.yml?branch=main&amp;style=flat-square&amp;label=Live%20E2E&amp;labelColor=0f172a&amp;color=10b981"
+							alt="Live E2E status"
+							height="20"
+						/>
+					</a>
 				</div>
+				<a
+					class="playwright-link"
+					href="https://popelnuh.github.io/popelnuh-portfolio/"
+					target="_blank"
+					rel="noopener noreferrer"
+					data-testid="footer-live-e2e-report">Latest Test Report</a
+				>
 			</div>
 		</footer>
 	</body>

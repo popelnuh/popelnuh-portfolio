@@ -27,7 +27,7 @@ const readingTime = estimateReadingTime(post.body ?? '');
 		<article>
 			<header class="essay-header">
 				<p class="eyebrow">PERSONAL ESSAY</p>
-				<h1>{post.data.title}</h1>
+				<h1 data-testid="blog-essay-title">{post.data.title}</h1>
 				<div class="post-meta">
 					<time datetime={post.data.pubDate.toISOString()}>
 						{formatPostDate(post.data.pubDate)}
@@ -41,12 +41,12 @@ const readingTime = estimateReadingTime(post.body ?? '');
 						)
 					}
 					<span aria-hidden="true">·</span>
-					<span>{readingTime} min read</span>
+					<span data-testid="blog-reading-time">{readingTime} min read</span>
 				</div>
 				<p class="description">{post.data.description}</p>
 			</header>
 
-			<div class="essay-content">
+			<div class="essay-content" data-testid="blog-essay-content">
 				<Content />
 			</div>
 		</article>
