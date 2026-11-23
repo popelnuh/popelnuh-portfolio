@@ -100,3 +100,18 @@ Feature: European data maps
     Then the tooltip shows the UK's religious education policy
     When I select the UK
     Then the UK religious education popup shows its note and source link
+
+  Scenario: Open a map dataset from a direct link
+    Given I open the Maps page with dataset "school-uniforms"
+    Then the school uniform heading, legend, and map load without browser errors
+
+  Scenario: Fall back to the default dataset for an invalid link
+    Given I open the Maps page with dataset "nonexistent"
+    Then the map dataset tabs are rendered with Childcare Costs selected
+    And the childcare heading, legend, and source are shown
+    And the childcare map renders without browser errors
+
+  Scenario: Keep the selected dataset in the URL
+    Given I open the Maps page
+    When I switch to the Free School Meals map
+    Then the Maps URL includes dataset "free-school-meals"

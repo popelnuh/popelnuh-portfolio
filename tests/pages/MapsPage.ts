@@ -268,9 +268,17 @@ export class MapsPage {
 		});
 	}
 
-	async goto(): Promise<void> {
+	async goto(path = '/maps'): Promise<void> {
 		this.selectedMap = 'education';
-		await this.page.goto('/maps');
+		await this.page.goto(path);
+	}
+
+	async gotoDataset(datasetKey: string): Promise<void> {
+		await this.goto(`/maps?dataset=${encodeURIComponent(datasetKey)}`);
+	}
+
+	getCurrentUrl(): string {
+		return this.page.url();
 	}
 
 	async followWorldContentsLink(): Promise<void> {
