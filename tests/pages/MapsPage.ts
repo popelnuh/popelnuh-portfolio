@@ -7,10 +7,18 @@ export class MapsPage {
 	readonly nav: NavBarComponent;
 	readonly heading: Locator;
 	readonly pageContents: Locator;
+	readonly activePageContentsLink: Locator;
 	readonly educationContentsLink: Locator;
 	readonly worldContentsLink: Locator;
+	readonly heyerdahlContentsLink: Locator;
 	readonly renewableContentsLink: Locator;
 	readonly educationInsightsSection: Locator;
+	readonly heyerdahlSection: Locator;
+	readonly heyerdahlMap: Locator;
+	readonly heyerdahlMapStatus: Locator;
+	readonly heyerdahlMapSvg: Locator;
+	readonly heyerdahlRoutePaths: Locator;
+	readonly heyerdahlFilters: Locator;
 	readonly renewableMapSection: Locator;
 	readonly tabList: Locator;
 	readonly childcareTab: Locator;
@@ -95,16 +103,33 @@ export class MapsPage {
 	constructor(private readonly page: Page) {
 		this.nav = new NavBarComponent(page);
 		this.heading = page.getByRole('heading', { name: 'Maps', exact: true });
-		this.pageContents = page.getByRole('navigation', { name: 'Page contents' });
+		this.pageContents = page.getByRole('navigation', { name: 'On this page' });
+		this.activePageContentsLink = this.pageContents.getByRole('link', {
+			current: 'location',
+		});
 		this.educationContentsLink = this.pageContents.getByRole('link', {
 			name: 'European Children Education Insights',
 		});
 		this.worldContentsLink = this.pageContents.getByRole('link', { name: 'World Travel Map' });
+		this.heyerdahlContentsLink = this.pageContents.getByRole('link', {
+			name: "Thor Heyerdahl's Maritime Expeditions",
+		});
 		this.renewableContentsLink = this.pageContents.getByRole('link', {
 			name: 'Renewable Energy',
 		});
 		this.educationInsightsSection = page.getByRole('region', {
 			name: 'European Children Education Insights',
+		});
+		this.heyerdahlSection = page.getByRole('region', {
+			name: "Thor Heyerdahl's Maritime Expeditions",
+			exact: true,
+		});
+		this.heyerdahlMap = this.heyerdahlSection.getByTestId('heyerdahl-map-shell');
+		this.heyerdahlMapStatus = this.heyerdahlMap.getByRole('status');
+		this.heyerdahlMapSvg = this.heyerdahlMap.getByTestId('heyerdahl-routes-svg');
+		this.heyerdahlRoutePaths = this.heyerdahlMap.getByTestId(/^heyerdahl-route-/);
+		this.heyerdahlFilters = this.heyerdahlMap.getByRole('group', {
+			name: 'Filter expeditions',
 		});
 		this.renewableMapSection = page.getByRole('region', {
 			name: 'Renewable Energy',
@@ -279,12 +304,48 @@ export class MapsPage {
 		await this.goto(`/maps?dataset=${encodeURIComponent(datasetKey)}`);
 	}
 
+	async setDesktopViewport(): Promise<void> {
+		await this.page.setViewportSize({ width: 1280, height: 900 });
+	}
+
+	async setMobileViewport(): Promise<void> {
+		await this.page.setViewportSize({ width: 390, height: 844 });
+	}
+
+	async hasHorizontalOverflow(): Promise<boolean> {
+		return this.page.evaluate(
+			() => document.documentElement.scrollWidth > document.documentElement.clientWidth,
+		);
+	}
+
+	async contentsAreAboveFirstMap(): Promise<boolean> {
+		return this.page.evaluate(() => {
+			const contents = document.querySelector<HTMLElement>('.maps-contents');
+			const firstMap = document.getElementById('european-education-insights');
+			return Boolean(
+				contents &&
+					firstMap &&
+					contents.getBoundingClientRect().bottom <= firstMap.getBoundingClientRect().top,
+			);
+		});
+	}
+
+	async contentsSidebarIsSticky(): Promise<boolean> {
+		return this.pageContents.evaluate(
+			(navigation) => getComputedStyle(navigation.parentElement!).position === 'sticky',
+		);
+	}
+
 	getCurrentUrl(): string {
 		return this.page.url();
 	}
 
 	async followWorldContentsLink(): Promise<void> {
 		await this.worldContentsLink.click();
+	}
+
+	async followHeyerdahlContentsLink(): Promise<void> {
+		await this.heyerdahlContentsLink.click();
 	}
 
 	async viewRenewableEnergySection(): Promise<void> {

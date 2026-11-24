@@ -16,11 +16,16 @@ When('I open the starter essay', async ({ blogPage }) => {
 	await blogPage.openStarterEssay();
 });
 
+When("I open the Thor Heyerdahl essay", async ({ blogPage }) => {
+	await blogPage.openHeyerdahlEssay();
+});
+
 Then('the Blog index lists published essays without browser errors', async ({ blogPage }) => {
 	await expect(blogPage.heading).toBeVisible();
 	await expect(blogPage.publishedEssays).toBeVisible();
-	await expect(blogPage.essayCards).toHaveCount(1);
+	await expect(blogPage.essayCards).toHaveCount(2);
 	await expect(blogPage.starterEssayLink).toBeVisible();
+	await expect(blogPage.heyerdahlEssayLink).toBeVisible();
 	expect(blogPage.getErrors()).toEqual([]);
 });
 
@@ -50,3 +55,36 @@ Then('the Summer Holidays dataset is active', async ({ blogPage, mapsPage }) => 
 	expect(new URL(blogPage.getCurrentUrl()).searchParams.get('dataset')).toBe('summer-holidays');
 	expect(blogPage.getErrors()).toEqual([]);
 });
+
+Then(
+	'the expedition map renders and its filters work without browser errors',
+	async ({ blogPage }) => {
+		expect(blogPage.getCurrentUrl()).toMatch(/\/blog\/thor-heyerdahl-journeys\/?$/);
+		await expect(blogPage.essayHeading).toHaveText(
+			"Thor Heyerdahl's Maritime Expeditions",
+		);
+		await expect(blogPage.expeditionMap).toBeVisible();
+		await expect(blogPage.expeditionMapStatus).toHaveText(
+			'Map loaded with 4 expeditions.',
+		);
+		await expect(blogPage.expeditionMapSvg).toBeVisible();
+		await expect(blogPage.expeditionRoutePaths).toHaveCount(4);
+
+		for (const filter of [
+			blogPage.allExpeditionsFilter,
+			blogPage.konTikiFilter,
+			blogPage.raIFilter,
+			blogPage.raIIFilter,
+			blogPage.tigrisFilter,
+		]) {
+			await expect(filter).toBeVisible();
+		}
+
+		await blogPage.raIIFilter.click();
+		await expect(blogPage.raIIFilter).toHaveAttribute('aria-pressed', 'true');
+		await expect(blogPage.expeditionRoutePaths).toHaveCount(1);
+		await blogPage.allExpeditionsFilter.click();
+		await expect(blogPage.expeditionRoutePaths).toHaveCount(4);
+		expect(blogPage.getErrors()).toEqual([]);
+	},
+);

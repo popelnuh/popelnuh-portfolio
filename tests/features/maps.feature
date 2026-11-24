@@ -9,6 +9,12 @@ Feature: European data maps
     And the Renewable Energy section follows the World Travel Map
     And the world map renders without browser errors
 
+  Scenario: Navigate the contents to the Thor Heyerdahl expedition map
+    Given I open the Maps page
+    Then the Maps contents links point to all map sections
+    When I follow the Thor Heyerdahl map contents link
+    Then the Thor Heyerdahl map section shows all expedition routes
+
   Scenario: View the interactive choropleth
     Given I open the Maps page
     When I navigate to the Renewable Energy section

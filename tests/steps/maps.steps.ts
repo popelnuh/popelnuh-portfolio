@@ -31,6 +31,7 @@ Then('the Maps contents links point to all map sections', async ({ mapsPage }) =
 		'#european-education-insights',
 	);
 	await expect(mapsPage.worldContentsLink).toHaveAttribute('href', '#world-travel-map');
+	await expect(mapsPage.heyerdahlContentsLink).toHaveAttribute('href', '#heyerdahl-journeys');
 	await expect(mapsPage.renewableContentsLink).toHaveAttribute('href', '#renewable-energy');
 });
 
@@ -45,6 +46,19 @@ Then('the Renewable Energy section follows the World Travel Map', async ({ mapsP
 
 When('I follow the World Travel Map contents link', async ({ mapsPage }) => {
 	await mapsPage.followWorldContentsLink();
+});
+
+When("I follow the Thor Heyerdahl map contents link", async ({ mapsPage }) => {
+	await mapsPage.followHeyerdahlContentsLink();
+});
+
+Then('the Thor Heyerdahl map section shows all expedition routes', async ({ mapsPage }) => {
+	await expect(mapsPage.heyerdahlMap).toBeVisible();
+	await expect(mapsPage.heyerdahlMapStatus).toHaveText('Map loaded with 4 expeditions.');
+	await expect(mapsPage.heyerdahlMapSvg).toBeVisible();
+	await expect(mapsPage.heyerdahlRoutePaths).toHaveCount(4);
+	await expect(mapsPage.heyerdahlFilters).toBeVisible();
+	expect(mapsPage.getErrors()).toEqual([]);
 });
 
 Then('the world travel map section shows 38 countries', async ({ mapsPage }) => {

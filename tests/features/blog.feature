@@ -11,6 +11,11 @@ Feature: Personal essays
     When I open the starter essay
     Then the starter essay shows its title, reading time, and prose
 
+  Scenario: Explore Thor Heyerdahl's maritime expeditions
+    Given I open the Blog page
+    When I open the Thor Heyerdahl essay
+    Then the expedition map renders and its filters work without browser errors
+
   Scenario: Follow an essay's related map link
     Given I open the Blog page
     When I open the starter essay
