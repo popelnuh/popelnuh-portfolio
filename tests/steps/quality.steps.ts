@@ -22,7 +22,7 @@ When('I view the Quality page on mobile', async ({ qualityPage }) => {
 });
 
 Then('the Quality page exposes its status badges and engineering sections', async ({ qualityPage }) => {
-	await expect(qualityPage.statusBadges).toHaveCount(3);
+	await expect(qualityPage.statusBadges).toHaveCount(4);
 	await expect(qualityPage.testPyramidHeading).toBeVisible();
 	await expect(qualityPage.monitoringHeading).toBeVisible();
 	await expect(qualityPage.guardrailsHeading).toBeVisible();
@@ -45,6 +45,9 @@ Then('the workflow descriptions include spaces around their links', async ({ qua
 	);
 	await expect(qualityPage.livePipelineCard).toContainText(
 		'The scheduled E2E workflow runs Playwright',
+	);
+	await expect(qualityPage.securityPipelineCard).toContainText(
+		'The Security Scan workflow runs npm audit and OWASP ZAP Baseline DAST',
 	);
 	expect(qualityPage.getErrors()).toEqual([]);
 });

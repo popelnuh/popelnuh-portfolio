@@ -58,6 +58,19 @@ import Layout from '../layouts/Layout.astro';
 						height="20"
 					/>
 				</a>
+				<a
+					href="https://github.com/popelnuh/popelnuh-portfolio/actions/workflows/security-scan.yml"
+					target="_blank"
+					rel="noopener noreferrer"
+					aria-label="Security scan workflow status"
+					data-testid="quality-security-badge"
+				>
+					<img
+						src="https://img.shields.io/github/actions/workflow/status/popelnuh/popelnuh-portfolio/security-scan.yml?branch=main&amp;style=flat-square&amp;label=Security&amp;labelColor=0f172a&amp;color=10b981"
+						alt="Security status"
+						height="20"
+					/>
+				</a>
 			</div>
 			<a
 				class="report-link"
@@ -146,6 +159,17 @@ import Layout from '../layouts/Layout.astro';
 						{' '}runs Playwright daily against{' '}
 						<a href="https://www.popelnuh.com">popelnuh.com</a>{' '}
 						and publishes each HTML report to GitHub Pages.
+					</p>
+				</li>
+				<li class="pipeline-card" data-testid="quality-security-pipeline">
+					<h3>Weekly security scan</h3>
+					<p>
+						The{' '}
+						<a
+							href="https://github.com/popelnuh/popelnuh-portfolio/blob/main/.github/workflows/security-scan.yml"
+							>Security Scan workflow</a
+						>
+						{' '}runs <code>npm audit</code> and OWASP ZAP Baseline DAST against the live site.
 					</p>
 				</li>
 			</ol>
