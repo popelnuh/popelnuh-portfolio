@@ -15,6 +15,16 @@ Feature: European data maps
     When I follow the Thor Heyerdahl map contents link
     Then the Thor Heyerdahl map section shows all expedition routes
 
+  Scenario: Use responsive map contents navigation
+    Given I open the Maps page
+    Then the Maps contents links point to all map sections
+    And the first map section is active in the contents navigation
+    When I follow the Renewable Energy contents link
+    Then the Renewable Energy section is active and brought into view
+    And the desktop contents sidebar is sticky without horizontal overflow
+    When I view the Maps page on mobile
+    Then the contents navigation is above the maps without horizontal overflow
+
   Scenario: View the interactive choropleth
     Given I open the Maps page
     When I navigate to the Renewable Energy section

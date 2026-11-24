@@ -7,7 +7,6 @@ export class MapsPage {
 	readonly nav: NavBarComponent;
 	readonly heading: Locator;
 	readonly pageContents: Locator;
-	readonly activePageContentsLink: Locator;
 	readonly educationContentsLink: Locator;
 	readonly worldContentsLink: Locator;
 	readonly heyerdahlContentsLink: Locator;
@@ -104,13 +103,12 @@ export class MapsPage {
 		this.nav = new NavBarComponent(page);
 		this.heading = page.getByRole('heading', { name: 'Maps', exact: true });
 		this.pageContents = page.getByRole('navigation', { name: 'On this page' });
-		this.activePageContentsLink = this.pageContents.getByRole('link', {
-			current: 'location',
-		});
 		this.educationContentsLink = this.pageContents.getByRole('link', {
 			name: 'European Children Education Insights',
 		});
-		this.worldContentsLink = this.pageContents.getByRole('link', { name: 'World Travel Map' });
+		this.worldContentsLink = this.pageContents.getByRole('link', {
+			name: 'World Travel Map',
+		});
 		this.heyerdahlContentsLink = this.pageContents.getByRole('link', {
 			name: "Thor Heyerdahl's Maritime Expeditions",
 		});
@@ -136,10 +134,18 @@ export class MapsPage {
 			exact: true,
 		});
 		this.tabList = page.getByRole('tablist', { name: 'Map datasets' });
-		this.childcareTab = this.tabList.getByRole('tab', { name: 'Childcare Costs' });
-		this.schoolUniformsTab = this.tabList.getByRole('tab', { name: 'School Uniforms' });
-		this.freeSchoolMealsTab = this.tabList.getByRole('tab', { name: 'Free School Meals' });
-		this.summerHolidaysTab = this.tabList.getByRole('tab', { name: 'Summer Holidays' });
+		this.childcareTab = this.tabList.getByRole('tab', {
+			name: 'Childcare Costs',
+		});
+		this.schoolUniformsTab = this.tabList.getByRole('tab', {
+			name: 'School Uniforms',
+		});
+		this.freeSchoolMealsTab = this.tabList.getByRole('tab', {
+			name: 'Free School Meals',
+		});
+		this.summerHolidaysTab = this.tabList.getByRole('tab', {
+			name: 'Summer Holidays',
+		});
 		this.schoolStartingAgeTab = this.tabList.getByRole('tab', {
 			name: 'School Starting Age',
 		});
@@ -153,9 +159,13 @@ export class MapsPage {
 		this.childcareHeading = page.getByRole('heading', {
 			name: 'Net Childcare Costs Across Europe',
 		});
-		this.childcareLegend = page.getByRole('list', { name: 'Net childcare cost legend' });
+		this.childcareLegend = page.getByRole('list', {
+			name: 'Net childcare cost legend',
+		});
 		this.childcareSwatch = page.getByTestId('map-legend-swatch').first();
-		this.childcareSource = page.getByRole('link', { name: 'OECD Data Explorer' });
+		this.childcareSource = page.getByRole('link', {
+			name: 'OECD Data Explorer',
+		});
 		this.schoolUniformsHeading = page.getByRole('heading', {
 			name: 'School Uniform Policies Across Europe',
 		});
@@ -166,7 +176,10 @@ export class MapsPage {
 		this.educationMap = this.educationInsightsSection.getByTestId('leaflet-map');
 		this.mapShell = this.renewableMapSection.getByTestId('map-shell');
 		this.educationMapShell = this.educationInsightsSection.getByTestId('map-shell');
-		this.resetViewControl = this.mapShell.getByRole('button', { name: 'Reset view', exact: true });
+		this.resetViewControl = this.mapShell.getByRole('button', {
+			name: 'Reset view',
+			exact: true,
+		});
 		this.zoomInControl = this.map.getByRole('button', { name: 'Zoom in' });
 		this.leafletContainer = this.renewableMapSection.getByRole('region', {
 			name: 'European countries by renewable energy share',
@@ -281,7 +294,10 @@ export class MapsPage {
 			name: 'Reset view',
 			exact: true,
 		});
-		this.worldMapHeading = page.getByRole('heading', { name: 'Countries Visited', exact: true });
+		this.worldMapHeading = page.getByRole('heading', {
+			name: 'Countries Visited',
+			exact: true,
+		});
 		this.worldCountryCount = page.getByText('38 countries', { exact: true });
 		this.franceWorldRegion = this.worldTravelMap.getByTestId('world-region-FRA');
 		this.norwayWorldRegion = this.worldTravelMap.getByTestId('world-region-NOR');
@@ -324,8 +340,8 @@ export class MapsPage {
 			const firstMap = document.getElementById('european-education-insights');
 			return Boolean(
 				contents &&
-					firstMap &&
-					contents.getBoundingClientRect().bottom <= firstMap.getBoundingClientRect().top,
+				firstMap &&
+				contents.getBoundingClientRect().bottom <= firstMap.getBoundingClientRect().top,
 			);
 		});
 	}
@@ -359,9 +375,8 @@ export class MapsPage {
 			const renewableMap = document.getElementById('renewable-energy');
 			return Boolean(
 				worldMap &&
-					renewableMap &&
-					(worldMap.compareDocumentPosition(renewableMap) &
-						Node.DOCUMENT_POSITION_FOLLOWING),
+				renewableMap &&
+				worldMap.compareDocumentPosition(renewableMap) & Node.DOCUMENT_POSITION_FOLLOWING,
 			);
 		});
 	}
