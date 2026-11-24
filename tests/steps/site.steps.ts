@@ -1,8 +1,31 @@
 import { expect } from '@playwright/test';
+import { readFileSync } from 'node:fs';
 import { createBdd } from 'playwright-bdd';
 import { test } from '../fixtures/test';
 
 const { Given, When, Then } = createBdd(test);
+
+interface StaticWebAppConfig {
+	globalHeaders: Record<string, string>;
+}
+
+const securityConfig = JSON.parse(
+	readFileSync(new URL('../../public/staticwebapp.config.json', import.meta.url), 'utf8'),
+) as StaticWebAppConfig;
+
+Given(
+	'I visit the public routes under the configured Content Security Policy',
+	async ({ securityPage }) => {
+		await securityPage.visitPublicRoutesWithPolicy(
+			securityConfig.globalHeaders['Content-Security-Policy'],
+		);
+	},
+);
+
+Then('the routes have no browser errors or policy violations', async ({ securityPage }) => {
+	expect(securityPage.getErrors()).toEqual([]);
+	expect(securityPage.getPolicyViolations()).toEqual([]);
+});
 
 Given('I open the home page', async ({ homePage }) => {
 	await homePage.goto();

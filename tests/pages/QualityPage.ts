@@ -9,6 +9,7 @@ export class QualityPage {
 	readonly unitPipelineCard: Locator;
 	readonly azurePipelineCard: Locator;
 	readonly livePipelineCard: Locator;
+	readonly securityPipelineCard: Locator;
 	readonly testPyramidHeading: Locator;
 	readonly monitoringHeading: Locator;
 	readonly guardrailsHeading: Locator;
@@ -30,6 +31,7 @@ export class QualityPage {
 		this.unitPipelineCard = page.getByTestId('quality-unit-pipeline');
 		this.azurePipelineCard = page.getByTestId('quality-azure-pipeline');
 		this.livePipelineCard = page.getByTestId('quality-live-pipeline');
+		this.securityPipelineCard = page.getByTestId('quality-security-pipeline');
 		this.testPyramidHeading = page.getByRole('heading', { name: 'The Test Pyramid', exact: true });
 		this.monitoringHeading = page.getByRole('heading', {
 			name: 'CI/CD & Synthetic Monitoring',

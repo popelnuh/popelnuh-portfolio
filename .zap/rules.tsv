@@ -1,0 +1,2 @@
+# Rule ID	Action	Description. IGNORE suppresses an alert, WARN keeps it visible without failing, and FAIL fails the scan; tune noisy informational alerts without losing visibility.
+10109	IGNORE	Modern Web Application (informational)
