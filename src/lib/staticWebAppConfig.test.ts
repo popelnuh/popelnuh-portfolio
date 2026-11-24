@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 interface StaticWebAppConfig {
 	globalHeaders: Record<string, string>;
+	responseOverrides?: Record<string, { rewrite: string; statusCode: number }>;
 }
 
 const config = JSON.parse(
@@ -33,5 +34,12 @@ describe('Azure Static Web Apps configuration', () => {
 		]) {
 			expect(policy).toContain(directive);
 		}
+	});
+
+	it('rewrites not-found responses to the custom page without changing the status', () => {
+		expect(config.responseOverrides?.['404']).toEqual({
+			rewrite: '/404',
+			statusCode: 404,
+		});
 	});
 });

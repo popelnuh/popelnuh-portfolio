@@ -4,6 +4,7 @@ import { AboutPage } from '../pages/AboutPage';
 import { BlogPage } from '../pages/BlogPage';
 import { HomePage } from '../pages/HomePage';
 import { MapsPage } from '../pages/MapsPage';
+import { NotFoundPage } from '../pages/NotFoundPage';
 import { QualityPage } from '../pages/QualityPage';
 import { SecurityPage } from '../pages/SecurityPage';
 
@@ -12,6 +13,7 @@ type PageFixtures = {
 	blogPage: BlogPage;
 	homePage: HomePage;
 	mapsPage: MapsPage;
+	notFoundPage: NotFoundPage;
 	qualityPage: QualityPage;
 	securityPage: SecurityPage;
 };
@@ -28,6 +30,9 @@ export const test = base.extend<PageFixtures>({
 	},
 	mapsPage: async ({ page }, use) => {
 		await use(new MapsPage(page));
+	},
+	notFoundPage: async ({ page }, use) => {
+		await use(new NotFoundPage(page));
 	},
 	qualityPage: async ({ page }, use) => {
 		await use(new QualityPage(page));
