@@ -1,7 +1,7 @@
 ---
 title: Thor Heyerdahl's Maritime Expeditions
 description: An interactive map of the Kon-Tiki, Ra I, Ra II, and Tigris voyages.
-pubDate: 2026-11-24
+pubDate: 2026-11-25
 tags:
   - GIS
   - Leaflet
