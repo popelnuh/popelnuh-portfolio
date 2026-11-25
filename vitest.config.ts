@@ -12,5 +12,16 @@ export default defineConfig({
 		include: ['src/lib/**/*.test.ts'],
 		clearMocks: true,
 		restoreMocks: true,
+		coverage: {
+			provider: 'v8',
+			reporter: ['text', 'html', 'json-summary'],
+			reportsDirectory: './coverage',
+			exclude: [
+				'node_modules/',
+				'**/*.test.{js,ts}',
+				'**/*.spec.{js,ts}',
+				'**/*config.{js,ts,mjs,cjs}',
+			],
+		},
 	},
 });

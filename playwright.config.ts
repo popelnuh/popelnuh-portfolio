@@ -18,9 +18,14 @@ export default defineConfig({
 			testDir: bddTestDir,
 		},
 	],
-	reporter: [['html', { open: 'never' }]],
+	reporter: [
+		['list'],
+		['html', { open: 'never', outputFolder: 'playwright-report' }],
+	],
 	use: {
 		baseURL: process.env.BASE_URL || 'http://localhost:4321',
+		screenshot: 'only-on-failure',
+		trace: 'retain-on-failure',
 	},
 	webServer: process.env.BASE_URL
 		? undefined
