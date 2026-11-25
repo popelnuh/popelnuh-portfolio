@@ -11,6 +11,7 @@ node_modules/
 coverage/
 playwright-report/
 test-results/
+reports-site/
 .features-gen/
 
 # logs
