@@ -31,12 +31,48 @@ Then('the Maps contents links point to all map sections', async ({ mapsPage }) =
 		'#european-education-insights',
 	);
 	await expect(mapsPage.worldContentsLink).toHaveAttribute('href', '#world-travel-map');
+	await expect(mapsPage.heyerdahlContentsLink).toHaveAttribute('href', '#heyerdahl-journeys');
 	await expect(mapsPage.renewableContentsLink).toHaveAttribute('href', '#renewable-energy');
+});
+
+Then('the first map section is active in the contents navigation', async ({ mapsPage }) => {
+	await expect(mapsPage.educationContentsLink).toHaveAttribute('aria-current', 'location');
 });
 
 When('I navigate to the Renewable Energy section', async ({ mapsPage }) => {
 	await mapsPage.viewRenewableEnergySection();
 });
+
+When('I follow the Renewable Energy contents link', async ({ mapsPage }) => {
+	await mapsPage.viewRenewableEnergySection();
+});
+
+Then('the Renewable Energy section is active and brought into view', async ({ mapsPage }) => {
+	expect(new URL(mapsPage.getCurrentUrl()).hash).toBe('#renewable-energy');
+	await expect(mapsPage.renewableContentsLink).toHaveAttribute('aria-current', 'location');
+	await expect(mapsPage.renewableMapSection).toBeInViewport();
+});
+
+Then('the desktop contents sidebar is sticky without horizontal overflow', async ({ mapsPage }) => {
+	await mapsPage.setDesktopViewport();
+	expect(await mapsPage.contentsSidebarIsSticky()).toBe(true);
+	expect(await mapsPage.hasHorizontalOverflow()).toBe(false);
+	expect(mapsPage.getErrors()).toEqual([]);
+});
+
+When('I view the Maps page on mobile', async ({ mapsPage }) => {
+	await mapsPage.setMobileViewport();
+});
+
+Then(
+	'the contents navigation is above the maps without horizontal overflow',
+	async ({ mapsPage }) => {
+		await expect(mapsPage.pageContents).toBeVisible();
+		expect(await mapsPage.contentsAreAboveFirstMap()).toBe(true);
+		expect(await mapsPage.hasHorizontalOverflow()).toBe(false);
+		expect(mapsPage.getErrors()).toEqual([]);
+	},
+);
 
 Then('the Renewable Energy section follows the World Travel Map', async ({ mapsPage }) => {
 	await expect(mapsPage.renewableMapSection).toBeVisible();
@@ -45,6 +81,19 @@ Then('the Renewable Energy section follows the World Travel Map', async ({ mapsP
 
 When('I follow the World Travel Map contents link', async ({ mapsPage }) => {
 	await mapsPage.followWorldContentsLink();
+});
+
+When('I follow the Thor Heyerdahl map contents link', async ({ mapsPage }) => {
+	await mapsPage.followHeyerdahlContentsLink();
+});
+
+Then('the Thor Heyerdahl map section shows all expedition routes', async ({ mapsPage }) => {
+	await expect(mapsPage.heyerdahlMap).toBeVisible();
+	await expect(mapsPage.heyerdahlMapStatus).toHaveText('Map loaded with 4 expeditions.');
+	await expect(mapsPage.heyerdahlMapSvg).toBeVisible();
+	await expect(mapsPage.heyerdahlRoutePaths).toHaveCount(4);
+	await expect(mapsPage.heyerdahlFilters).toBeVisible();
+	expect(mapsPage.getErrors()).toEqual([]);
 });
 
 Then('the world travel map section shows 38 countries', async ({ mapsPage }) => {
@@ -85,11 +134,14 @@ Then('Spain is available on the map', async ({ mapsPage }) => {
 	await expect(mapsPage.spainRegion).toBeVisible();
 });
 
-Then('the reset view control is available and works without browser errors', async ({ mapsPage }) => {
-	await expect(mapsPage.resetViewControl).toBeVisible();
-	await mapsPage.zoomInAndReset();
-	expect(mapsPage.getErrors()).toEqual([]);
-});
+Then(
+	'the reset view control is available and works without browser errors',
+	async ({ mapsPage }) => {
+		await expect(mapsPage.resetViewControl).toBeVisible();
+		await mapsPage.zoomInAndReset();
+		expect(mapsPage.getErrors()).toEqual([]);
+	},
+);
 
 Then('countries without a metric are styled as no data', async ({ mapsPage }) => {
 	await expect(mapsPage.countryWithoutMetric).toHaveAttribute('fill', '#e5e7eb');
@@ -253,26 +305,20 @@ Then("the tooltip shows the UK's religious education policy", async ({ mapsPage 
 	await expect(mapsPage.tooltip).toContainText('Statutory Worship / Faith-Patron System');
 });
 
-Then(
-	'the UK religious education popup shows its note and source link',
-	async ({ mapsPage }) => {
-		await expect(mapsPage.popup).toContainText('United Kingdom');
-		await expect(mapsPage.popup).toContainText(
-			'Statutory Religious Education plus daily collective worship',
-		);
-		await expect(mapsPage.popup).toContainText('parental opt-out');
-		await expect(mapsPage.religiousEducationSourceLink).toHaveAttribute(
-			'href',
-			'https://eurydice.eacea.ec.europa.eu/national-education-systems',
-		);
-		await expect(mapsPage.religiousEducationSourceLink).toHaveAttribute('target', '_blank');
-		await expect(mapsPage.religiousEducationSourceLink).toHaveAttribute(
-			'rel',
-			'noopener noreferrer',
-		);
-		expect(mapsPage.getErrors()).toEqual([]);
-	},
-);
+Then('the UK religious education popup shows its note and source link', async ({ mapsPage }) => {
+	await expect(mapsPage.popup).toContainText('United Kingdom');
+	await expect(mapsPage.popup).toContainText(
+		'Statutory Religious Education plus daily collective worship',
+	);
+	await expect(mapsPage.popup).toContainText('parental opt-out');
+	await expect(mapsPage.religiousEducationSourceLink).toHaveAttribute(
+		'href',
+		'https://eurydice.eacea.ec.europa.eu/national-education-systems',
+	);
+	await expect(mapsPage.religiousEducationSourceLink).toHaveAttribute('target', '_blank');
+	await expect(mapsPage.religiousEducationSourceLink).toHaveAttribute('rel', 'noopener noreferrer');
+	expect(mapsPage.getErrors()).toEqual([]);
+});
 
 Then(
 	'the teacher qualifications heading, three-tier legend, and map load without browser errors',
@@ -297,10 +343,7 @@ Then(
 			'aria-label',
 			'European countries by minimum teacher qualification level',
 		);
-		await expect(mapsPage.teacherQualificationsMapRegion).toHaveAttribute(
-			'fill',
-			'#0f766e',
-		);
+		await expect(mapsPage.teacherQualificationsMapRegion).toHaveAttribute('fill', '#0f766e');
 		expect(mapsPage.getErrors()).toEqual([]);
 	},
 );
@@ -358,10 +401,7 @@ Then(
 			'aria-label',
 			'European countries by compulsory education starting age',
 		);
-		await expect(mapsPage.estoniaSchoolStartingAgeRegion).toHaveAttribute(
-			'fill',
-			'#cbd5e1',
-		);
+		await expect(mapsPage.estoniaSchoolStartingAgeRegion).toHaveAttribute('fill', '#cbd5e1');
 		expect(mapsPage.getErrors()).toEqual([]);
 	},
 );
@@ -386,10 +426,7 @@ Then('the Estonia popup shows its starting age, note, and source link', async ({
 		'https://eurydice.eacea.ec.europa.eu/publications',
 	);
 	await expect(mapsPage.schoolStartingAgeSourceLink).toHaveAttribute('target', '_blank');
-	await expect(mapsPage.schoolStartingAgeSourceLink).toHaveAttribute(
-		'rel',
-		'noopener noreferrer',
-	);
+	await expect(mapsPage.schoolStartingAgeSourceLink).toHaveAttribute('rel', 'noopener noreferrer');
 	expect(mapsPage.getErrors()).toEqual([]);
 });
 
@@ -438,18 +475,13 @@ When('I select Italy', async ({ mapsPage }) => {
 Then('the Italy popup shows its duration, note, and source link', async ({ mapsPage }) => {
 	await expect(mapsPage.popup).toContainText('Italy');
 	await expect(mapsPage.popup).toContainText('~13 weeks');
-	await expect(mapsPage.popup).toContainText(
-		'among the longest summer holidays in Europe.',
-	);
+	await expect(mapsPage.popup).toContainText('among the longest summer holidays in Europe.');
 	await expect(mapsPage.summerHolidaysSourceLink).toHaveAttribute(
 		'href',
 		'https://eurydice.eacea.ec.europa.eu/data-and-visuals/european-school-calendars',
 	);
 	await expect(mapsPage.summerHolidaysSourceLink).toHaveAttribute('target', '_blank');
-	await expect(mapsPage.summerHolidaysSourceLink).toHaveAttribute(
-		'rel',
-		'noopener noreferrer',
-	);
+	await expect(mapsPage.summerHolidaysSourceLink).toHaveAttribute('rel', 'noopener noreferrer');
 	expect(mapsPage.getErrors()).toEqual([]);
 });
 
@@ -493,27 +525,27 @@ Then('the Finland popup shows its policy note and source link', async ({ mapsPag
 		'https://eurydice.eacea.ec.europa.eu/national-education-systems/finland/overview',
 	);
 	await expect(mapsPage.freeSchoolMealsSourceLink).toHaveAttribute('target', '_blank');
-	await expect(mapsPage.freeSchoolMealsSourceLink).toHaveAttribute(
-		'rel',
-		'noopener noreferrer',
-	);
+	await expect(mapsPage.freeSchoolMealsSourceLink).toHaveAttribute('rel', 'noopener noreferrer');
 });
 
-Then('the school uniform heading, legend, and map load without browser errors', async ({ mapsPage }) => {
-	await expect(mapsPage.educationStatus).toHaveText(
-		'Map data loaded. Select a country for details.',
-	);
-	await expect(mapsPage.schoolUniformsTab).toHaveAttribute('aria-selected', 'true');
-	await expect(mapsPage.schoolUniformsHeading).toBeVisible();
-	await expect(mapsPage.schoolUniformsLegend.getByRole('listitem')).toHaveText([
-		'No data',
-		'Standard in state schools',
-		'Mostly private / optional',
-		'Not used in state schools',
-	]);
-	await expect(mapsPage.educationSpainRegion).toBeVisible();
-	expect(mapsPage.getErrors()).toEqual([]);
-});
+Then(
+	'the school uniform heading, legend, and map load without browser errors',
+	async ({ mapsPage }) => {
+		await expect(mapsPage.educationStatus).toHaveText(
+			'Map data loaded. Select a country for details.',
+		);
+		await expect(mapsPage.schoolUniformsTab).toHaveAttribute('aria-selected', 'true');
+		await expect(mapsPage.schoolUniformsHeading).toBeVisible();
+		await expect(mapsPage.schoolUniformsLegend.getByRole('listitem')).toHaveText([
+			'No data',
+			'Standard in state schools',
+			'Mostly private / optional',
+			'Not used in state schools',
+		]);
+		await expect(mapsPage.educationSpainRegion).toBeVisible();
+		expect(mapsPage.getErrors()).toEqual([]);
+	},
+);
 
 When('I hover the UK', async ({ mapsPage }) => {
 	await mapsPage.hoverCountry('UK');

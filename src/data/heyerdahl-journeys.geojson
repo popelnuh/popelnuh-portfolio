@@ -1,0 +1,127 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "kon-tiki",
+      "properties": {
+        "id": "kon-tiki",
+        "name": "Kon-Tiki",
+        "year": 1947,
+        "vessel": "Kon-Tiki (balsa raft)",
+        "departure": "Callao, Peru",
+        "arrival": "Raroia, Tuamotu Archipelago",
+        "distance_nm": 3770,
+        "duration_days": 101,
+        "status": "Completed",
+        "summary": "The raft drifted west from Callao and reached Raroia after 101 days at sea.",
+        "color": "#c2410c"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-77.15, -12.06],
+          [-80.0, -14.0],
+          [-88.0, -17.5],
+          [-101.0, -19.0],
+          [-114.0, -18.0],
+          [-126.0, -15.0],
+          [-137.0, -13.0],
+          [-142.45, -16.03]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ra-i",
+      "properties": {
+        "id": "ra-i",
+        "name": "Ra I",
+        "year": 1969,
+        "vessel": "Ra (papyrus reed boat)",
+        "departure": "Safi, Morocco",
+        "arrival": "Central Atlantic (rescue)",
+        "distance_nm": 2700,
+        "duration_days": 57,
+        "status": "Did not reach its planned destination",
+        "summary": "The papyrus vessel began to break apart during its Atlantic crossing and the crew was rescued.",
+        "color": "#2563eb"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-9.24, 32.3],
+          [-12.0, 29.0],
+          [-16.0, 25.0],
+          [-20.0, 18.0],
+          [-26.0, 12.0],
+          [-32.0, 8.0],
+          [-38.0, 6.0]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ra-ii",
+      "properties": {
+        "id": "ra-ii",
+        "name": "Ra II",
+        "year": 1970,
+        "vessel": "Ra II (papyrus reed boat)",
+        "departure": "Safi, Morocco",
+        "arrival": "Bridgetown, Barbados",
+        "distance_nm": 3100,
+        "duration_days": 57,
+        "status": "Completed",
+        "summary": "A redesigned papyrus boat completed the Atlantic crossing from Morocco to Barbados.",
+        "color": "#0f766e"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-9.24, 32.3],
+          [-13.0, 28.0],
+          [-17.0, 23.0],
+          [-22.0, 17.0],
+          [-29.0, 12.0],
+          [-38.0, 10.0],
+          [-47.0, 12.0],
+          [-54.0, 13.0],
+          [-59.6, 13.1]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "tigris",
+      "properties": {
+        "id": "tigris",
+        "name": "Tigris",
+        "year": 1977,
+        "vessel": "Tigris (reed boat)",
+        "departure": "Al-Qurnah, Iraq",
+        "arrival": "Djibouti",
+        "distance_nm": 3670,
+        "duration_days": 143,
+        "status": "Completed; vessel burned as a protest",
+        "summary": "The reed boat crossed the Persian Gulf and Arabian Sea before the crew ended the voyage in Djibouti.",
+        "color": "#7c3aed"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [47.44, 31.0],
+          [48.5, 29.8],
+          [50.0, 26.0],
+          [54.0, 25.0],
+          [57.0, 23.0],
+          [58.0, 18.0],
+          [56.0, 13.0],
+          [50.0, 11.5],
+          [45.0, 11.2],
+          [43.15, 11.6]
+        ]
+      }
+    }
+  ]
+}

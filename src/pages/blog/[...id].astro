@@ -1,6 +1,7 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import HeyerdahlMap from '../../components/HeyerdahlMap.astro';
 import { estimateReadingTime, formatPostDate, getPublishedPosts } from '../../lib/blog';
 
 export async function getStaticPaths() {
@@ -47,6 +48,7 @@ const readingTime = estimateReadingTime(post.body ?? '');
 			</header>
 
 			<div class="essay-content" data-testid="blog-essay-content">
+				{post.id === 'thor-heyerdahl-journeys' && <HeyerdahlMap />}
 				<Content />
 			</div>
 		</article>

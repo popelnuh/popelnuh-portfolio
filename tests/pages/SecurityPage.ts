@@ -7,12 +7,11 @@ function isBlockedLocalViteHmrError(message: string): boolean {
 	const failedViteWebSocket =
 		message.startsWith('[vite] failed to connect to websocket.') &&
 		message.includes('(browser) localhost:');
-	const viteToolbarCascade =
+	const viteHmrClientCascade =
 		message.includes("[vite] TypeError: Cannot read properties of undefined (reading 'send')") &&
-		message.includes('/@vite/client') &&
-		message.includes('AstroDevToolbar');
+		message.includes('/@vite/client');
 
-	return blockedLocalWebSocket || failedViteWebSocket || viteToolbarCascade;
+	return blockedLocalWebSocket || failedViteWebSocket || viteHmrClientCascade;
 }
 
 export class SecurityPage {

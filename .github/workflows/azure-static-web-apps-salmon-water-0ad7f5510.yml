@@ -26,11 +26,21 @@ jobs:
       - name: Lint Playwright tests
         run: npm run lint:tests
       - name: Run unit tests
-        run: npm run test:unit
+        run: npm run test:coverage
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
       - name: Run Playwright tests
         run: npm run test:e2e
+      - name: Upload test reports and failure artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            coverage/
+            playwright-report/
+            test-results/
+          if-no-files-found: warn
 
   build_and_deploy_job:
     needs: playwright_test_job

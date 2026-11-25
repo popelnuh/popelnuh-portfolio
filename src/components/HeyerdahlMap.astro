@@ -1,0 +1,416 @@
+<section class="journey-panel" data-testid="heyerdahl-map-shell" aria-labelledby="journey-map-heading">
+	<header class="map-header">
+		<div>
+			<p class="eyebrow">MARITIME EXPEDITIONS</p>
+			<h2 id="journey-map-heading">Routes Across the Oceans</h2>
+		</div>
+		<p class="map-intro">Select an expedition to focus on its route.</p>
+	</header>
+
+	<div class="expedition-filters" role="group" aria-label="Filter expeditions">
+		<button
+			type="button"
+			class="filter-button"
+			data-expedition-filter="all"
+			data-testid="heyerdahl-filter-all"
+			aria-pressed="true"
+		>
+			All expeditions
+		</button>
+		<button
+			type="button"
+			class="filter-button"
+			data-expedition-filter="kon-tiki"
+			data-testid="heyerdahl-filter-kon-tiki"
+			aria-pressed="false"
+		>
+			<span class="route-swatch" aria-hidden="true"></span>
+			Kon-Tiki
+		</button>
+		<button
+			type="button"
+			class="filter-button"
+			data-expedition-filter="ra-i"
+			data-testid="heyerdahl-filter-ra-i"
+			aria-pressed="false"
+		>
+			<span class="route-swatch" aria-hidden="true"></span>
+			Ra I
+		</button>
+		<button
+			type="button"
+			class="filter-button"
+			data-expedition-filter="ra-ii"
+			data-testid="heyerdahl-filter-ra-ii"
+			aria-pressed="false"
+		>
+			<span class="route-swatch" aria-hidden="true"></span>
+			Ra II
+		</button>
+		<button
+			type="button"
+			class="filter-button"
+			data-expedition-filter="tigris"
+			data-testid="heyerdahl-filter-tigris"
+			aria-pressed="false"
+		>
+			<span class="route-swatch" aria-hidden="true"></span>
+			Tigris
+		</button>
+	</div>
+
+	<div class="map-frame">
+		<div
+			class="journey-map"
+			data-testid="heyerdahl-map"
+			role="region"
+			aria-label="Thor Heyerdahl expedition routes"
+		></div>
+		<p class="map-status" role="status" aria-live="polite">Loading expedition routes…</p>
+	</div>
+	<p class="map-credit">Routes are approximate GeoJSON reconstructions based on historical expedition records and Kon-Tiki Museum documentation.</p>
+</section>
+
+<script>
+	import * as L from 'leaflet';
+	import 'leaflet/dist/leaflet.css';
+	import journeysRaw from '../data/heyerdahl-journeys.geojson?raw';
+	import type { FeatureCollection, LineString } from 'geojson';
+
+	interface JourneyProperties {
+		id: string;
+		name: string;
+		year: number;
+		vessel: string;
+		departure: string;
+		arrival: string;
+		distance_nm: number;
+		duration_days: number;
+		status: string;
+		summary: string;
+		color: string;
+	}
+
+	type JourneyCollection = FeatureCollection<LineString, JourneyProperties>;
+	type WorldFeatureProperties = Record<string, unknown>;
+
+	const journeyCollection = JSON.parse(journeysRaw) as JourneyCollection;
+	const panel = document.querySelector<HTMLElement>('[data-testid="heyerdahl-map-shell"]');
+	const mapContainer = panel?.querySelector<HTMLElement>('[data-testid="heyerdahl-map"]');
+	const status = panel?.querySelector<HTMLElement>('[role="status"]');
+
+	if (!panel || !mapContainer || !status) {
+		throw new Error('The Heyerdahl expedition map could not find its required page elements.');
+	}
+
+	const map = L.map(mapContainer, { scrollWheelZoom: false }).setView([10, -30], 2);
+	const routeGroups = new Map<string, L.FeatureGroup>();
+	const routeBounds = new Map<string, L.LatLngBounds>();
+	const allRouteBounds = L.latLngBounds([]);
+	const filterButtons = Array.from(
+		panel.querySelectorAll<HTMLButtonElement>('[data-expedition-filter]'),
+	);
+
+	const createPopup = (journey: JourneyProperties): HTMLElement => {
+		const popup = document.createElement('article');
+		popup.className = 'heyerdahl-popup';
+
+		const heading = document.createElement('h3');
+		heading.textContent = `${journey.name} (${journey.year})`;
+		popup.append(heading);
+
+		const details: Array<[string, string]> = [
+			['Vessel', journey.vessel],
+			['Route', `${journey.departure} → ${journey.arrival}`],
+			['Distance', `${journey.distance_nm.toLocaleString()} nm`],
+			['Duration', `${journey.duration_days} days`],
+			['Status', journey.status],
+		];
+
+		for (const [label, value] of details) {
+			const paragraph = document.createElement('p');
+			const detailLabel = document.createElement('strong');
+			detailLabel.textContent = `${label}: `;
+			paragraph.append(detailLabel, document.createTextNode(value));
+			popup.append(paragraph);
+		}
+
+		const summary = document.createElement('p');
+		summary.className = 'popup-summary';
+		summary.textContent = journey.summary;
+		popup.append(summary);
+		return popup;
+	};
+
+	const initializeMap = async (): Promise<void> => {
+		const response = await fetch('/data/world-countries-110m.geojson');
+		if (!response.ok) {
+			throw new Error(`World map data request failed with status ${response.status}`);
+		}
+
+		const world = (await response.json()) as GeoJSON.FeatureCollection<
+			GeoJSON.Geometry,
+			WorldFeatureProperties
+		>;
+		L.geoJSON<WorldFeatureProperties>(world, {
+			style: () => ({
+				color: '#94a3b8',
+				weight: 0.6,
+				fillColor: '#f8fafc',
+				fillOpacity: 0.88,
+			}),
+		}).addTo(map);
+
+		for (const feature of journeyCollection.features) {
+			const journey = feature.properties;
+			const coordinates = feature.geometry.coordinates;
+			const path = coordinates.map(([longitude, latitude]) =>
+				L.latLng(latitude, longitude),
+			);
+			const route = L.polyline(path, {
+				color: journey.color,
+				weight: 3,
+				opacity: 0.9,
+				lineCap: 'round',
+				lineJoin: 'round',
+			});
+			route.on('add', () => {
+				const routeElement = route.getElement();
+				routeElement?.setAttribute('data-testid', `heyerdahl-route-${journey.id}`);
+			});
+			route.on('mouseover', () => route.setStyle({ weight: 5, opacity: 1 }));
+			route.on('mouseout', () => route.setStyle({ weight: 3, opacity: 0.9 }));
+			route.bindPopup(createPopup(journey));
+
+			const start = coordinates[0];
+			const end = coordinates[coordinates.length - 1];
+			const departureMarker = L.circleMarker([start[1], start[0]], {
+				radius: 4,
+				color: '#fff',
+				weight: 1.5,
+				fillColor: journey.color,
+				fillOpacity: 1,
+			}).bindTooltip(`Departure: ${journey.departure}`);
+			const arrivalMarker = L.circleMarker([end[1], end[0]], {
+				radius: 4,
+				color: '#fff',
+				weight: 1.5,
+				fillColor: journey.color,
+				fillOpacity: 1,
+			}).bindTooltip(`Arrival: ${journey.arrival}`);
+
+			const group = L.featureGroup([route, departureMarker, arrivalMarker]);
+			group.addTo(map);
+			routeGroups.set(journey.id, group);
+			routeBounds.set(journey.id, route.getBounds());
+			allRouteBounds.extend(route.getBounds());
+
+			const filter = filterButtons.find(
+				(button) => button.dataset.expeditionFilter === journey.id,
+			);
+			const swatch = filter?.querySelector<HTMLElement>('.route-swatch');
+			if (swatch) swatch.style.backgroundColor = journey.color;
+		}
+
+		const applyFilter = (expeditionId: string): void => {
+			for (const [id, group] of routeGroups) {
+				const shouldShow = expeditionId === 'all' || id === expeditionId;
+				if (shouldShow && !map.hasLayer(group)) group.addTo(map);
+				if (!shouldShow && map.hasLayer(group)) map.removeLayer(group);
+			}
+
+			for (const button of filterButtons) {
+				button.setAttribute(
+					'aria-pressed',
+					String(button.dataset.expeditionFilter === expeditionId),
+				);
+			}
+
+			const bounds = expeditionId === 'all' ? allRouteBounds : routeBounds.get(expeditionId);
+			if (bounds?.isValid()) {
+				map.fitBounds(bounds.pad(expeditionId === 'all' ? 0.06 : 0.2), { maxZoom: 5 });
+			}
+		};
+
+		for (const button of filterButtons) {
+			button.addEventListener('click', () => {
+				const expeditionId = button.dataset.expeditionFilter;
+				if (expeditionId) applyFilter(expeditionId);
+			});
+		}
+
+		const svg = mapContainer.querySelector<SVGSVGElement>('.leaflet-overlay-pane svg');
+		if (svg) svg.dataset.testid = 'heyerdahl-routes-svg';
+		status.textContent = `Map loaded with ${journeyCollection.features.length} expeditions.`;
+		map.fitBounds(allRouteBounds.pad(0.06), { maxZoom: 3 });
+	};
+
+	void initializeMap().catch((error: unknown) => {
+		console.error('Unable to load the Heyerdahl expedition map.', error);
+		status.textContent = 'Expedition map could not be loaded.';
+	});
+</script>
+
+<style>
+	.journey-panel {
+		margin: 28px 0;
+		padding: 18px;
+		border: 1px solid var(--border-subtle);
+		border-radius: 14px;
+		background: #fff;
+		box-shadow: 0 12px 30px rgb(15 23 42 / 6%);
+	}
+
+	.map-header {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: end;
+		justify-content: space-between;
+		gap: 8px 18px;
+		margin-bottom: 14px;
+	}
+
+	.eyebrow {
+		margin: 0 0 5px;
+		color: var(--accent-muted);
+		font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+			'Courier New', monospace;
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+	}
+
+	h2 {
+		margin: 0;
+		color: var(--text-primary);
+		font-size: clamp(1.2rem, 3vw, 1.55rem);
+		letter-spacing: -0.035em;
+		line-height: 1.25;
+	}
+
+	.map-intro {
+		margin: 0;
+		color: var(--text-body);
+		font-size: 0.86rem;
+	}
+
+	.expedition-filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 7px;
+		margin-bottom: 12px;
+	}
+
+	.filter-button {
+		display: inline-flex;
+		min-height: 34px;
+		align-items: center;
+		gap: 7px;
+		padding: 6px 10px;
+		border: 1px solid var(--border-subtle);
+		border-radius: 7px;
+		background: #fff;
+		color: var(--text-body);
+		font: 600 0.8rem/1.2 system-ui, sans-serif;
+		cursor: pointer;
+		transition: color 140ms ease, background-color 140ms ease, border-color 140ms ease;
+	}
+
+	.filter-button:hover {
+		border-color: var(--accent-muted);
+	}
+
+	.filter-button[aria-pressed='true'] {
+		border-color: var(--accent);
+		background: var(--accent);
+		color: #fff;
+	}
+
+	.filter-button:focus-visible {
+		outline: 3px solid rgb(30 41 59 / 28%);
+		outline-offset: 2px;
+	}
+
+	.route-swatch {
+		width: 10px;
+		height: 10px;
+		border: 1px solid rgb(15 23 42 / 18%);
+		border-radius: 50%;
+		background: #64748b;
+	}
+
+	.filter-button[aria-pressed='true'] .route-swatch {
+		border-color: rgb(255 255 255 / 70%);
+	}
+
+	.map-frame {
+		overflow: hidden;
+		border: 1px solid var(--border-subtle);
+		border-radius: 10px;
+		background: #dbeafe;
+	}
+
+	.journey-map {
+		width: 100%;
+		height: 400px;
+		background: #dbeafe;
+	}
+
+	.map-status {
+		margin: 0;
+		padding: 8px 11px;
+		border-top: 1px solid var(--border-subtle);
+		color: var(--accent-muted);
+		font-size: 0.8rem;
+	}
+
+	.map-credit {
+		margin: 10px 0 0;
+		color: var(--accent-muted);
+		font-size: 0.75rem;
+	}
+
+	:global(.heyerdahl-popup) {
+		min-width: 220px;
+		color: var(--text-body);
+		font: 0.84rem/1.5 system-ui, sans-serif;
+	}
+
+	:global(.heyerdahl-popup h3) {
+		margin: 0 0 8px;
+		color: var(--text-primary);
+		font-size: 1rem;
+		line-height: 1.3;
+	}
+
+	:global(.heyerdahl-popup p) {
+		margin: 3px 0;
+	}
+
+	:global(.heyerdahl-popup .popup-summary) {
+		margin-top: 8px;
+		padding-top: 7px;
+		border-top: 1px solid var(--border-subtle);
+	}
+
+	:global(.leaflet-container) {
+		font-family: system-ui, sans-serif;
+	}
+
+	@media (max-width: 600px) {
+		.journey-panel {
+			margin: 24px -8px;
+			padding: 12px;
+		}
+
+		.journey-map {
+			height: 340px;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.filter-button {
+			transition: none;
+		}
+	}
+</style>

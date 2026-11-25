@@ -18,6 +18,9 @@ jobs:
   e2e-live:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Node.js
@@ -27,6 +30,8 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
+      - name: Run unit tests with coverage
+        run: npm run test:coverage
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
       - name: Run Playwright tests against live site
@@ -34,28 +39,106 @@ jobs:
         env:
           BASE_URL: https://www.popelnuh.com
       - name: Upload Playwright report
-        if: ${{ !cancelled() }}
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
-          path: playwright-report/
+          name: test-reports
+          path: |
+            coverage/
+            playwright-report/
+            test-results/
           retention-days: 14
+          if-no-files-found: warn
+      - name: Configure GitHub Pages
+        if: always()
+        uses: actions/configure-pages@v5
+      - name: Stage reports for GitHub Pages
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p reports-site
+
+          for report in "coverage:coverage" "playwright-report:playwright"; do
+            IFS=: read -r source_dir target_dir <<< "$report"
+            target_path="reports-site/$target_dir"
+            mkdir -p "$target_path"
+
+            if [ -d "$source_dir" ]; then
+              cp -R "$source_dir"/. "$target_path"/
+            fi
+
+            if [ ! -f "$target_path/index.html" ]; then
+              printf '%s\n' \
+                '<!doctype html><html lang="en"><meta charset="utf-8"><title>Report unavailable</title><p>No report was generated for this run.</p></html>' \
+                > "$target_path/index.html"
+            fi
+          done
+
+          cat > reports-site/index.html <<'HTML'
+          <!doctype html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <title>Test reports</title>
+          </head>
+          <body>
+            <h1>Test reports</h1>
+            <ul>
+              <li><a href="./coverage/">Vitest coverage report</a></li>
+              <li><a href="./playwright/">Playwright report</a></li>
+            </ul>
+          </body>
+          </html>
+          HTML
       - name: Upload Pages artifact
-        if: ${{ !cancelled() }}
+        if: always()
         uses: actions/upload-pages-artifact@v3
         with:
-          path: playwright-report
-
-  deploy-report:
-    needs: e2e-live
-    if: ${{ always() && !cancelled() }}
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-      - name: Deploy report to GitHub Pages
+          path: reports-site/
+      - name: Deploy reports to GitHub Pages
+        if: always()
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Write test summary
+        if: always()
+        env:
+          REPORT_BASE_URL: ${{ steps.deployment.outputs.page_url }}
+        shell: bash
+        run: |
+          base_url="${REPORT_BASE_URL:-https://popelnuh.github.io/popelnuh-portfolio}"
+          base_url="${base_url%/}"
+
+          {
+            echo "## Test Reports"
+            echo
+            echo "| Metric | Coverage | Covered | Total |"
+            echo "| --- | ---: | ---: | ---: |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [ -f coverage/coverage-summary.json ]; then
+            node - <<'NODE' >> "$GITHUB_STEP_SUMMARY"
+          const fs = require('node:fs');
+          const summary = JSON.parse(fs.readFileSync('coverage/coverage-summary.json', 'utf8'));
+
+          for (const metric of ['lines', 'statements', 'functions', 'branches']) {
+            const value = summary.total?.[metric];
+            const label = metric[0].toUpperCase() + metric.slice(1);
+            if (value && typeof value.pct === 'number') {
+              console.log(`| ${label} | ${value.pct}% | ${value.covered} | ${value.total} |`);
+            } else {
+              console.log(`| ${label} | unavailable | - | - |`);
+            }
+          }
+          NODE
+          else
+            for metric in Lines Statements Functions Branches; do
+              echo "| $metric | unavailable | - | - |" >> "$GITHUB_STEP_SUMMARY"
+            done
+          fi
+
+          {
+            echo
+            echo "[Coverage report]($base_url/coverage/)"
+            echo
+            echo "[Playwright report]($base_url/playwright/)"
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import HeyerdahlMap from '../components/HeyerdahlMap.astro';
 import LeafletMap from '../components/LeafletMap.astro';
 import WorldTravelMap from '../components/WorldTravelMap.astro';
 import { mapStrategies } from '../lib/mapStrategies';
@@ -7,36 +8,60 @@ import { mapStrategies } from '../lib/mapStrategies';
 
 <Layout title="Maps | Zlata Popelnuh">
 	<section class="maps">
-		<p class="eyebrow">Geospatial data</p>
-		<h1>Maps</h1>
-		<nav class="page-contents" aria-label="Page contents">
-			<a
-				href="#european-education-insights"
-				data-track="maps-toc-link"
-				data-testid="maps-toc-european-education-insights"
-			>
-				European Children Education Insights
-			</a>
-			<a
-				href="#world-travel-map"
-				data-track="maps-toc-link"
-				data-testid="maps-toc-world-travel-map"
-			>
-				World Travel Map
-			</a>
-			<a
-				href="#renewable-energy"
-				data-track="maps-toc-link"
-				data-testid="maps-toc-renewable-energy"
-			>
-				Renewable Energy
-			</a>
-		</nav>
+		<header class="maps-header">
+			<p class="eyebrow">Geospatial data</p>
+			<h1>Maps</h1>
+		</header>
+		<div class="maps-layout">
+			<aside class="maps-contents">
+				<nav aria-label="On this page">
+					<p class="contents-label">On this page</p>
+					<ul class="page-contents">
+						<li>
+							<a
+								href="#european-education-insights"
+								data-track="maps-toc-link"
+								data-testid="maps-toc-european-education-insights"
+							>
+								European Children Education Insights
+							</a>
+						</li>
+						<li>
+							<a
+								href="#world-travel-map"
+								data-track="maps-toc-link"
+								data-testid="maps-toc-world-travel-map"
+							>
+								World Travel Map
+							</a>
+						</li>
+						<li>
+							<a
+								href="#heyerdahl-journeys"
+								data-track="maps-toc-link"
+								data-testid="maps-toc-heyerdahl-journeys"
+							>
+								Thor Heyerdahl's Maritime Expeditions
+							</a>
+						</li>
+						<li>
+							<a
+								href="#renewable-energy"
+								data-track="maps-toc-link"
+								data-testid="maps-toc-renewable-energy"
+							>
+								Renewable Energy
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</aside>
+			<div class="maps-content">
 
-		<section
-			id="european-education-insights"
-			aria-labelledby="european-education-insights-heading"
-		>
+				<section
+					id="european-education-insights"
+					aria-labelledby="european-education-insights-heading"
+				>
 			<h2 id="european-education-insights-heading" class="section-title">
 				European Children Education Insights
 			</h2>
@@ -193,6 +218,16 @@ import { mapStrategies } from '../lib/mapStrategies';
 
 		<WorldTravelMap />
 
+		<section
+			id="heyerdahl-journeys"
+			aria-labelledby="heyerdahl-journeys-heading"
+		>
+			<h2 id="heyerdahl-journeys-heading" class="section-title">
+				Thor Heyerdahl's Maritime Expeditions
+			</h2>
+			<HeyerdahlMap />
+		</section>
+
 		<section id="renewable-energy" aria-labelledby="renewable-energy-heading">
 			<h2 id="renewable-energy-heading" class="section-title">Renewable Energy</h2>
 			<ul
@@ -233,7 +268,9 @@ import { mapStrategies } from '../lib/mapStrategies';
 					</p>
 				</div>
 			</div>
-		</section>
+				</section>
+			</div>
+		</div>
 	</section>
 </Layout>
 
@@ -370,11 +407,101 @@ import { mapStrategies } from '../lib/mapStrategies';
 		);
 		if (isMapStrategyKey(initialDatasetKey)) selectStrategy(initialDatasetKey);
 	}
+
+	const sectionLinks = Array.from(
+		document.querySelectorAll<HTMLAnchorElement>(
+			'.maps-contents nav a[href^="#"]',
+		),
+	);
+	const linkedSections = sectionLinks
+		.map((link) => ({
+			link,
+			section: document.getElementById(link.hash.slice(1)),
+		}))
+		.filter(
+			(entry): entry is { link: HTMLAnchorElement; section: HTMLElement } =>
+				entry.section instanceof HTMLElement,
+		);
+	const intersectingSections = new Set<HTMLElement>();
+
+	function setActiveSection(section: HTMLElement): void {
+		for (const { link, section: target } of linkedSections) {
+			const active = target === section;
+			link.classList.toggle('active', active);
+			if (active) {
+				link.setAttribute('aria-current', 'location');
+			} else {
+				link.removeAttribute('aria-current');
+			}
+		}
+	}
+
+	if (linkedSections[0]) setActiveSection(linkedSections[0].section);
+
+	if (linkedSections.length && 'IntersectionObserver' in window) {
+		const sectionObserver = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					const section = entry.target;
+					if (!(section instanceof HTMLElement)) continue;
+					if (entry.isIntersecting) {
+						intersectingSections.add(section);
+					} else {
+						intersectingSections.delete(section);
+					}
+				}
+				const activeSection = [...intersectingSections].sort(
+					(first, second) =>
+						second.getBoundingClientRect().top - first.getBoundingClientRect().top,
+				)[0];
+				if (activeSection) setActiveSection(activeSection);
+			},
+			{ rootMargin: '-96px 0px -70% 0px', threshold: 0 },
+		);
+
+		for (const { section } of linkedSections) sectionObserver.observe(section);
+	}
 </script>
 
 <style>
 	.maps {
 		padding: 64px 0 72px;
+	}
+
+	.maps-header {
+		margin-bottom: 30px;
+	}
+
+	.maps-layout {
+		display: grid;
+		grid-template-areas:
+			"contents"
+			"content";
+		grid-template-columns: minmax(0, 1fr);
+		gap: 24px;
+	}
+
+	.maps-content {
+		grid-area: content;
+		min-width: 0;
+	}
+
+	.maps-contents {
+		grid-area: contents;
+		min-width: 0;
+		padding: 14px;
+		border: 1px solid var(--border-subtle);
+		border-radius: 12px;
+		background: #fff;
+	}
+
+	.contents-label {
+		margin: 0 0 10px;
+		color: var(--accent-muted);
+		font-size: 0.74rem;
+		font-weight: 750;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
 	}
 
 	.eyebrow {
@@ -398,22 +525,34 @@ import { mapStrategies } from '../lib/mapStrategies';
 	}
 
 	.page-contents {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 8px 18px;
-		margin: 16px 0 34px;
+		display: grid;
+		gap: 2px;
+		margin: 0;
+		padding: 0;
+		border-left: 1px solid var(--border-subtle);
 		font-size: 0.9rem;
+		list-style: none;
 	}
 
 	.page-contents a {
+		display: block;
+		margin-left: -1px;
+		padding: 8px 12px;
+		border-left: 2px solid transparent;
 		color: var(--accent-muted);
-		text-decoration-color: var(--border-subtle);
-		text-underline-offset: 3px;
+		text-decoration: none;
+		transition: color 160ms ease, border-color 160ms ease;
 	}
 
-	.page-contents a:hover {
+	.page-contents a:hover,
+	.page-contents a.active {
 		color: var(--accent);
-		text-decoration-color: var(--accent);
+		border-left-color: var(--accent);
+	}
+
+	.page-contents a.active {
+		color: var(--text-primary);
+		font-weight: 700;
 	}
 
 	.page-contents a:focus-visible {
@@ -422,8 +561,10 @@ import { mapStrategies } from '../lib/mapStrategies';
 	}
 
 	#european-education-insights,
-	#renewable-energy {
-		scroll-margin-top: 24px;
+	#heyerdahl-journeys,
+	#renewable-energy,
+	:global(#world-travel-map) {
+		scroll-margin-top: 6rem;
 	}
 
 	.section-title {
@@ -541,6 +682,24 @@ import { mapStrategies } from '../lib/mapStrategies';
 	@media (max-width: 700px) {
 		.metadata-bar {
 			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.maps-layout {
+			grid-template-areas: "content contents";
+			grid-template-columns: minmax(0, 1fr) 230px;
+			gap: 32px;
+		}
+
+		.maps-contents {
+			position: sticky;
+			top: 6rem;
+			align-self: start;
+			padding: 8px 0;
+			border: 0;
+			border-radius: 0;
+			background: transparent;
 		}
 	}
 

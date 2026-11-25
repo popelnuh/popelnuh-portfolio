@@ -41,12 +41,12 @@ Then('the home page exposes favicon and social metadata', async ({ homePage }) =
 	await expect(homePage.svgFavicon).toHaveAttribute('href', '/favicon.svg?v=2');
 	await expect(homePage.descriptionMeta).toHaveAttribute(
 		'content',
-		'Senior Test Automation Engineer & GIS specialist. Interactive European data maps, clean architecture, and Playwright automation.',
+		'Senior Test Automation Engineer, SDTE. Interactive European data maps, clean architecture, and quality automation.',
 	);
 	await expect(homePage.ogTitleMeta).toHaveAttribute('content', 'Home | Zlata Popelnuh');
 	await expect(homePage.ogDescriptionMeta).toHaveAttribute(
 		'content',
-		'Senior Test Automation Engineer & GIS specialist. Interactive European data maps, clean architecture, and Playwright automation.',
+		'Senior Test Automation Engineer, SDTE. Interactive European data maps, clean architecture, and quality automation.',
 	);
 	await expect(homePage.ogTypeMeta).toHaveAttribute('content', 'website');
 	await expect(homePage.twitterCardMeta).toHaveAttribute('content', 'summary');

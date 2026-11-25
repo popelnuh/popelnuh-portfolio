@@ -7,10 +7,21 @@ export class BlogPage {
 	readonly publishedEssays: Locator;
 	readonly essayCards: Locator;
 	readonly starterEssayLink: Locator;
+	readonly heyerdahlEssayLink: Locator;
 	readonly essayHeading: Locator;
 	readonly readingTime: Locator;
 	readonly essayArticle: Locator;
 	readonly relatedMapLink: Locator;
+	readonly expeditionMap: Locator;
+	readonly expeditionMapRegion: Locator;
+	readonly expeditionMapStatus: Locator;
+	readonly expeditionMapSvg: Locator;
+	readonly expeditionRoutePaths: Locator;
+	readonly allExpeditionsFilter: Locator;
+	readonly konTikiFilter: Locator;
+	readonly raIFilter: Locator;
+	readonly raIIFilter: Locator;
+	readonly tigrisFilter: Locator;
 	private readonly browserErrors: string[] = [];
 
 	constructor(private readonly page: Page) {
@@ -21,10 +32,29 @@ export class BlogPage {
 		this.starterEssayLink = page
 			.getByTestId('blog-post-entry-european-school-differences')
 			.getByTestId('blog-post-card');
+		this.heyerdahlEssayLink = page
+			.getByTestId('blog-post-entry-thor-heyerdahl-journeys')
+			.getByTestId('blog-post-card');
 		this.essayHeading = page.getByTestId('blog-essay-title');
 		this.readingTime = page.getByTestId('blog-reading-time');
 		this.essayArticle = page.getByTestId('blog-essay-content');
 		this.relatedMapLink = page.getByTestId('blog-related-map-link');
+		this.expeditionMap = page.getByTestId('heyerdahl-map-shell');
+		this.expeditionMapRegion = page.getByRole('region', {
+			name: 'Thor Heyerdahl expedition routes',
+		});
+		this.expeditionMapStatus = this.expeditionMap.getByRole('status');
+		this.expeditionMapSvg = this.expeditionMapRegion.getByTestId('heyerdahl-routes-svg');
+		this.expeditionRoutePaths = this.expeditionMapRegion.getByTestId(
+			/^heyerdahl-route-/,
+		);
+		this.allExpeditionsFilter = this.expeditionMap.getByRole('button', {
+			name: 'All expeditions',
+		});
+		this.konTikiFilter = this.expeditionMap.getByRole('button', { name: 'Kon-Tiki' });
+		this.raIFilter = this.expeditionMap.getByRole('button', { name: 'Ra I', exact: true });
+		this.raIIFilter = this.expeditionMap.getByRole('button', { name: 'Ra II', exact: true });
+		this.tigrisFilter = this.expeditionMap.getByRole('button', { name: 'Tigris' });
 
 		page.on('pageerror', (error) => this.browserErrors.push(error.message));
 		page.on('console', (message) => {
@@ -42,6 +72,10 @@ export class BlogPage {
 
 	async openStarterEssay(): Promise<void> {
 		await this.starterEssayLink.click();
+	}
+
+	async openHeyerdahlEssay(): Promise<void> {
+		await this.heyerdahlEssayLink.click();
 	}
 
 	async followRelatedMapLink(): Promise<void> {
